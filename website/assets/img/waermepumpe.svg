@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="t">
+  <title id="t">Illustration: Luft-Wasser-Wärmepumpe an einer Hauswand</title>
+  <style>
+    .fan { transform-origin: 500px 445px; animation: spin 1.5s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .flow { fill: none; stroke-width: 6; stroke-linecap: round; stroke-dasharray: 16 22; animation: dash 1.1s linear infinite; }
+    @keyframes dash { to { stroke-dashoffset: -38; } }
+    .air { fill: none; stroke: #00a3d9; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 70 50; opacity: .55; animation: air 2.2s linear infinite; }
+    .air.b { animation-delay: -.7s; opacity: .4; }
+    .air.c { animation-delay: -1.4s; opacity: .3; }
+    @keyframes air { to { stroke-dashoffset: 240; } }
+    .led { animation: blink 2.4s ease-in-out infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4f7f8"/>
+      <stop offset="1" stop-color="#e3e9ec"/>
+    </linearGradient>
+    <linearGradient id="unit" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#eef2f4"/>
+    </linearGradient>
+    <radialGradient id="hole" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#3a3d3b"/>
+      <stop offset="1" stop-color="#1f2120"/>
+    </radialGradient>
+    <path id="blade" d="M500 445 C 512 392, 552 330, 612 318 C 628 316, 640 326, 634 342 C 610 392, 560 430, 500 445 Z"/>
+  </defs>
+
+  <!-- Wand mit Fassadenplatten -->
+  <rect width="1200" height="800" fill="url(#wall)"/>
+  <g stroke="#dfe6ea" stroke-width="2">
+    <path d="M0 160 H1200 M0 320 H1200 M0 480 H1200 M0 640 H1200"/>
+    <path d="M240 0 V160 M600 0 V160 M960 0 V160 M120 160 V320 M480 160 V320 M840 160 V320 M1080 160 V320 M240 320 V480 M600 320 V480 M960 320 V480 M120 480 V640 M480 480 V640 M840 480 V640 M1080 480 V640"/>
+  </g>
+
+  <!-- Boden und Sockel -->
+  <rect y="700" width="1200" height="100" fill="#d9e0e4"/>
+  <rect y="700" width="1200" height="6" fill="#cbd3d8"/>
+  <ellipse cx="560" cy="706" rx="330" ry="16" fill="#2f302e" opacity=".12"/>
+  <rect x="250" y="668" width="620" height="34" rx="4" fill="#c9d1d6"/>
+  <rect x="250" y="668" width="620" height="8" rx="4" fill="#d6dde1"/>
+
+  <!-- Leitungen in die Wand (Vorlauf warm, Rücklauf kalt) -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M860 560 H990 V230" stroke="#3a3d3b" stroke-width="26"/>
+    <path d="M860 610 H1040 V230" stroke="#3a3d3b" stroke-width="26"/>
+    <path d="M860 560 H990 V230" stroke="#555a5c" stroke-width="18"/>
+    <path d="M860 610 H1040 V230" stroke="#555a5c" stroke-width="18"/>
+    <path class="flow" d="M860 560 H990 V230" stroke="#f0643c"/>
+    <path class="flow" d="M1040 230 V610 H860" stroke="#00a3d9"/>
+  </g>
+  <rect x="966" y="200" width="98" height="34" rx="6" fill="#b9c3c9"/>
+  <rect x="966" y="200" width="98" height="8" rx="4" fill="#cfd6da"/>
+
+  <!-- Aussengerät -->
+  <rect x="268" y="626" width="40" height="46" fill="#8f999f"/>
+  <rect x="810" y="626" width="40" height="46" fill="#8f999f"/>
+  <rect x="250" y="222" width="620" height="412" rx="20" fill="url(#unit)" stroke="#cfd6da" stroke-width="3"/>
+  <rect x="250" y="222" width="620" height="14" rx="7" fill="#00a3d9"/>
+
+  <!-- Ventilator -->
+  <circle cx="500" cy="445" r="172" fill="#e6ebee"/>
+  <circle cx="500" cy="445" r="160" fill="url(#hole)"/>
+  <g class="fan" fill="#7d878c">
+    <use href="#blade"/>
+    <use href="#blade" transform="rotate(72 500 445)"/>
+    <use href="#blade" transform="rotate(144 500 445)"/>
+    <use href="#blade" transform="rotate(216 500 445)"/>
+    <use href="#blade" transform="rotate(288 500 445)"/>
+  </g>
+  <circle cx="500" cy="445" r="30" fill="#00a3d9"/>
+  <circle cx="500" cy="445" r="12" fill="#ffffff" opacity=".85"/>
+  <!-- Schutzgitter -->
+  <g fill="none" stroke="#dbe2e6" stroke-width="4" opacity=".9">
+    <circle cx="500" cy="445" r="58"/>
+    <circle cx="500" cy="445" r="98"/>
+    <circle cx="500" cy="445" r="138"/>
+    <path d="M340 445 H660 M500 285 V605"/>
+  </g>
+
+  <!-- Seitenteil mit Anzeige -->
+  <rect x="712" y="262" width="128" height="342" rx="10" fill="#f6f8f9" stroke="#dfe5e9" stroke-width="3"/>
+  <rect x="736" y="292" width="80" height="44" rx="6" fill="#2f302e"/>
+  <rect x="748" y="306" width="40" height="6" rx="3" fill="#00a3d9"/>
+  <rect x="748" y="318" width="26" height="6" rx="3" fill="#00a3d9" opacity=".5"/>
+  <circle class="led" cx="800" cy="314" r="5" fill="#46dc82"/>
+  <g stroke="#d3dadf" stroke-width="5" stroke-linecap="round">
+    <path d="M740 380 H812 M740 404 H812 M740 428 H812 M740 452 H812 M740 476 H812 M740 500 H812"/>
+  </g>
+  <circle cx="776" cy="560" r="10" fill="#cfd6da"/>
+
+  <!-- Luftstrom -->
+  <path class="air" d="M318 360 C 250 340, 200 380, 130 360 S 40 330, -20 352"/>
+  <path class="air b" d="M300 450 C 230 430, 170 470, 100 450 S 10 420, -40 444"/>
+  <path class="air c" d="M318 540 C 250 520, 200 560, 130 540 S 40 510, -20 532"/>
+</svg>
