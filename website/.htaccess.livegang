@@ -1,0 +1,139 @@
+# =============================================================================
+# .htaccess für www.aderapartner.ch (Apache 2.4.10 oder neuer)
+# Vorschlag aus dem Tech-Audit vom 26.11.2026
+#
+# Ins Hauptverzeichnis der Website legen (dort, wo index.html liegt).
+# Eine bestehende .htaccess (z. B. von WordPress) vorher sichern und den Block
+# "# BEGIN WordPress ... # END WordPress" entfernen.
+# Erst beim Livegang auf der richtigen Domain einsetzen.
+#
+# Nach dem Hochladen testen:
+#   - jede Seite im Browser öffnen, Entwicklertools > Konsole: keine roten
+#     Meldungen "Content-Security-Policy"
+#   - "Karte laden" auf index.html und kontakt.html, Formular einmal senden
+#   - http://aderapartner.ch/kontakt/ muss in EINEM Schritt auf
+#     https://www.aderapartner.ch/kontakt.html führen
+#   - https://securityheaders.com (Ziel: A), https://www.ssllabs.com/ssltest/
+# Bei Fehler 500 nach dem Hochladen: Der Hoster erlaubt eine Anweisung nicht.
+# Dann Block für Block auskommentieren (# davor) und den Hoster fragen.
+# =============================================================================
+
+# ---------- Grundeinstellungen ----------
+Options -Indexes
+DirectoryIndex index.html
+AddDefaultCharset utf-8
+FileETag MTime Size
+
+<IfModule mod_mime.c>
+  AddCharset utf-8 .css .js .svg .xml .txt .json .webmanifest
+  AddType image/avif .avif
+  AddType image/webp .webp
+  AddType image/svg+xml .svg
+  AddType image/x-icon .ico
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
+# ---------- Fehlerseite ----------
+ErrorDocument 404 /404.html
+
+# ---------- Dateien, die niemand abrufen soll (README.md, Backups, Logs) ----------
+<FilesMatch "(\.(md|bak|old|orig|log|sh|sql|ini|dist|zip)|~)$">
+  Require all denied
+</FilesMatch>
+
+# ---------- Weiterleitungen ----------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # 1) Alte Adressen der WordPress-Website: direkt auf die neue Seite,
+  #    in EINER 301-Weiterleitung (ersetzt die RedirectMatch-Zeilen aus der README)
+  RewriteRule ^haustechnik/?$          https://www.aderapartner.ch/                 [R=301,L]
+  RewriteRule ^unternehmen/?$          https://www.aderapartner.ch/unternehmen.html [R=301,L]
+  RewriteRule ^kontakt/?$              https://www.aderapartner.ch/kontakt.html     [R=301,L]
+  RewriteRule ^services/sanitaer/?$    https://www.aderapartner.ch/sanitaer.html    [R=301,L]
+  RewriteRule ^services/heizung/?$     https://www.aderapartner.ch/heizung.html     [R=301,L]
+  RewriteRule ^services/lueftung/?$    https://www.aderapartner.ch/lueftung.html    [R=301,L]
+  RewriteRule ^services/haustechnik/?$ https://www.aderapartner.ch/                 [R=301,L]
+  RewriteRule ^leistungen/?$           https://www.aderapartner.ch/                 [R=301,L]
+  RewriteRule ^anfrage/?$              https://www.aderapartner.ch/kontakt.html     [R=301,L]
+
+  # 2) Immer https://www.aderapartner.ch (auch http:// und aderapartner.ch ohne www)
+  #    Läuft die Seite hinter einem Proxy/CDN, das HTTPS selbst abwickelt (z. B. Cloudflare),
+  #    entsteht mit %{HTTPS} eine Endlosschleife. Dann die erste Bedingung ersetzen durch:
+  #    RewriteCond %{HTTP:X-Forwarded-Proto} !https [OR]
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} !^www\.aderapartner\.ch$ [NC]
+  RewriteRule ^ https://www.aderapartner.ch%{REQUEST_URI} [R=301,L,NE]
+
+  # 3) OPTIONAL, erst einschalten, wenn alle internen Links "index.html" auf "/" zeigen:
+  #    /index.html -> / (eine Adresse für die Startseite, passend zum canonical)
+  # RewriteCond %{THE_REQUEST} \s/+index\.html[?\s] [NC]
+  # RewriteRule ^index\.html$ https://www.aderapartner.ch/ [R=301,L]
+</IfModule>
+
+# ---------- Sicherheits-Header ----------
+<IfModule mod_headers.c>
+  # HSTS: Browser verwenden 1 Jahr lang nur noch HTTPS.
+  # Zuerst ein paar Tage mit max-age=300 testen. "includeSubDomains" erst ergänzen, wenn
+  # alle Subdomains (z. B. mail., autodiscover., webmail.) HTTPS haben. "preload" nur bewusst.
+  Header always set Strict-Transport-Security "max-age=31536000"
+
+  # Content-Security-Policy, im Browser gegen alle 14 Seiten getestet (keine Verstösse):
+  # - nur eigene Skripte, Stylesheets, Bilder; data: für die Icons im CSS
+  # - Google-Karte (iframe) erst nach Klick auf "Karte laden": frame-src www.google.com
+  # - Formular per fetch an send.php: connect-src/form-action 'self'
+  # - 'unsafe-inline' bei style-src nur wegen der style="..."-Attribute im HTML
+  #   (object-position usw.). Werden sie in CSS-Klassen verschoben, 'unsafe-inline' streichen.
+  # Neue externe Dienste (Analytics, YouTube, Schriften ...) müssen hier ergänzt werden.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://www.google.com; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+  Header always set X-Frame-Options "DENY"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always unset X-Powered-By
+  Header unset X-Powered-By
+</IfModule>
+
+# ---------- Caching ----------
+<IfModule mod_headers.c>
+  # HTML: Browser fragt jedes Mal kurz nach (304, wenn unverändert). Änderungen sind sofort sichtbar.
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+
+  # CSS und JS: 1 Stunde. Mit Versionsangabe im HTML (style.css?v=2026-11-26) 1 Jahr fest.
+  # Bei jeder Änderung an style.css oder main.js die Versionsangabe in allen HTML-Dateien ändern.
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=3600"
+    Header set Cache-Control "public, max-age=31536000, immutable" "expr=%{QUERY_STRING} =~ /(^|&)v=/"
+  </FilesMatch>
+
+  # Bilder, Logos, Icons: 30 Tage. (Bilder werden laut README mit gleichem Namen ersetzt,
+  # darum nicht länger. Wer ein Bild sofort überall neu haben will, gibt ihm einen neuen Namen.)
+  <FilesMatch "\.(jpe?g|png|webp|avif|svg|ico)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+
+  <FilesMatch "\.(xml|txt)$">
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
+
+  # Das Formular-Skript nie indexieren
+  <Files "send.php">
+    Header set X-Robots-Tag "noindex, nofollow"
+  </Files>
+</IfModule>
+
+# ---------- Komprimierung (HTML/CSS/JS/SVG werden 60–90 % kleiner) ----------
+<IfModule mod_brotli.c>
+  <IfModule mod_filter.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css text/plain text/xml text/javascript application/javascript application/json application/ld+json application/xml image/svg+xml application/manifest+json
+  </IfModule>
+</IfModule>
+<IfModule mod_deflate.c>
+  <IfModule mod_filter.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml text/javascript application/javascript application/json application/ld+json application/xml image/svg+xml application/manifest+json
+  </IfModule>
+</IfModule>

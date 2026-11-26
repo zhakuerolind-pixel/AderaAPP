@@ -1,0 +1,8 @@
+# robots.txt fuer www.aderapartner.ch (ins Hauptverzeichnis legen)
+# Alles darf gecrawlt werden, auch CSS, JavaScript und Bilder (Google braucht sie zum Darstellen der Seiten).
+# send.php ist nur das Formular-Skript und hat keinen Inhalt fuer Suchmaschinen.
+
+User-agent: *
+Disallow: /send.php
+
+Sitemap: https://www.aderapartner.ch/sitemap.xml

@@ -9,7 +9,7 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Projekte – Adera Partner GmbH">
   <meta property="og:description" content="Fotos aus unseren Projekten: Bäder, Küchen, Heizungs- und Technikräume.">
-  <meta property="og:image" content="https://www.aderapartner.ch/assets/img/bad-hell-dusche.jpg">
+  <meta property="og:image" content="https://www.aderapartner.ch/assets/img/bad-marmor-schwarz.jpg">
   <link rel="icon" href="assets/img/favicon.png">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -24,8 +24,6 @@
     </a>
     <div class="site-header__nav">
       <div class="topbar">
-        <a href="jobs.html">Jobs</a>
-        <a href="kontakt.html">Kontakt</a>
         <a href="mailto:info@aderapartner.ch">info@aderapartner.ch</a>
         <a class="hotline" href="tel:+41564021000"><span class="i i-phone" aria-hidden="true"></span>24h-Service 056 402 10 00</a>
       </div>
@@ -46,10 +44,14 @@
           <li><a href="unternehmen.html">Unternehmen</a></li>
           <li><a href="jobs.html">Arbeiten bei uns</a></li>
           <li><a href="kontakt.html">Kontakt</a></li>
+          <li class="nav-cta"><a class="btn btn--solid btn--sm" href="kontakt.html#formular">Offerte anfragen</a></li>
         </ul>
       </nav>
     </div>
-    <button class="burger" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobilenav"><span></span><span></span><span></span></button>
+    <div class="header-actions">
+      <a class="header-call" href="tel:+41564021000" aria-label="Anrufen: 056 402 10 00"><span class="i i-phone" aria-hidden="true"></span></a>
+      <button class="burger" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobilenav"><span></span><span></span><span></span></button>
+    </div>
   </div>
   <nav class="mobilenav" id="mobilenav" aria-label="Navigation">
     <ul>
@@ -77,11 +79,11 @@
     </div>
   </nav>
 </header>
-<a class="sidetab" href="tel:+41564021000"><span class="i i-phone" aria-hidden="true"></span>24h-Service</a>
 <!-- ===== /HEADER ===== -->
 
 <main id="inhalt">
 
+  <!-- Hero -->
   <section class="hero hero--page" aria-labelledby="hero-title">
     <div class="hero__media">
       <img src="assets/img/bad-marmor-schwarz.jpg" srcset="assets/img/bad-marmor-schwarz-900.jpg 900w, assets/img/bad-marmor-schwarz.jpg 1500w" sizes="(max-width: 960px) 100vw, 50vw" alt="Bad mit Platten in Marmoroptik und Lichtlinien an der Decke" width="1500" height="2000" fetchpriority="high" style="object-position: 50% 55%">
@@ -99,11 +101,14 @@
     </div>
   </section>
 
+  <!-- Galerie. Neues Foto: weiteres <figure class="gallery__item"> mit data-cat (bad, kueche, technik
+       oder baustelle). Der Link zeigt auf das grosse Bild, das <img> auf die -900-Version.
+       Filter und Grossansicht steuert main.js. -->
   <section class="section" aria-labelledby="galerie-title">
     <div class="container">
       <div class="section-head">
-        <h2 id="galerie-title">Aus unseren Projekten</h2>
-        <p>Alle Fotos stammen von unseren eigenen Baustellen. Klicken Sie auf ein Bild, um es gross anzusehen.</p>
+        <h2 id="galerie-title">Fotos von unseren Baustellen</h2>
+        <p>Tippen oder klicken Sie auf ein Foto, um es gross anzusehen.</p>
       </div>
       <div class="filters" role="group" aria-label="Projekte filtern">
         <button type="button" data-filter="alle" aria-pressed="true">Alle</button>
@@ -253,21 +258,6 @@
     </div>
   </section>
 
-  <section class="section" aria-labelledby="cta-title">
-    <div class="container">
-      <div class="cta">
-        <div>
-          <h2 id="cta-title">Sprechen Sie mit uns über Ihr Projekt</h2>
-          <p>Ob neues Bad, Heizungsersatz oder Neubau: Wir schauen uns die Situation vor Ort an und erstellen Ihnen eine Offerte.</p>
-        </div>
-        <div class="cta__actions">
-          <a class="cta__phone" href="tel:+41564021000"><span class="i i-phone" aria-hidden="true"></span>056&nbsp;402&nbsp;10&nbsp;00</a>
-          <a class="btn btn--light" href="kontakt.html#formular"><span class="i i-arrow" aria-hidden="true"></span>Zum Kontaktformular</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
 </main>
 
 <!-- ===== FOOTER (auf allen Seiten gleich) ===== -->
@@ -276,7 +266,7 @@
     <div class="site-footer__grid">
       <div class="footer-brand">
         <img src="assets/img/logo-adera-partner.svg" alt="Adera Partner GmbH" width="210" height="41" loading="lazy">
-        <p>Ihr 360°-Partner für Haustechnik aus dem Limmattal – rund um die Uhr.</p>
+        <p>Heizung, Lüftung und Sanitär aus Spreitenbach. Bei Störungen rund um die Uhr erreichbar.</p>
         <a class="social" href="https://www.linkedin.com/company/adera-partner-gmbh/" target="_blank" rel="noopener"><span class="i i-linkedin" aria-hidden="true"></span>LinkedIn</a>
       </div>
       <div>
@@ -293,7 +283,7 @@
       <div>
         <h3>Unternehmen</h3>
         <ul>
-          <li><a href="unternehmen.html">Über uns</a></li>
+          <li><a href="unternehmen.html">Unternehmen</a></li>
           <li><a href="projekte.html" aria-current="page">Projekte</a></li>
           <li><a href="jobs.html">Arbeiten bei uns</a></li>
           <li><a href="kontakt.html">Kontakt</a></li>
@@ -305,7 +295,6 @@
         <ul>
           <li><a href="tel:+41564021000">056 402 10 00</a></li>
           <li><a href="mailto:info@aderapartner.ch">info@aderapartner.ch</a></li>
-          <li>24h-Service: <a href="tel:+41564021000">056 402 10 00</a></li>
         </ul>
       </div>
     </div>
