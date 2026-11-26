@@ -804,3 +804,13 @@ h2 { font-size: clamp(30px, 3.5vw, 52px); letter-spacing: -.02em; line-height: 1
   .gallery { column-gap: 14px; }
   .gallery__item { margin-bottom: 18px; }
 }
+
+/* Mitglieds-Logos (offizielle Dateien) und Lehrbetrieb-Vignette (mind. 120 × 120 px laut Vorgabe) */
+.member-logo { display: inline-flex; align-items: center; }
+.member-logo img { height: 24px; width: auto; }
+.member-logo img[src*="logo-wdg"] { height: 46px; }
+.member-logo:hover { opacity: .8; }
+img.vignette { width: 120px; height: 120px; }
+.memberships { gap: 32px 40px; }
+.feature img.vignette { margin-bottom: 24px; }
+.faq details > div ul { padding-left: 1.2em; margin: 0 0 1em; } .faq details > div li { margin-bottom: .35em; }
