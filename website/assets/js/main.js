@@ -198,6 +198,92 @@
     });
   });
 
+  /* Projekte: Filter und Grossansicht (Lightbox) */
+  var gallery = document.querySelector('[data-gallery]');
+  if (gallery) {
+    var gItems = Array.prototype.slice.call(gallery.querySelectorAll('.gallery__item'));
+    document.querySelectorAll('[data-filter]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var f = btn.getAttribute('data-filter');
+        document.querySelectorAll('[data-filter]').forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+        gItems.forEach(function (it) {
+          it.hidden = !(f === 'alle' || it.getAttribute('data-cat') === f);
+          it.classList.remove('rv'); it.classList.add('is-in');
+        });
+      });
+    });
+
+    var box = null, boxImg, boxCap, boxClose, idx = 0, shown = [], lastFocus = null, touchX = null;
+    function buildBox() {
+      box = document.createElement('div');
+      box.className = 'lightbox';
+      box.hidden = true;
+      box.setAttribute('role', 'dialog');
+      box.setAttribute('aria-modal', 'true');
+      box.setAttribute('aria-label', 'Foto in Grossansicht');
+      box.innerHTML =
+        '<button class="lightbox__close" type="button" aria-label="Schliessen">&times;</button>' +
+        '<button class="lightbox__prev" type="button" aria-label="Vorheriges Foto"><span class="i i-prev" aria-hidden="true"></span></button>' +
+        '<figure class="lightbox__figure"><img alt=""><figcaption></figcaption></figure>' +
+        '<button class="lightbox__next" type="button" aria-label="Nächstes Foto"><span class="i i-next" aria-hidden="true"></span></button>';
+      body.appendChild(box);
+      boxImg = box.querySelector('img');
+      boxCap = box.querySelector('figcaption');
+      boxClose = box.querySelector('.lightbox__close');
+      boxClose.addEventListener('click', closeBox);
+      box.querySelector('.lightbox__prev').addEventListener('click', function () { show(idx - 1); });
+      box.querySelector('.lightbox__next').addEventListener('click', function () { show(idx + 1); });
+      box.addEventListener('click', function (e) { if (e.target === box) closeBox(); });
+      box.addEventListener('touchstart', function (e) { touchX = e.changedTouches[0].clientX; }, { passive: true });
+      box.addEventListener('touchend', function (e) {
+        if (touchX === null) return;
+        var dx = e.changedTouches[0].clientX - touchX; touchX = null;
+        if (Math.abs(dx) > 50) show(idx + (dx < 0 ? 1 : -1));
+      });
+      document.addEventListener('keydown', function (e) {
+        if (box.hidden) return;
+        if (e.key === 'Escape') { e.stopPropagation(); closeBox(); }
+        else if (e.key === 'ArrowLeft') show(idx - 1);
+        else if (e.key === 'ArrowRight') show(idx + 1);
+        else if (e.key === 'Tab') {
+          var f = Array.prototype.slice.call(box.querySelectorAll('button'));
+          var i = f.indexOf(document.activeElement);
+          e.preventDefault();
+          f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+        }
+      });
+    }
+    function show(i) {
+      shown = gItems.filter(function (it) { return !it.hidden; });
+      if (!shown.length) return;
+      idx = (i + shown.length) % shown.length;
+      var a = shown[idx].querySelector('a'), im = shown[idx].querySelector('img');
+      boxImg.src = a.getAttribute('href');
+      boxImg.alt = im ? im.alt : '';
+      var cap = shown[idx].querySelector('figcaption');
+      boxCap.textContent = (cap ? cap.textContent : '') + '  ·  ' + (idx + 1) + ' / ' + shown.length;
+    }
+    function openBox(item) {
+      if (!box) buildBox();
+      lastFocus = document.activeElement;
+      shown = gItems.filter(function (it) { return !it.hidden; });
+      show(shown.indexOf(item));
+      box.hidden = false;
+      body.classList.add('lb-open');
+      boxClose.focus();
+    }
+    function closeBox() {
+      if (!box) return;
+      box.hidden = true;
+      body.classList.remove('lb-open');
+      if (lastFocus) lastFocus.focus();
+    }
+    gItems.forEach(function (it) {
+      var a = it.querySelector('a');
+      if (a) a.addEventListener('click', function (e) { e.preventDefault(); openBox(it); });
+    });
+  }
+
   /* ================= Bewegung ================= */
 
   /* Laufband vor dem Footer (auf allen Seiten) */
@@ -240,7 +326,7 @@
     /* Elemente fürs Einblenden markieren (nur was unterhalb des sichtbaren Bereichs liegt) */
     var revealSel = ['.section-head', '.intro > *', '.card', '.person', '.feature > *', '.steps > li', '.checklist > li',
       '.joblist > li', '.fact', '.timeline > li', '.infoblock__text', '.split__panel', '.quotes > div:first-child', '.quotebox',
-      '.cta', '.band__text', '.location__info', '.map', '.faq details', '.carousel__stage', '.site-footer__grid > *', '.memberships'];
+      '.cta', '.band__text', '.location__info', '.map', '.faq details', '.carousel__stage', '.gallery__item', '.site-footer__grid > *', '.memberships'];
     var imgSel = ['.card__img', '.feature__media', '.split__media', '.band__media', '.person__photo'];
     var vh = window.innerHeight;
     var targets = [];
