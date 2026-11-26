@@ -1,155 +1,146 @@
-# Website Adera Partner GmbH
+# Website Adera Partner GmbH – Übergabe
 
-Statische Website (HTML, CSS, JavaScript) mit einem Kontaktformular in PHP.
-Keine Datenbank, kein CMS, keine Cookies und beim Seitenaufruf keine externen Dienste.
+Stand: 26. November 2026. Für Ivan (Informatik) zur Übernahme, Livegang und Pflege.
 
-## Was ist im Ordner
+Statische Website (HTML, CSS, JavaScript ohne Bibliotheken) mit einem Kontaktformular in PHP.
+Kein CMS, keine Datenbank, keine Cookies, keine Analyse- oder Trackingdienste, keine externen Schriften.
+Externe Inhalte gibt es nur nach einem Klick: die Google-Karte («Karte laden») und Links (Google Maps, LinkedIn, Förderstellen).
 
-| Datei / Ordner | Inhalt |
-|---|---|
-| `index.html` | Startseite |
-| `heizung.html`, `lueftung.html`, `sanitaer.html`, `badumbau.html`, `planung.html`, `service.html` | Angebotsseiten |
-| `unternehmen.html`, `jobs.html`, `kontakt.html` | Über uns, Stellen, Kontakt mit Formular und Karte |
-| `impressum.html`, `datenschutz.html` | Rechtliche Angaben |
-| `404.html` | Fehlerseite für Adressen, die es nicht gibt |
-| `send.php` | Verschickt das Kontaktformular als E-Mail an info@aderapartner.ch |
-| `assets/css/style.css` | Gestaltung aller Seiten |
-| `assets/js/main.js` | Navigation, Karussells, Karte, Formular, Animationen |
-| `assets/img/` | Bilder (gross und als `-900`-Version für Handys), Logos, Favicon |
-| `README.md` | Diese Anleitung (nicht hochladen) |
+---
 
-## Lokal ansehen
+## 1. Was ist im Paket
 
-- Am einfachsten: `index.html` doppelklicken. So lassen sich alle Seiten ansehen.
-  Nicht funktionieren nur das Senden des Formulars (braucht PHP) und die 404-Seite (braucht einen Webserver).
-- Mit PHP auf dem Computer: im Ordner `php -S localhost:8000` ausführen und `http://localhost:8000` öffnen.
-  Das Formular meldet dann meist «Das Senden hat leider nicht geklappt», weil lokal kein Mailserver läuft. Das ist normal.
-
-## Hochladen
-
-1. Webhosting mit **PHP 7.4 oder neuer** und eingeschalteter PHP-Funktion `mail()` (bei Schweizer Hostern meist Standard). Ohne PHP läuft die Website auch, nur das Formular nicht.
-2. Die alte WordPress-Website sichern (Backup beim Hoster) und danach entfernen. Eine bestehende `.htaccess` von WordPress enthält einen Block `# BEGIN WordPress … # END WordPress`, der alle Adressen an WordPress schickt. Diesen Block löschen.
-3. Alle Dateien und den Ordner `assets` per SFTP/FTP oder mit dem Dateimanager des Hosters ins **Hauptverzeichnis** der Domain laden (oft `public_html`, `httpdocs` oder `www`). Nicht in einen Unterordner, sonst funktioniert die 404-Seite nicht. `README.md` nicht hochladen.
-4. Beim Hoster **HTTPS** einschalten (SSL-Zertifikat, meist kostenlos über Let's Encrypt) und alle Aufrufe auf `https://www.aderapartner.ch` umleiten lassen, auch `aderapartner.ch` ohne www. Die Datenschutzerklärung sagt, dass die Verbindung verschlüsselt ist.
-5. Weiterleitungen und Fehlerseite einrichten (Abschnitt 5 unten).
-
-## Wichtig vor dem Livegang (Recherche vom 26.11.2026)
-
-1. **Hoster in Konkurs.** Die heutige Website und das DNS laufen bei Unity Systems (Schweiz) AG, Dietikon
-   (Server bei Datasource AG, Hünenberg). Diese Firma heisst heute «Cliq Soft AG in Liquidation»; der Konkurs
-   wurde am 25.08.2026 eröffnet (Zefix, SHAB vom 12.10.2026). Vor dem Livegang einen neuen Hoster wählen
-   (Schweizer Hoster mit PHP, z. B. bei hosttech, wo die Domain registriert ist) und DNS dorthin umziehen.
-   Danach in `datenschutz.html` Hoster und Logfile-Dauer eintragen.
-2. **Formular und E-Mail-Schutz.** Die Domain erlaubt per SPF nur Microsoft 365 als Absender (`-all`) und hat
-   DMARC `p=reject`. E-Mails, die `send.php` mit PHP `mail()` vom Webserver schickt, werden deshalb
-   voraussichtlich abgewiesen. Lösung: entweder den Mailserver des neuen Hosters ins SPF aufnehmen
-   (`include:` des Hosters ergänzen) oder `send.php` über Microsoft 365 (SMTP) senden lassen. Nach dem
-   Livegang das Formular unbedingt testen.
-3. **Alte Einträge im Internet.** local.ch und search.ch zeigen noch die alte Adresse Boostockstrasse 7.
-   Das local.ch-Profil ist nicht beansprucht. Einträge auf Industriestrasse 107 ändern und ein
-   Google-Unternehmensprofil mit Öffnungszeiten anlegen (hilft bei Google Maps und Bewertungen).
-4. **Zwei Firmen trennen.** Die Domain aderaimmobilien.ch leitet heute auf www.aderapartner.ch weiter.
-   Adera Immobilien AG ist eine eigene Firma und sollte eine eigene Seite erhalten.
-5. **Alte Website.** Auf der alten WordPress-Seite sind englische Demo-Beiträge des Themes online und es gibt
-   kein Impressum. Mit dem Wechsel auf die neue Seite fällt das weg; alte Adressen per 301 umleiten (Abschnitt 5).
-
-## Vor dem Livegang
-
-### 1. Platzhalter ersetzen
-
-Gelb markierte Stellen sind Platzhalter: `<span class="todo">…</span>`. Text ersetzen und die `span`-Klammer entfernen, zum Beispiel
-`<span class="todo">CHE-…</span>` wird zu `CHE-123.456.789`.
-
-Alle Platzhalter finden (im Ordner der Website):
-
-```sh
-grep -n 'class="todo"' *.html
+```
+website/                      → gehört auf den Webserver (Hauptverzeichnis der Domain)
+  index.html                  Startseite
+  heizung.html lueftung.html sanitaer.html badumbau.html planung.html service.html   Angebot
+  projekte.html               Galerie mit Filter und Grossansicht (34 eigene Projektfotos)
+  unternehmen.html jobs.html kontakt.html
+  impressum.html datenschutz.html 404.html
+  send.php                    Versand des Kontaktformulars per E-Mail
+  robots.txt  sitemap.xml
+  .htaccess.livegang          Server-Einstellungen, erst beim Livegang in .htaccess umbenennen (Abschnitt 3)
+  README.md                   diese Anleitung (wird durch .htaccess gesperrt, darf aber auch weggelassen werden)
+  assets/css/style.css        Gestaltung aller Seiten
+  assets/js/main.js           Navigation, Anfrage-Assistent, Galerie, Karte, Kontaktleiste, Einblenden
+  assets/img/                 Fotos (siehe Abschnitt 5), Logos, Favicon
+  assets/img/og/              Vorschaubilder 1200×630 für WhatsApp, LinkedIn usw.
+werkzeuge/                    → NICHT auf den Server, nur für die Pflege (Python)
+  bilder-erzeugen.py          600/1200-px-Varianten und AVIF aus einem neuen Foto
+  jsonld-einfuegen.py         strukturierte Daten für Google in alle Seiten einsetzen
+  sitemap-erzeugen.py         sitemap.xml neu erzeugen
+  vorschaubilder-erzeugen.py  Vorschaubilder (og) aus den Hero-Bildern
 ```
 
-Unter Windows (PowerShell): `Select-String -Pattern 'class="todo"' -Path *.html`
+Lokal ansehen: `index.html` doppelklicken genügt. Mit Server (Formular, 404): im Ordner `website` `php -S localhost:8000`.
+Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Mailserver läuft. Das ist normal.
 
-Stand 26. November 2026 (nach öffentlicher Recherche): nur noch wenige Platzhalter.
+---
 
-| Was gebraucht wird | Wo |
-|---|---|
-| Neuer Hoster: Name, Ort, Land; wie lange er die Logfiles aufbewahrt (siehe Warnung unten) | `datenschutz.html` (2×) |
-| Bildnachweis: wird vervollständigt, sobald alle Bilder eigene Fotos sind | `impressum.html` |
+## 2. Wichtig vor dem Livegang
 
-Bereits aus öffentlichen Quellen eingesetzt (Zefix, SHAB, UID-Register, suissetec, Lehrstellennachweis):
-UID CHE-190.687.776, MWST-Nummer CHE-190.687.776 MWST, Firmennummer CH-400.4.450.565-8,
-Geschäftsführung Erolind Zhaku (Vorsitz) und Tosum Zhaku, Gründung Januar 2022, suissetec-Mitglied seit 2023,
-Schnupperlehre Sanitärpraktiker/in EBA. Bitte trotzdem kurz gegenlesen.
+1. **Der heutige Hoster ist in Konkurs.** Website und DNS von aderapartner.ch laufen bei Unity Systems (Schweiz) AG,
+   Dietikon (Server bei Datasource AG, Hünenberg). Die Firma heisst heute «Cliq Soft AG in Liquidation», Konkurs eröffnet
+   am 25.08.2026 (Zefix, SHAB vom 12.10.2026). Neuen Hoster wählen (Apache mit `.htaccess`, PHP 7.4 oder neuer, HTTPS)
+   und das DNS umziehen. Die Domain ist bei hosttech GmbH registriert (DNSSEC aktiv).
+2. **Beim DNS-Umzug die E-Mail nicht verlieren.** E-Mail läuft über Microsoft 365. Alle Einträge 1:1 mitnehmen:
+   MX `aderapartner-ch.mail.protection.outlook.com`, SPF `v=spf1 include:spf.protection.outlook.com -all`,
+   DMARC `p=reject`, Autodiscover-CNAME und allfällige weitere M365-Einträge (vorher vollständig exportieren).
+3. **Kontaktformular und SPF/DMARC.** Wegen SPF `-all` und DMARC `p=reject` werden E-Mails, die `send.php` mit PHP `mail()`
+   vom Webserver verschickt, sehr wahrscheinlich abgewiesen. Zwei Lösungen:
+   - den Mailserver des neuen Hosters ins SPF aufnehmen (zusätzliches `include:` des Hosters), oder
+   - `send.php` auf SMTP über Microsoft 365 umbauen (authentifiziert, z. B. mit PHPMailer und einem eigenen Postfach
+     wie `website@aderapartner.ch`).
+   Nach dem Livegang das Formular unbedingt testen (Abschnitt 4).
+4. **Datenschutzerklärung:** Drei gelb markierte Stellen in `datenschutz.html` brauchen den neuen Hoster (Name, Ort, Land,
+   Aufbewahrungsdauer der Logfiles). Suchen mit `grep -n 'class="todo"' *.html`.
+5. **Zwei Firmen trennen:** aderaimmobilien.ch leitet heute auf www.aderapartner.ch weiter. Die Adera Immobilien AG ist eine
+   eigene Firma und sollte eine eigene Seite erhalten (oder die Weiterleitung entfernen).
 
-Danach jede Seite im Browser durchsehen. Es darf nichts Gelbes mehr zu sehen sein.
+---
 
-### 2. Bildrechte prüfen
+## 3. Livegang Schritt für Schritt
 
-Für jedes Bild klären, woher es stammt und ob eine Lizenz für die Website besteht. Lizenznachweise aufbewahren.
+1. Alte WordPress-Website beim alten Hoster sichern.
+2. Inhalt des Ordners `website` ins Hauptverzeichnis der Domain laden (oft `public_html`, `httpdocs` oder `www`),
+   nicht in einen Unterordner (die 404-Seite arbeitet mit absoluten Pfaden).
+3. HTTPS einschalten (Let's Encrypt).
+4. **`.htaccess.livegang` in `.htaccess` umbenennen** – erst auf der echten Domain, denn sie leitet alles auf
+   `https://www.aderapartner.ch` um. Sie enthält:
+   - HTTPS- und www-Zwang in einem Schritt, 301-Weiterleitungen der alten WordPress-Adressen (`/kontakt/`, `/services/heizung/` …)
+   - Sicherheits-Header (HSTS, CSP, nosniff, Referrer- und Permissions-Policy, frame-ancestors), getestet gegen alle Seiten
+   - Caching (CSS/JS mit Versionsangabe 1 Jahr, Bilder 30 Tage, HTML kurz), gzip/Brotli, Fehlerseite 404, Schutz von `.md` usw.
+   Bei Fehler 500: Der Hoster erlaubt eine Anweisung nicht – Block für Block auskommentieren. Hinweise stehen in der Datei.
+   Hinter Cloudflare o. ä.: Kommentar zu `X-Forwarded-Proto` in der Datei beachten.
+5. Testen: alle Seiten, «Karte laden», Formular, `http://aderapartner.ch/kontakt/` muss in einem Schritt auf
+   `https://www.aderapartner.ch/kontakt.html` führen, https://securityheaders.com (Ziel A), https://www.ssllabs.com/ssltest/.
+6. Google Search Console: Domain bestätigen, `https://www.aderapartner.ch/sitemap.xml` einreichen.
+7. Google-Unternehmensprofil anlegen bzw. aktualisieren, local.ch und search.ch auf Industriestrasse 107 ändern
+   (dort steht noch Boostockstrasse 7; das local.ch-Profil ist nicht beansprucht).
 
-- Das frühere Wärmepumpen-Foto (`waermepumpe.jpg`) hatte ein sichtbares ©-Wasserzeichen und wurde entfernt. Es ist ersetzt durch die eigene, animierte Grafik `waermepumpe.svg` (keine fremden Rechte). Sobald ein eigenes Foto einer Wärmepumpe von einer Adera-Baustelle vorliegt, kann es die Grafik ersetzen.
-- `lueftung.jpg`, `sanitaer.jpg`, `bad-lavabo.jpg`, `haustechnik.jpg`: sehr wahrscheinlich Stockbilder. Quelle und Lizenz klären und im Impressum unter «Bildnachweis» eintragen.
-- `team-baustelle.jpg`: Wer hat das Foto gemacht? Die abgebildeten Personen müssen mit der Veröffentlichung einverstanden sein.
-- Logos von suissetec, «Wir, die Gebäudetechniker» und Lehrbetrieb nur verwenden, solange die Mitgliedschaft oder Berechtigung besteht.
-- Auf der alten Website war mindestens ein Bild von iStock eingebunden. Vielleicht gibt es dort schon ein Konto mit Lizenzen.
+---
 
-### 3. Kontaktformular (`send.php`) einrichten und testen
+## 4. Kontaktformular (`send.php`)
 
-Die Einstellungen stehen oben in `send.php`:
+- Einstellungen oben in der Datei: `MAIL_TO` (fest info@aderapartner.ch, nie aus dem Formular), `MAIL_FROM`
+  (website@aderapartner.ch – muss beim Hoster bzw. im SPF erlaubt sein), `MAIL_SET_ENVELOPE_FROM`, Rate-Limit
+  (5 Anfragen pro IP und Stunde, braucht Schreibrecht im temporären Verzeichnis).
+- Schutz: Honeypot-Feld `hp_adera` (unsichtbar), Prüfung aller Felder, keine Header-Injection, Antwort immer JSON.
+- Pflichtfelder: thema, plz, ort, vorname, nachname, email, datenschutz. Freiwillig: objekt, zeitraum, adresse,
+  nachricht, firma, telefon, rueckruf. Der Assistent setzt Thema, Objekt, Zeitraum und Rückruf oben in die Nachricht.
+- Test nach dem Livegang: auf `kontakt.html` und der Startseite je eine Anfrage senden → «Vielen Dank …» erscheint →
+  E-Mail kommt in info@aderapartner.ch an (auch Spam prüfen), Antworten gehen an die eingegebene Adresse.
+  Nach 5 Anfragen pro Stunde vom gleichen Anschluss sperrt das Rate-Limit eine Stunde lang.
+- Der Assistent (4 Schritte) funktioniert ohne JavaScript als normales Formular. Links wie
+  `kontakt.html?thema=badumbau#formular` wählen das Thema vor (heizung, lueftung, sanitaer, badumbau, planung, service).
 
-- `MAIL_FROM` (Absender, voreingestellt `website@aderapartner.ch`): Diese Adresse beim Hoster anlegen oder eine bestehende Adresse der Domain eintragen. Der Hoster muss den Versand mit dieser Adresse erlauben.
-- Liegt das Postfach nicht beim selben Anbieter wie die Website (zum Beispiel bei Microsoft 365), muss der SPF-Eintrag der Domain den Webserver als Absender erlauben. Sonst landen die Anfragen im Spam oder werden abgewiesen. Den Hoster fragen.
-- `MAIL_SET_ENVELOPE_FROM`: Falls der Versand nicht klappt, versuchsweise auf `false` setzen.
-- `MAIL_TO`: Empfänger, fest `info@aderapartner.ch`. Wird nie aus dem Formular übernommen.
-- `RATE_LIMIT_MAX` und `RATE_LIMIT_WINDOW`: höchstens 5 Anfragen pro IP-Adresse und Stunde. Dafür braucht PHP Schreibrecht im temporären Verzeichnis. Fehlt es, läuft das Formular ohne Limit weiter.
+---
 
-Nach dem Hochladen testen:
+## 5. Bilder
 
-1. Auf `kontakt.html` und auf der Startseite je eine Testanfrage senden. Es muss «Vielen Dank …» erscheinen.
-2. Im Postfach info@aderapartner.ch nachsehen, auch im Spam-Ordner: Betreff «Kontaktanfrage Website: …», Umlaute korrekt, alle Angaben vorhanden. Nur wenn die E-Mail wirklich ankommt, funktioniert das Formular.
-3. Auf die E-Mail antworten: Die Antwort muss an die Adresse gehen, die im Formular eingetragen wurde.
-4. Ein Pflichtfeld leer lassen: Das Formular muss den Fehler anzeigen und nichts senden.
+- Alle Fotos stammen von Projekten und Baustellen der Adera Partner GmbH (so steht es auch im Impressum).
+  Keine Stockbilder, keine KI-Bilder. Logos: offizielle Dateien von suissetec, «Wir, die Gebäudetechniker» und die
+  Lehrbetrieb-Vignette (Bund, gültig seit 1.12.2025, Mindestgrösse 120 × 120 px) – nur verwenden, solange Mitgliedschaft
+  bzw. Bildungsbewilligung bestehen.
+- Jedes Foto gibt es als `name.jpg` (max. 2000 px), `name-900.jpg`, `name-600.jpg`, `name-1200.jpg` (falls breiter) und
+  jeweils als `.avif`. Die Seiten binden sie mit `<picture>` ein (AVIF zuerst, JPEG als Ersatz, passendes `srcset/sizes`).
+- Neues Foto: Metadaten (GPS!) entfernen, auf max. 2000 px verkleinern, als `name.jpg` und `name-900.jpg` speichern, dann
+  `python3 werkzeuge/bilder-erzeugen.py --src website/assets/img --out website/assets/img` (Pillow 11.3+ mit AVIF).
+- Projekte-Galerie: in `projekte.html` ein `<figure class="gallery__item" data-cat="bad|kueche|technik|baustelle">`
+  kopieren und anpassen (Kommentar in der Datei).
+- Personen auf Fotos (Teamfoto) und Kundenbäder: Einverständnis der Abgebildeten bzw. der Kunden einholen.
 
-Achtung beim Testen: Nach 5 Anfragen innerhalb einer Stunde vom selben Internetanschluss nimmt das Formular eine Stunde lang nichts mehr an (Schutz vor Spam). Dann erscheint die Fehlermeldung mit der Telefonnummer.
-Läuft die Website hinter einem Proxy oder CDN (zum Beispiel Cloudflare), sieht PHP unter Umständen für alle Besucher dieselbe IP-Adresse. Dann `RATE_LIMIT_MAX` erhöhen.
+---
 
-Erlaubt der Hoster `mail()` nicht (manche verlangen den Versand über SMTP mit Passwort), funktioniert `send.php` nicht. Dann muss der Versand auf SMTP umgebaut werden.
+## 6. Aufbau und Pflege
 
-### 4. Datenschutzerklärung vervollständigen
+- **Kopf und Fuss stehen in jeder HTML-Datei** (kein Template-System). Änderungen dort in allen Dateien machen,
+  auch in `404.html` (dort beginnen alle Pfade mit `/`).
+- **Automatisch durch `main.js`:** die Kontaktleiste am Handy (Anrufen / Anfrage starten), der Schluss-Aufruf vor dem
+  Footer (auf Seiten ohne Formular), das Einblenden beim Scrollen, der Anfrage-Assistent, Filter und Grossansicht der Galerie,
+  die Karte nach Klick.
+- **Versionsangabe:** `style.css?v=20261126` und `main.js?v=20261126` in allen HTML-Dateien. Nach jeder Änderung an CSS/JS
+  die Zahl in allen Dateien hochzählen (die `.htaccess` speichert diese Dateien 1 Jahr im Browser).
+- **Strukturierte Daten (JSON-LD):** stehen im `<head>` jeder Seite zwischen den Kommentaren
+  `<!-- JSON-LD: automatisch erzeugt … -->` und `<!-- /JSON-LD -->`. Nach Textänderungen (Titel, Beschreibung, Fragen)
+  `pip install html5lib` und `python3 werkzeuge/jsonld-einfuegen.py website` ausführen.
+- **Sitemap:** nach neuen Seiten `python3 werkzeuge/sitemap-erzeugen.py website website/sitemap.xml`.
+- **Vorschaubilder:** `python3 werkzeuge/vorschaubilder-erzeugen.py website` (aus dem Hero-Bild jeder Seite;
+  `og-index.jpg` ist eine eigene Gestaltung und wird dabei nicht überschrieben).
+- **Barrierefreiheit:** Kontraste nach WCAG AA, Tastaturbedienung (Menü, Assistent, Galerie), Fehlermeldungen mit
+  `aria-describedby`, `prefers-reduced-motion` wird respektiert, kein waagrechtes Scrollen ab 320 px.
+- **Schreibweise:** Schweizer Hochdeutsch, immer «ss», Anführungszeichen «…». Kunden mit «Sie».
 
-- Hoster und E-Mail-Anbieter mit Ort und Land eintragen (Platzhalter in `datenschutz.html`). Speichert ein Anbieter Daten ausserhalb der Schweiz, das Land nennen. Steht dieses Land nicht auf der Liste des Bundesrats mit angemessenem Datenschutz (dazu gehören die EU- und EWR-Staaten), zusätzlich die Garantien nennen, zum Beispiel Standardvertragsklauseln.
-- Beim Hoster nachfragen, ob er aus den Logfiles automatisch Besucherstatistiken erstellt (zum Beispiel AWStats oder Webalizer). Falls ja: abschalten oder in der Datenschutzerklärung ergänzen.
-- Die Datenschutzerklärung sagt: Anfragen ohne Auftrag werden nach der Erledigung gelöscht, Bewerbungsunterlagen nach einer Absage. Das Postfach entsprechend regelmässig aufräumen.
-- Kommt später etwas dazu (zum Beispiel Google Analytics, YouTube-Videos, Google Fonts, Newsletter, Chat, Facebook-Pixel), zuerst die Datenschutzerklärung anpassen und das Datum bei «Stand» ändern.
+---
 
-### 5. Weiterleitungen von alten Adressen und Fehlerseite
+## 7. Offene Punkte (vom Inhaber zu liefern oder zu bestätigen)
 
-Die alte Website hatte andere Adressen. Damit alte Links und Google-Einträge weiter funktionieren, die alten Adressen dauerhaft (301) auf die neuen Seiten umleiten. Bei Hostern mit Apache gehört das in die Datei `.htaccess` im Hauptverzeichnis (der Dateiname beginnt mit einem Punkt; falls es sie nicht gibt, neu anlegen). Beispiel:
-
-```apache
-# Fehlerseite für Adressen, die es nicht gibt
-ErrorDocument 404 /404.html
-
-# Alte Adressen dauerhaft auf die neuen Seiten umleiten
-RedirectMatch 301 ^/haustechnik/?$          https://www.aderapartner.ch/
-RedirectMatch 301 ^/unternehmen/?$          https://www.aderapartner.ch/unternehmen.html
-RedirectMatch 301 ^/kontakt/?$              https://www.aderapartner.ch/kontakt.html
-RedirectMatch 301 ^/services/sanitaer/?$    https://www.aderapartner.ch/sanitaer.html
-RedirectMatch 301 ^/services/heizung/?$     https://www.aderapartner.ch/heizung.html
-RedirectMatch 301 ^/services/lueftung/?$    https://www.aderapartner.ch/lueftung.html
-RedirectMatch 301 ^/services/haustechnik/?$ https://www.aderapartner.ch/
-
-# Ebenfalls auf der alten Website verlinkt
-RedirectMatch 301 ^/leistungen/?$           https://www.aderapartner.ch/
-RedirectMatch 301 ^/anfrage/?$              https://www.aderapartner.ch/kontakt.html
-```
-
-- Die Regeln erst beim Livegang auf der richtigen Domain einsetzen, denn die Ziele zeigen auf www.aderapartner.ch.
-- Testen: Alte Adressen im Browser aufrufen, zum Beispiel `https://www.aderapartner.ch/services/heizung/`. Es muss `heizung.html` erscheinen. Eine erfundene Adresse muss die 404-Seite zeigen, mit Logo und Farben.
-- Hoster mit nginx (ohne `.htaccess`): Weiterleitungen und Fehlerseite vom Hoster einrichten lassen.
-
-## Inhalte später ändern
-
-- Texte direkt in den HTML-Dateien ändern, mit einem Texteditor (zum Beispiel Visual Studio Code oder Notepad++), Kodierung UTF-8. Schweizer Schreibweise beibehalten: immer «ss» (kein scharfes S), Anführungszeichen «…».
-- Kopf- und Fussbereich (Navigation, Adresse, Telefon) stehen in jeder Seite. Änderungen dort in allen HTML-Dateien machen, auch in `404.html`. In `404.html` beginnen alle Pfade mit `/`; das muss so bleiben.
-- Bilder in `assets/img/` mit gleichem Namen und ähnlichem Format ersetzen, jeweils gross (1800 px breit) und als `-900`-Version (900 px breit).
-- Das Jahr im Fussbereich aktualisiert sich automatisch.
+- Neuer Hoster (Abschnitt 2) und die drei Platzhalter in `datenschutz.html`.
+- Eigene Fotos von einer Wärmepumpe (aussen/Heizraum) und einer Lüftungsanlage bzw. einem Komfortlüftungsgerät.
+  Die Lüftungsseite zeigt vorläufig ein Bad mit Abluftventilator.
+- Bürozeiten sind nirgends angegeben (öffentlich nicht bekannt). Bei Bedarf auf `kontakt.html` ergänzen.
+- Einverständnis der drei Personen auf dem Teamfoto und der Kunden, deren Bäder gezeigt werden.
+- Einige Aussagen zur Arbeitsweise sollten vom Inhaber bestätigt werden (z. B. Leitungsersatz in Etappen,
+  provisorisches WC beim Badumbau, Terminplan für alle Handwerker, Dichtheitsprüfung neuer Leitungen).
+- GitHub: Der Verlauf liegt im Repository `zhakuerolind-pixel/AderaAPP` (Branch `claude/zealous-ramanujan-ue3ezh`);
+  der Upload auf GitHub braucht noch die Freigabe der Claude-App für dieses Repository.

@@ -65,10 +65,10 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     respond(405, 'Nur POST-Anfragen sind erlaubt.');
 }
 
-// Honeypot: Das Feld «website» ist für Menschen unsichtbar und bleibt leer.
+// Honeypot: Das Feld «hp_adera» ist für Menschen unsichtbar und bleibt leer.
 // Ist es ausgefüllt, war es sehr wahrscheinlich ein Spam-Programm. Wir melden
 // Erfolg, senden aber nichts.
-$honeypot = $_POST['website'] ?? '';
+$honeypot = $_POST['hp_adera'] ?? '';
 if (!is_string($honeypot) || trim($honeypot) !== '') {
     respond(200);
 }
