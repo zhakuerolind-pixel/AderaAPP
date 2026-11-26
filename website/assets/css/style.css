@@ -363,7 +363,7 @@ main > .section--grey { padding: calc(var(--section) * .75) 0; }
 .showcase__img { overflow: hidden; flex: 1; min-height: 0; background: var(--grey); }
 .showcase__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s var(--ease); }
 .showcase__item:first-child .showcase__img { aspect-ratio: auto; min-height: 560px; }
-.showcase__item:not(:first-child) .showcase__img { aspect-ratio: 4 / 3; }
+.showcase__item:not(:first-child) .showcase__img { aspect-ratio: 4 / 3; flex: none; }
 .showcase__item:hover { text-decoration: none; color: var(--blue-ink); }
 .showcase__item:hover img { transform: scale(1.04); }
 .showcase__cap { padding: 14px 0 0; }
