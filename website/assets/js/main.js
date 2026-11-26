@@ -78,62 +78,6 @@
     if (body.classList.contains('nav-open')) setNav(false, true);
   });
 
-  /* Karussells: Scroll-Snap mit Pfeilen und Punkten, läuft nicht von selbst */
-  document.querySelectorAll('[data-carousel]').forEach(function (root) {
-    var track = root.querySelector('[data-track]');
-    if (!track) return;
-    var slides = Array.prototype.slice.call(track.children);
-    var prev = root.querySelector('[data-prev]');
-    var next = root.querySelector('[data-next]');
-    var dotsWrap = root.querySelector('[data-dots]');
-    var dots = [];
-    /* Audit: als Karussell angekündigt, Spur per Tastatur scrollbar (axe: scrollable-region-focusable) */
-    var sec = root.closest('section');
-    root.setAttribute('role', 'group');
-    root.setAttribute('aria-roledescription', 'Karussell');
-    if (sec && sec.getAttribute('aria-labelledby')) root.setAttribute('aria-labelledby', sec.getAttribute('aria-labelledby'));
-    track.setAttribute('tabindex', '0');
-    slides.forEach(function (s, k) {
-      if (s.tagName !== 'ARTICLE') s.setAttribute('role', 'group');   /* <article> behält seine Rolle */
-      s.setAttribute('aria-roledescription', 'Folie');
-      s.setAttribute('aria-label', (k + 1) + ' von ' + slides.length);
-    });
-    function step() { return slides.length < 2 ? track.clientWidth : slides[1].offsetLeft - slides[0].offsetLeft; }
-    function current() { return Math.round(track.scrollLeft / (step() || 1)); }
-    function go(i) {
-      i = Math.max(0, Math.min(slides.length - 1, i));
-      track.scrollTo({ left: slides[i].offsetLeft - slides[0].offsetLeft, behavior: reduce ? 'auto' : 'smooth' });
-    }
-    function update() {
-      var i = Math.min(current(), dots.length - 1), max = track.scrollWidth - track.clientWidth - 4;
-      if (prev) prev.disabled = track.scrollLeft <= 4;
-      if (next) next.disabled = track.scrollLeft >= max;
-      dots.forEach(function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
-    }
-    /* Audit: nur so viele Punkte wie erreichbare Positionen (vorher waren die letzten Punkte tot) */
-    function buildDots() {
-      if (!dotsWrap) return;
-      var n = Math.max(1, Math.min(slides.length, Math.round((track.scrollWidth - track.clientWidth) / (step() || 1)) + 1));
-      if (n === dots.length) return;
-      dotsWrap.innerHTML = ''; dots = [];
-      for (var k = 0; k < n; k++) {
-        (function (k) {
-          var d = document.createElement('button');
-          d.type = 'button';
-          d.setAttribute('aria-label', 'Position ' + (k + 1) + ' von ' + n + ' anzeigen');
-          d.addEventListener('click', function () { go(k); });
-          dotsWrap.appendChild(d); dots.push(d);
-        })(k);
-      }
-    }
-    buildDots();
-    if (prev) prev.addEventListener('click', function () { go(current() - 1); });
-    if (next) next.addEventListener('click', function () { go(current() + 1); });
-    track.addEventListener('scroll', function () { window.requestAnimationFrame(update); }, { passive: true });
-    window.addEventListener('resize', function () { buildDots(); update(); });
-    update();
-  });
-
   /* Karte erst nach Klick laden (Datenschutz) */
   document.querySelectorAll('[data-map]').forEach(function (wrap) {
     var btn = wrap.querySelector('button');
@@ -260,17 +204,6 @@
       status.className = 'form-status ' + (type === 'ok' ? 'is-ok' : type === 'info' ? 'is-info' : 'is-error');
       status.textContent = text;
     }
-    /* Antworten aus den Kacheln stehen in der E-Mail oben in der Nachricht */
-    function compose(fd) {
-      var lines = [];
-      [['thema', 'Thema'], ['objekt', 'Objekt'], ['zeitraum', 'Zeitraum'], ['rueckruf', 'Rückruf']].forEach(function (p) {
-        var v = fd.get(p[0]);
-        if (v) lines.push(p[1] + ': ' + v);
-      });
-      var text = (fd.get('nachricht') || '').toString().trim();
-      return lines.join('\n') + (lines.length && text ? '\n\n' : '') + text;
-    }
-
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!validateIn(form)) {
@@ -282,11 +215,7 @@
         }
         return;
       }
-      var fd = new FormData(form);
-      if (wizard) {
-        var msg = compose(fd);
-        fd.set('nachricht', msg || 'Anfrage über das Formular');
-      }
+      var fd = new FormData(form);   /* alle Angaben, auch die Kacheln, setzt send.php in die E-Mail */
       var btn = form.querySelector('[type="submit"]');
       /* Audit: nicht "disabled" (der Fokus ginge verloren), Doppelklick über aria-disabled abfangen;
          Meldung des Servers (fehlende Angaben, zu viele Anfragen) anzeigen */
@@ -414,7 +343,8 @@
     });
   }
 
-  /* Schluss-Aufruf vor dem Footer (nicht auf Seiten mit Formular oder data-no-finale) */
+  /* Schluss-Aufruf vor dem Footer: Telefonnummer in Riesenschrift und Knopf zum Formular
+     (nicht auf Seiten mit Formular und nicht mit <body data-no-finale>, z. B. service.html) */
   var footer = document.querySelector('.site-footer');
   if (footer && !document.querySelector('.finale') && !document.querySelector('form[data-form]') && !body.hasAttribute('data-no-finale')) {
     var finale = document.createElement('section');
@@ -422,12 +352,11 @@
     finale.setAttribute('aria-label', 'Kontakt aufnehmen');
     finale.innerHTML =
       '<div class="container">' +
-        '<p class="finale__lines"><span>Neues Bad.</span><span>Neue Heizung.</span><span>Störung?</span></p>' +
+        '<p class="finale__intro">Für Offerten und Fragen. Bei Störungen rund um die Uhr.</p>' +
+        '<a class="finale__phone" href="' + TEL + '"><span class="visually-hidden">Anrufen: </span>' + PHONE + '</a>' +
         '<div class="finale__row">' +
-          '<a class="finale__phone" href="' + TEL + '"><span class="i i-phone" aria-hidden="true"></span>' + PHONE + '</a>' +
           '<a class="btn btn--solid" href="' + base + 'kontakt.html#formular"><span class="i i-arrow" aria-hidden="true"></span>Anfrage starten</a>' +
         '</div>' +
-        '<p class="finale__note">Bei Störungen sind wir rund um die Uhr erreichbar.</p>' +
       '</div>';
     footer.parentNode.insertBefore(finale, footer);
   }
@@ -454,7 +383,7 @@
 
   /* Einblenden beim Scrollen: nur Titel, Karten und Bilder */
   if (!reduce && 'IntersectionObserver' in window) {
-    var revealSel = ['.section-head', '.card', '.gallery__item', '.showcase__item', '.value', '.team__text', '.feature > div:not(.feature__media)', '.finale'];
+    var revealSel = ['.section-head', '.gallery__item', '.showcase__item', '.value', '.team__text', '.feature > div:not(.feature__media)'];
     var imgSel = ['.feature__media', '.split__media', '.band__media', '.team__media'];
     var vh = window.innerHeight, targets = [];
     function stagger(el) {
@@ -482,10 +411,32 @@
         if (!e.isIntersecting) return;
         e.target.classList.add('is-in');
         io.unobserve(e.target);
-        if (!e.target.classList.contains('finale')) done(e.target);
+        done(e.target);
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
     targets.forEach(function (el) { io.observe(el); });
+  }
+
+  /* Startseite, Angebotsliste: das Foto rechts zeigt die Zeile unter der Maus oder mit dem
+     Tastaturfokus. Es bleibt stehen, wenn die Maus die Liste verlässt (kein Zurückspringen).
+     Ohne JavaScript zeigt es das Foto der ersten Zeile (class="offer is-active" im HTML). */
+  var offerLists = document.querySelectorAll('[data-offers]');
+  if (offerLists.length) {
+    /* Wer mit der Tastatur arbeitet, behält das Foto der fokussierten Zeile, auch wenn beim
+       Scrollen eine andere Zeile unter den ruhenden Mauszeiger rutscht */
+    var viaKeyboard = false;
+    document.addEventListener('keydown', function (e) { if (e.key === 'Tab') viaKeyboard = true; });
+    document.addEventListener('mousemove', function (e) { if (e.movementX || e.movementY) viaKeyboard = false; });
+    offerLists.forEach(function (list) {
+      var offers = Array.prototype.slice.call(list.querySelectorAll('.offer'));
+      function activate(item) {
+        offers.forEach(function (it) { it.classList.toggle('is-active', it === item); });
+      }
+      offers.forEach(function (it) {
+        it.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse' && !viaKeyboard) activate(it); });
+        it.addEventListener('focusin', function () { activate(it); });
+      });
+    });
   }
 
   /* Jahr im Footer */

@@ -6,9 +6,12 @@
  * Nimmt die Daten des Kontaktformulars per POST entgegen, prüft sie und schickt
  * sie als E-Mail an MAIL_TO. Die Daten werden auf dem Server nicht gespeichert.
  *
- * Antwort immer als JSON:
+ * Antwort als JSON, wenn der Browser es verlangt (der Anfrage-Assistent in main.js
+ * sendet «Accept: application/json»):
  *   {"ok":true}                   Anfrage wurde an den Mailserver übergeben
  *   {"ok":false,"error":"…"}      Fehler, mit passendem HTTP-Statuscode
+ * Ohne JavaScript (normales Absenden des Formulars) kommt dieselbe Meldung als
+ * einfache Seite im Design der Website.
  *
  * Voraussetzungen: PHP 7.4 oder neuer, PHP-Funktion mail() beim Hoster aktiviert.
  * Keine Bibliotheken, keine Datenbank.
@@ -38,18 +41,21 @@ const RATE_LIMIT_MAX = 5;
 const RATE_LIMIT_WINDOW = 3600;
 
 // Formularfelder: Name => [Bezeichnung in der E-Mail, Pflichtfeld, max. Zeichen, mehrzeilig]
+// (thema, objekt, zeitraum und rueckruf kommen aus den Kacheln des Assistenten)
 const FIELDS = [
-    'anrede'    => ['Anrede', false, 20, false],
-    'vorname'   => ['Vorname', true, 100, false],
-    'nachname'  => ['Nachname', true, 100, false],
-    'firma'     => ['Firma', false, 150, false],
+    'thema'     => ['Thema', false, 100, false],
+    'objekt'    => ['Art des Gebäudes', false, 50, false],
+    'zeitraum'  => ['Zeitraum', false, 50, false],
     'adresse'   => ['Adresse', false, 200, false],
     'plz'       => ['PLZ', true, 20, false],
     'ort'       => ['Ort', true, 100, false],
+    'nachricht' => ['Nachricht', false, 10000, true],
+    'vorname'   => ['Vorname', true, 100, false],
+    'nachname'  => ['Nachname', true, 100, false],
+    'firma'     => ['Firma', false, 150, false],
     'email'     => ['E-Mail', true, 254, false],
     'telefon'   => ['Telefon', false, 50, false],
-    'thema'     => ['Thema', false, 100, false],
-    'nachricht' => ['Nachricht', true, 10000, true],
+    'rueckruf'  => ['Rückruf', false, 30, false],
 ];
 
 // ===========================================================================
@@ -115,17 +121,20 @@ $lines = [
     'Neue Anfrage über das Kontaktformular auf www.aderapartner.ch',
     '',
     'Thema:      ' . $thema,
-    'Anrede:     ' . or_dash($data['anrede']),
+    'Gebäude:    ' . or_dash($data['objekt']),
+    'Zeitraum:   ' . or_dash($data['zeitraum']),
+    '',
     'Vorname:    ' . $data['vorname'],
     'Nachname:   ' . $data['nachname'],
     'Firma:      ' . or_dash($data['firma']),
-    'Adresse:    ' . $data['adresse'],
+    'Adresse:    ' . or_dash($data['adresse']),
     'PLZ / Ort:  ' . $data['plz'] . ' ' . $data['ort'],
     'E-Mail:     ' . $data['email'],
     'Telefon:    ' . or_dash($data['telefon']),
+    'Rückruf:    ' . or_dash($data['rueckruf']),
     '',
     'Nachricht:',
-    $data['nachricht'],
+    or_dash($data['nachricht']),
     '',
     '--',
     'Gesendet am ' . date('d.m.Y \u\m H:i') . ' Uhr. Datenschutzerklärung bestätigt: ja.',
@@ -163,16 +172,53 @@ respond(200);
 // Hilfsfunktionen
 // ===========================================================================
 
-/** JSON-Antwort senden und beenden. Ohne $error: {"ok":true}. */
+/**
+ * Antwort senden und beenden. Ohne $error: Erfolg.
+ * Mit JavaScript (Accept: application/json) als JSON, sonst als einfache Seite.
+ */
 function respond(int $status, ?string $error = null): void
 {
     http_response_code($status);
-    header('Content-Type: application/json; charset=utf-8');
     header('Cache-Control: no-store');
     header('X-Content-Type-Options: nosniff');
-    $answer = $error === null ? ['ok' => true] : ['ok' => false, 'error' => $error];
-    echo json_encode($answer, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    if (wants_json()) {
+        header('Content-Type: application/json; charset=utf-8');
+        $answer = $error === null ? ['ok' => true] : ['ok' => false, 'error' => $error];
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        exit;
+    }
+    header('Content-Type: text/html; charset=utf-8');
+    if ($error === null) {
+        $title = 'Vielen Dank';
+        $text = 'Ihre Anfrage ist bei uns angekommen. Wir melden uns so schnell wie möglich.';
+        $more = '<a class="btn btn--solid" href="index.html">Zur Startseite</a>';
+    } else {
+        $title = 'Die Anfrage wurde nicht gesendet';
+        $text = $error;
+        $more = 'Gehen Sie im Browser einen Schritt zurück, um Ihre Angaben zu ergänzen, oder rufen Sie uns an: '
+              . '<a href="tel:+41564021000">056 402 10 00</a>.';
+    }
+    echo '<!doctype html><html lang="de-CH"><head><meta charset="utf-8">'
+        . '<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">'
+        . '<title>' . h($title) . ' | Adera Partner GmbH</title>'
+        . '<link rel="stylesheet" href="assets/css/style.css"></head>'
+        . '<body><main class="section"><div class="container">'
+        . '<h1>' . h($title) . '</h1><p>' . h($text) . '</p><p>' . $more . '</p>'
+        . '</div></main></body></html>';
     exit;
+}
+
+/** Verlangt der Browser JSON? (Der Assistent in main.js sendet «Accept: application/json».) */
+function wants_json(): bool
+{
+    $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
+    return is_string($accept) && stripos($accept, 'application/json') !== false;
+}
+
+/** Text für HTML maskieren. */
+function h(string $text): string
+{
+    return htmlspecialchars($text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
 /**

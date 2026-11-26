@@ -18,30 +18,213 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/img/favicon.png">
   <link rel="apple-touch-icon" href="assets/img/favicon.png">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261126">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261126c">
+  <!-- JSON-LD: automatisch erzeugt mit werkzeuge/jsonld-einfuegen.py -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HVACBusiness",
-    "name": "Adera Partner GmbH",
-    "url": "https://www.aderapartner.ch/",
-    "logo": "https://www.aderapartner.ch/assets/img/logo-adera-partner.svg",
-    "image": "https://www.aderapartner.ch/assets/img/team-adera.jpg",
-    "telephone": "+41 56 402 10 00",
-    "email": "info@aderapartner.ch",
-    "foundingDate": "2022-01",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Industriestrasse 107",
-      "postalCode": "8957",
-      "addressLocality": "Spreitenbach",
-      "addressRegion": "AG",
-      "addressCountry": "CH"
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "HVACBusiness",
+        "Plumber"
+      ],
+      "@id": "https://www.aderapartner.ch/#organization",
+      "name": "Adera Partner GmbH",
+      "legalName": "Adera Partner GmbH",
+      "url": "https://www.aderapartner.ch/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.aderapartner.ch/assets/img/logo-adera-partner.svg"
+      },
+      "image": [
+        "https://www.aderapartner.ch/assets/img/og/og-index.jpg",
+        "https://www.aderapartner.ch/assets/img/team-adera.jpg",
+        "https://www.aderapartner.ch/assets/img/heizraum.jpg"
+      ],
+      "description": "Haustechnik-Betrieb aus Spreitenbach: Heizung, Wärmepumpen, Lüftung, Sanitär, Badumbau, Planung und 24h-Service im Limmattal.",
+      "telephone": "+41 56 402 10 00",
+      "email": "info@aderapartner.ch",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Industriestrasse 107",
+        "postalCode": "8957",
+        "addressLocality": "Spreitenbach",
+        "addressRegion": "AG",
+        "addressCountry": "CH"
+      },
+      "hasMap": "https://www.google.com/maps/search/?api=1&query=Industriestrasse+107%2C+8957+Spreitenbach",
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Spreitenbach"
+        },
+        {
+          "@type": "Place",
+          "name": "Limmattal"
+        }
+      ],
+      "foundingDate": "2022-01",
+      "founder": [
+        {
+          "@type": "Person",
+          "name": "Erolind Zhaku"
+        },
+        {
+          "@type": "Person",
+          "name": "Tosum Zhaku"
+        }
+      ],
+      "vatID": "CHE-190.687.776 MWST",
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "UID",
+        "value": "CHE-190.687.776"
+      },
+      "memberOf": {
+        "@type": "Organization",
+        "name": "suissetec",
+        "url": "https://suissetec.ch/"
+      },
+      "knowsAbout": [
+        "Heizung",
+        "Wärmepumpen",
+        "Heizungsersatz",
+        "Lüftung",
+        "Komfortlüftung",
+        "Sanitär",
+        "Badumbau",
+        "Haustechnik-Planung",
+        "Boiler"
+      ],
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "telephone": "+41 56 402 10 00",
+          "email": "info@aderapartner.ch",
+          "availableLanguage": "de",
+          "areaServed": "CH"
+        },
+        {
+          "@type": "ContactPoint",
+          "contactType": "emergency",
+          "name": "24h-Service bei Störungen",
+          "telephone": "+41 56 402 10 00",
+          "availableLanguage": "de",
+          "areaServed": "CH",
+          "hoursAvailable": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "https://schema.org/Monday",
+              "https://schema.org/Tuesday",
+              "https://schema.org/Wednesday",
+              "https://schema.org/Thursday",
+              "https://schema.org/Friday",
+              "https://schema.org/Saturday",
+              "https://schema.org/Sunday"
+            ],
+            "opens": "00:00",
+            "closes": "23:59"
+          }
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Angebot der Adera Partner GmbH",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "@id": "https://www.aderapartner.ch/heizung.html#service",
+              "name": "Heizung und Wärmepumpen",
+              "url": "https://www.aderapartner.ch/heizung.html"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "@id": "https://www.aderapartner.ch/lueftung.html#service",
+              "name": "Lüftung",
+              "url": "https://www.aderapartner.ch/lueftung.html"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "@id": "https://www.aderapartner.ch/sanitaer.html#service",
+              "name": "Sanitär",
+              "url": "https://www.aderapartner.ch/sanitaer.html"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "@id": "https://www.aderapartner.ch/badumbau.html#service",
+              "name": "Badumbau",
+              "url": "https://www.aderapartner.ch/badumbau.html"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "@id": "https://www.aderapartner.ch/planung.html#service",
+              "name": "Planung Heizung, Lüftung, Sanitär",
+              "url": "https://www.aderapartner.ch/planung.html"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "@id": "https://www.aderapartner.ch/service.html#service",
+              "name": "Service und Wartung",
+              "url": "https://www.aderapartner.ch/service.html"
+            }
+          }
+        ]
+      },
+      "sameAs": [
+        "https://www.linkedin.com/company/adera-partner-gmbh/"
+      ]
     },
-    "areaServed": "Limmattal",
-    "sameAs": ["https://www.linkedin.com/company/adera-partner-gmbh/"]
-  }
+    {
+      "@type": "WebSite",
+      "@id": "https://www.aderapartner.ch/#website",
+      "url": "https://www.aderapartner.ch/",
+      "name": "Adera Partner GmbH",
+      "inLanguage": "de-CH",
+      "publisher": {
+        "@id": "https://www.aderapartner.ch/#organization"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://www.aderapartner.ch/#webpage",
+      "url": "https://www.aderapartner.ch/",
+      "name": "Heizung, Lüftung, Sanitär in Spreitenbach | Adera Partner GmbH",
+      "description": "Adera Partner GmbH, Spreitenbach: Wärmepumpen, Heizung, Lüftung, Sanitär, Badumbau und Planung im Limmattal. Bei Störungen rund um die Uhr erreichbar.",
+      "inLanguage": "de-CH",
+      "isPartOf": {
+        "@id": "https://www.aderapartner.ch/#website"
+      },
+      "about": {
+        "@id": "https://www.aderapartner.ch/#organization"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://www.aderapartner.ch/assets/img/og/og-index.jpg"
+      }
+    }
+  ]
+}
   </script>
+  <!-- /JSON-LD -->
 </head>
 <body>
 <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
@@ -113,17 +296,15 @@
 
 <main id="inhalt">
 
-  <!-- Einstieg: Aussage und Fotostreifen -->
+  <!-- Einstieg: Aussage links, rechts Teamfoto und ein Bad bis an den Bildschirmrand (am Handy: Text, dann das Teamfoto) -->
   <section class="hero-work" aria-labelledby="hero-title">
-    <div class="container">
+    <div class="hero-work__text">
       <p class="hero-work__kicker">Adera Partner GmbH · Haustechnik im Limmattal</p>
       <h1 id="hero-title">Heizung, Lüftung und Sanitär <span class="soft">aus Spreitenbach.</span></h1>
-      <div class="hero-work__row">
-        <p class="hero-work__lead">Wir ersetzen alte Heizungen durch Wärmepumpen und bauen Bäder um. In Neu- und Umbauten installieren wir Lüftung und Sanitär, für Private und Firmen im Limmattal.</p>
-        <div class="hero-work__actions">
-          <a class="btn btn--solid" href="kontakt.html#formular"><span class="i i-arrow" aria-hidden="true"></span>Offerte anfragen</a>
-          <a class="btn" href="tel:+41564021000"><span class="i i-phone" aria-hidden="true"></span>056 402 10 00</a>
-        </div>
+      <p class="hero-work__lead">Wir ersetzen alte Heizungen durch Wärmepumpen und bauen Bäder um. In Neu- und Umbauten installieren wir Lüftung und Sanitär, für Private und Firmen im Limmattal.</p>
+      <div class="hero-work__actions">
+        <a class="btn btn--solid" href="kontakt.html#formular"><span class="i i-arrow" aria-hidden="true"></span>Offerte anfragen</a>
+        <a class="btn" href="tel:+41564021000"><span class="i i-phone" aria-hidden="true"></span>056 402 10 00</a>
       </div>
       <ul class="proofline">
         <li>Mitglied bei suissetec</li>
@@ -131,119 +312,116 @@
         <li>Familienbetrieb, gegründet 2022</li>
         <li>Störungsdienst rund um die Uhr</li>
       </ul>
-      <ul class="hero-strip" aria-label="Fotos aus unseren Projekten">
-        <li style="--h:440;--i:0"><picture><source type="image/avif" srcset="assets/img/wanne-ecke-hell-600.avif 600w, assets/img/wanne-ecke-hell-900.avif 900w, assets/img/wanne-ecke-hell.avif 1125w" sizes="(max-width: 640px) 64vw, (max-width: 960px) 46vw, 16vw"><img srcset="assets/img/wanne-ecke-hell-600.jpg 600w, assets/img/wanne-ecke-hell-900.jpg 900w, assets/img/wanne-ecke-hell.jpg 1125w" sizes="(max-width: 640px) 64vw, (max-width: 960px) 46vw, 16vw" src="assets/img/wanne-ecke-hell-900.jpg" alt="Freistehende Badewanne mit Standarmatur in der Ecke eines hellen Bads" width="900" height="1600" fetchpriority="high"></picture><span>Freistehende Wanne</span></li>
-        <li style="--h:380;--i:1"><picture><source type="image/avif" srcset="assets/img/doppellavabo-rundspiegel-600.avif 600w, assets/img/doppellavabo-rundspiegel-900.avif 900w, assets/img/doppellavabo-rundspiegel.avif 1125w" sizes="(max-width: 640px) 64vw, (max-width: 960px) 46vw, 16vw"><img srcset="assets/img/doppellavabo-rundspiegel-600.jpg 600w, assets/img/doppellavabo-rundspiegel-900.jpg 900w, assets/img/doppellavabo-rundspiegel.jpg 1125w" sizes="(max-width: 640px) 64vw, (max-width: 960px) 46vw, 16vw" src="assets/img/doppellavabo-rundspiegel-900.jpg" alt="Doppelwaschtisch mit zwei runden, hinterleuchteten Spiegeln" width="900" height="1600" loading="lazy"></picture><span>Doppelwaschtisch</span></li>
-        <li style="--h:470;--i:2"><picture><source type="image/avif" srcset="assets/img/dusche-nischen-600.avif 600w, assets/img/dusche-nischen-900.avif 900w, assets/img/dusche-nischen-1200.avif 1200w, assets/img/dusche-nischen.avif 1500w" sizes="(max-width: 640px) 64vw, (max-width: 960px) 46vw, 16vw"><img srcset="assets/img/dusche-nischen-600.jpg 600w, assets/img/dusche-nischen-900.jpg 900w, assets/img/dusche-nischen-1200.jpg 1200w, assets/img/dusche-nischen.jpg 1500w" sizes="(max-width: 640px) 64vw, (max-width: 960px) 46vw, 16vw" src="assets/img/dusche-nischen-900.jpg" alt="Dusche mit Regenbrause und zwei beleuchteten Nischen in der Wand" width="900" height="1200" loading="lazy"></picture><span>Dusche mit Nischen</span></li>
-        <li style="--h:350;--i:3"><picture><source type="image/avif" srcset="assets/img/kueche-quooker-600.avif 600w, assets/img/kueche-quooker-900.avif 900w, assets/img/kueche-quooker-1200.avif 1200w, assets/img/kueche-quooker.avif 1500w" sizes="(max-width: 960px) 100vw, 50vw"><img srcset="assets/img/kueche-quooker-600.jpg 600w, assets/img/kueche-quooker-900.jpg 900w, assets/img/kueche-quooker-1200.jpg 1200w, assets/img/kueche-quooker.jpg 1500w" sizes="(max-width: 960px) 100vw, 50vw" src="assets/img/kueche-quooker-900.jpg" alt="Zwei schwarze Küchenarmaturen vor einem Fenster" width="900" height="1200" loading="lazy"></picture><span>Küche</span></li>
-        <li style="--h:420;--i:4"><picture><source type="image/avif" srcset="assets/img/waschtisch-blau-led-600.avif 600w, assets/img/waschtisch-blau-led-900.avif 900w, assets/img/waschtisch-blau-led.avif 1125w" sizes="(max-width: 960px) 100vw, 50vw"><img srcset="assets/img/waschtisch-blau-led-600.jpg 600w, assets/img/waschtisch-blau-led-900.jpg 900w, assets/img/waschtisch-blau-led.jpg 1125w" sizes="(max-width: 960px) 100vw, 50vw" src="assets/img/waschtisch-blau-led-900.jpg" alt="Waschtisch mit dunkelblauem Unterschrank, Lichtband am Boden und ovalem Lichtspiegel" width="900" height="1600" loading="lazy"></picture><span>Waschtisch mit Licht</span></li>
-        <li style="--h:360;--i:5"><picture><source type="image/avif" srcset="assets/img/armatur-bronze-600.avif 600w, assets/img/armatur-bronze-900.avif 900w, assets/img/armatur-bronze.avif 1125w" sizes="(max-width: 960px) 100vw, 50vw"><img srcset="assets/img/armatur-bronze-600.jpg 600w, assets/img/armatur-bronze-900.jpg 900w, assets/img/armatur-bronze.jpg 1125w" sizes="(max-width: 960px) 100vw, 50vw" src="assets/img/armatur-bronze-900.jpg" alt="Bronzefarbene Unterputz-Armatur an einer gerillten Wand" width="900" height="1600" loading="lazy"></picture><span>Unterputz-Armatur</span></li>
-      </ul>
     </div>
+    <ul class="hero-work__media" aria-label="Fotos von unserer Arbeit">
+      <li><picture><source type="image/avif" srcset="assets/img/team-adera-600.avif 600w, assets/img/team-adera-900.avif 900w, assets/img/team-adera.avif 1080w" sizes="(max-width: 960px) 100vw, (max-width: 1180px) 50vw, 40vw"><img srcset="assets/img/team-adera-600.jpg 600w, assets/img/team-adera-900.jpg 900w, assets/img/team-adera.jpg 1080w" sizes="(max-width: 960px) 100vw, (max-width: 1180px) 50vw, 40vw" src="assets/img/team-adera-900.jpg" alt="Drei Mitarbeiter der Adera Partner GmbH in blauen Firmen-Shirts und mit Helmen auf einer Baustelle" width="900" height="1202" fetchpriority="high" style="object-position: 55% 50%"></picture></li>
+      <li><picture><source type="image/avif" srcset="assets/img/wanne-ecke-hell-600.avif 600w, assets/img/wanne-ecke-hell-900.avif 900w, assets/img/wanne-ecke-hell.avif 1125w" sizes="(max-width: 1180px) 50vw, 30vw"><img srcset="assets/img/wanne-ecke-hell-600.jpg 600w, assets/img/wanne-ecke-hell-900.jpg 900w, assets/img/wanne-ecke-hell.jpg 1125w" sizes="(max-width: 1180px) 50vw, 30vw" src="assets/img/wanne-ecke-hell-900.jpg" alt="Freistehende Badewanne mit Standarmatur in der Ecke eines hellen Bads" width="900" height="1600" loading="lazy" style="object-position: 50% 62%"></picture></li>
+    </ul>
   </section>
 
-  <!-- Angebot -->
+  <!-- Angebot als grosse Zeilen. Am Bildschirm zeigt das Foto rechts die Zeile unter der Maus
+       oder mit dem Tastaturfokus (main.js setzt .is-active), am Handy steht ein kleines Foto vor jeder Zeile. -->
   <section id="angebot" aria-labelledby="angebot-title">
     <div class="container">
       <div class="section-head">
         <h2 id="angebot-title">Unser Angebot</h2>
         <p>Heizung, Lüftung und Sanitär können Sie bei uns zusammen in Auftrag geben. Dann stimmen wir die Arbeiten untereinander ab.</p>
       </div>
-      <div class="cards">
-        <article class="card">
-          <a class="card__img" href="heizung.html" tabindex="-1" aria-hidden="true"><picture><source type="image/avif" srcset="assets/img/heizraum-600.avif 600w, assets/img/heizraum-900.avif 900w, assets/img/heizraum-1200.avif 1200w, assets/img/heizraum.avif 1500w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 45vw, 440px"><img srcset="assets/img/heizraum-600.jpg 600w, assets/img/heizraum-900.jpg 900w, assets/img/heizraum-1200.jpg 1200w, assets/img/heizraum.jpg 1500w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 45vw, 440px" src="assets/img/heizraum-900.jpg" alt="" width="900" height="1200" loading="lazy"></picture></a>
-          <div class="card__body">
-            <h3><a href="heizung.html">Heizung &amp; Wärmepumpen</a></h3>
-            <p>Beim Wechsel von Öl oder Gas zur Wärmepumpe klären wir zuerst vor Ort ab, was Ihr Haus braucht. In Neubauten installieren wir die ganze Heizung samt Heizkörpern oder Bodenheizung.</p>
-            <a class="btn btn--sm" href="heizung.html"><span class="i i-arrow" aria-hidden="true"></span>Mehr dazu<span class="visually-hidden">: Heizung und Wärmepumpen</span></a>
+      <ul class="offers" data-offers>
+        <li class="offer is-active">
+          <div class="offer__media"><picture><source type="image/avif" srcset="assets/img/heizraum-600.avif 600w, assets/img/heizraum-900.avif 900w, assets/img/heizraum-1200.avif 1200w, assets/img/heizraum.avif 1500w" sizes="(max-width: 960px) 120px, (hover: none) 120px, 34vw"><img srcset="assets/img/heizraum-600.jpg 600w, assets/img/heizraum-900.jpg 900w, assets/img/heizraum-1200.jpg 1200w, assets/img/heizraum.jpg 1500w" sizes="(max-width: 960px) 120px, (hover: none) 120px, 34vw" src="assets/img/heizraum-900.jpg" alt="" width="900" height="1200" loading="lazy" style="object-position: 50% 40%"></picture></div>
+          <div class="offer__body">
+            <h3 class="offer__title"><a href="heizung.html">Heizung &amp; Wärmepumpen</a></h3>
+            <p class="offer__text">Beim Wechsel von Öl oder Gas zur Wärmepumpe klären wir zuerst vor Ort ab, was Ihr Haus braucht. In Neubauten installieren wir die ganze Heizung samt Heizkörpern oder Bodenheizung.</p>
+            <span class="offer__arrow i i-arrow" aria-hidden="true"></span>
           </div>
-        </article>
-        <article class="card">
-          <a class="card__img" href="lueftung.html" tabindex="-1" aria-hidden="true"><picture><source type="image/avif" srcset="assets/img/bad-rundspiegel-dusche-600.avif 600w, assets/img/bad-rundspiegel-dusche-900.avif 900w, assets/img/bad-rundspiegel-dusche.avif 1126w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 45vw, 440px"><img srcset="assets/img/bad-rundspiegel-dusche-600.jpg 600w, assets/img/bad-rundspiegel-dusche-900.jpg 900w, assets/img/bad-rundspiegel-dusche.jpg 1126w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 45vw, 440px" src="assets/img/bad-rundspiegel-dusche-900.jpg" alt="" width="900" height="1599" loading="lazy" style="object-position: 50% 40%"></picture></a>
-          <div class="card__body">
-            <h3><a href="lueftung.html">Lüftung</a></h3>
-            <p>Für Wohnungen und Einfamilienhäuser installieren wir Komfortlüftungen, für Gewerbebauten planen wir grössere Lüftungsanlagen. Bestehende Anlagen warten wir, samt Filterwechsel.</p>
-            <a class="btn btn--sm" href="lueftung.html"><span class="i i-arrow" aria-hidden="true"></span>Mehr dazu<span class="visually-hidden">: Lüftung</span></a>
+        </li>
+        <li class="offer">
+          <div class="offer__media"><picture><source type="image/avif" srcset="assets/img/bad-rundspiegel-dusche-600.avif 600w, assets/img/bad-rundspiegel-dusche-900.avif 900w, assets/img/bad-rundspiegel-dusche.avif 1126w" sizes="(max-width: 960px) 120px, (hover: none) 120px, 34vw"><img srcset="assets/img/bad-rundspiegel-dusche-600.jpg 600w, assets/img/bad-rundspiegel-dusche-900.jpg 900w, assets/img/bad-rundspiegel-dusche.jpg 1126w" sizes="(max-width: 960px) 120px, (hover: none) 120px, 34vw" src="assets/img/bad-rundspiegel-dusche-900.jpg" alt="" width="900" height="1599" loading="lazy" style="object-position: 50% 40%"></picture></div>
+          <div class="offer__body">
+            <h3 class="offer__title"><a href="lueftung.html">Lüftung</a></h3>
+            <p class="offer__text">Für Wohnungen und Einfamilienhäuser installieren wir Komfortlüftungen, für Gewerbebauten planen wir grössere Lüftungsanlagen. Bestehende Anlagen warten wir, samt Filterwechsel.</p>
+            <span class="offer__arrow i i-arrow" aria-hidden="true"></span>
           </div>
-        </article>
-        <article class="card">
-          <a class="card__img" href="sanitaer.html" tabindex="-1" aria-hidden="true"><picture><source type="image/avif" srcset="assets/img/gaeste-wc-holz-600.avif 600w, assets/img/gaeste-wc-holz-900.avif 900w, assets/img/gaeste-wc-holz.avif 1126w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 45vw, 440px"><img srcset="assets/img/gaeste-wc-holz-600.jpg 600w, assets/img/gaeste-wc-holz-900.jpg 900w, assets/img/gaeste-wc-holz.jpg 1126w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 45vw, 440px" src="assets/img/gaeste-wc-holz-900.jpg" alt="" width="900" height="1599" loading="lazy" style="object-position: 50% 75%"></picture></a>
-          <div class="card__body">
-            <h3><a href="sanitaer.html">Sanitär</a></h3>
-            <p>Im Neubau verlegen wir Wasser- und Abwasserleitungen. Alte Leitungen ersetzen wir auch in bewohnten Häusern. Dazu kommen Reparaturen an Armaturen und Spülkästen.</p>
-            <a class="btn btn--sm" href="sanitaer.html"><span class="i i-arrow" aria-hidden="true"></span>Mehr dazu<span class="visually-hidden">: Sanitär</span></a>
+        </li>
+        <li class="offer">
+          <div class="offer__media"><picture><source type="image/avif" srcset="assets/img/gaeste-wc-holz-600.avif 600w, assets/img/gaeste-wc-holz-900.avif 900w, assets/img/gaeste-wc-holz.avif 1126w" sizes="(max-width: 960px) 120px, (hover: none) 120px, 34vw"><img srcset="assets/img/gaeste-wc-holz-600.jpg 600w, assets/img/gaeste-wc-holz-900.jpg 900w, assets/img/gaeste-wc-holz.jpg 1126w" sizes="(max-width: 960px) 120px, (hover: none) 120px, 34vw" src="assets/img/gaeste-wc-holz-900.jpg" alt="" width="900" height="1599" loading="lazy" style="object-position: 50% 70%"></picture></div>
+          <div class="offer__body">
+            <h3 class="offer__title"><a href="sanitaer.html">Sanitär</a></h3>
+            <p class="offer__text">Im Neubau verlegen wir Wasser- und Abwasserleitungen. Alte Leitungen ersetzen wir auch in bewohnten Häusern. Dazu kommen Reparaturen an Armaturen und Spülkästen.</p>
+            <span class="offer__arrow i i-arrow" aria-hidden="true"></span>
           </div>
-        </article>
-        <article class="card">
-          <a class="card__img" href="badumbau.html" tabindex="-1" aria-hidden="true"><picture><source type="image/avif" srcset="assets/img/bad-hell-dusche-600.avif 600w, assets/img/bad-hell-dusche-900.avif 900w, assets/img/bad-hell-dusche.avif 1126w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 45vw, 440px"><img srcset="assets/img/bad-hell-dusche-600.jpg 600w, assets/img/bad-hell-dusche-900.jpg 900w, assets/img/bad-hell-dusche.jpg 1126w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 45vw, 440px" src="assets/img/bad-hell-dusche-900.jpg" alt="" width="900" height="1599" loading="lazy" style="object-position: 50% 60%"></picture></a>
-          <div class="card__body">
-            <h3><a href="badumbau.html">Badumbau</a></h3>
-            <p>Beim Umbau Ihres Bads machen wir die Sanitärarbeiten. Wenn Sie möchten, koordinieren wir den ganzen Umbau mit Plattenleger, Elektriker und Maler.</p>
-            <a class="btn btn--sm" href="badumbau.html"><span class="i i-arrow" aria-hidden="true"></span>Mehr dazu<span class="visually-hidden">: Badumbau</span></a>
+        </li>
+        <li class="offer">
+          <div class="offer__media"><picture><source type="image/avif" srcset="assets/img/bad-hell-dusche-600.avif 600w, assets/img/bad-hell-dusche-900.avif 900w, assets/img/bad-hell-dusche.avif 1126w" sizes="(max-width: 960px) 120px, (hover: none) 120px, 34vw"><img srcset="assets/img/bad-hell-dusche-600.jpg 600w, assets/img/bad-hell-dusche-900.jpg 900w, assets/img/bad-hell-dusche.jpg 1126w" sizes="(max-width: 960px) 120px, (hover: none) 120px, 34vw" src="assets/img/bad-hell-dusche-900.jpg" alt="" width="900" height="1599" loading="lazy" style="object-position: 50% 60%"></picture></div>
+          <div class="offer__body">
+            <h3 class="offer__title"><a href="badumbau.html">Badumbau</a></h3>
+            <p class="offer__text">Beim Umbau Ihres Bads machen wir die Sanitärarbeiten. Wenn Sie möchten, koordinieren wir den ganzen Umbau mit Plattenleger, Elektriker und Maler.</p>
+            <span class="offer__arrow i i-arrow" aria-hidden="true"></span>
           </div>
-        </article>
-        <article class="card">
-          <a class="card__img" href="planung.html" tabindex="-1" aria-hidden="true"><picture><source type="image/avif" srcset="assets/img/baugrube-leitungen-600.avif 600w, assets/img/baugrube-leitungen-900.avif 900w, assets/img/baugrube-leitungen-1200.avif 1200w, assets/img/baugrube-leitungen.avif 1500w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 45vw, 440px"><img srcset="assets/img/baugrube-leitungen-600.jpg 600w, assets/img/baugrube-leitungen-900.jpg 900w, assets/img/baugrube-leitungen-1200.jpg 1200w, assets/img/baugrube-leitungen.jpg 1500w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 45vw, 440px" src="assets/img/baugrube-leitungen-900.jpg" alt="" width="900" height="1200" loading="lazy" style="object-position: 50% 55%"></picture></a>
-          <div class="card__body">
-            <h3><a href="planung.html">Planung</a></h3>
-            <p>Wir planen Heizung, Lüftung und Sanitär für Neu- und Umbauten. Was wir planen, können wir auch selber ausführen und warten.</p>
-            <a class="btn btn--sm" href="planung.html"><span class="i i-arrow" aria-hidden="true"></span>Mehr dazu<span class="visually-hidden">: Planung</span></a>
+        </li>
+        <li class="offer">
+          <div class="offer__media"><picture><source type="image/avif" srcset="assets/img/baugrube-leitungen-600.avif 600w, assets/img/baugrube-leitungen-900.avif 900w, assets/img/baugrube-leitungen-1200.avif 1200w, assets/img/baugrube-leitungen.avif 1500w" sizes="(max-width: 960px) 120px, (hover: none) 120px, 34vw"><img srcset="assets/img/baugrube-leitungen-600.jpg 600w, assets/img/baugrube-leitungen-900.jpg 900w, assets/img/baugrube-leitungen-1200.jpg 1200w, assets/img/baugrube-leitungen.jpg 1500w" sizes="(max-width: 960px) 120px, (hover: none) 120px, 34vw" src="assets/img/baugrube-leitungen-900.jpg" alt="" width="900" height="1200" loading="lazy" style="object-position: 50% 55%"></picture></div>
+          <div class="offer__body">
+            <h3 class="offer__title"><a href="planung.html">Planung</a></h3>
+            <p class="offer__text">Wir planen Heizung, Lüftung und Sanitär für Neu- und Umbauten. Was wir planen, können wir auch selber ausführen und warten.</p>
+            <span class="offer__arrow i i-arrow" aria-hidden="true"></span>
           </div>
-        </article>
-        <article class="card">
-          <a class="card__img" href="service.html" tabindex="-1" aria-hidden="true"><picture><source type="image/avif" srcset="assets/img/service-technik-600.avif 600w, assets/img/service-technik-900.avif 900w, assets/img/service-technik-1200.avif 1200w, assets/img/service-technik.avif 1388w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 45vw, 440px"><img srcset="assets/img/service-technik-600.jpg 600w, assets/img/service-technik-900.jpg 900w, assets/img/service-technik-1200.jpg 1200w, assets/img/service-technik.jpg 1388w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 45vw, 440px" src="assets/img/service-technik-900.jpg" alt="" width="900" height="675" loading="lazy"></picture></a>
-          <div class="card__body">
-            <h3><a href="service.html">Service &amp; Wartung</a></h3>
-            <p>Wir warten Heizungen und Lüftungsanlagen und reparieren, was ausfällt. Bei einer Störung erreichen Sie uns auch nachts und am Wochenende.</p>
-            <a class="btn btn--sm" href="service.html"><span class="i i-arrow" aria-hidden="true"></span>Mehr dazu<span class="visually-hidden">: Service und Wartung</span></a>
+        </li>
+        <li class="offer">
+          <div class="offer__media"><picture><source type="image/avif" srcset="assets/img/service-technik-600.avif 600w, assets/img/service-technik-900.avif 900w, assets/img/service-technik-1200.avif 1200w, assets/img/service-technik.avif 1388w" sizes="(max-width: 960px) 120px, (hover: none) 120px, 34vw"><img srcset="assets/img/service-technik-600.jpg 600w, assets/img/service-technik-900.jpg 900w, assets/img/service-technik-1200.jpg 1200w, assets/img/service-technik.jpg 1388w" sizes="(max-width: 960px) 120px, (hover: none) 120px, 34vw" src="assets/img/service-technik-900.jpg" alt="" width="900" height="675" loading="lazy" style="object-position: 40% 50%"></picture></div>
+          <div class="offer__body">
+            <h3 class="offer__title"><a href="service.html">Service &amp; Wartung</a></h3>
+            <p class="offer__text">Wir warten Heizungen und Lüftungsanlagen und reparieren, was ausfällt. Bei einer Störung erreichen Sie uns auch nachts und am Wochenende.</p>
+            <span class="offer__arrow i i-arrow" aria-hidden="true"></span>
           </div>
-        </article>
-      </div>
+        </li>
+      </ul>
     </div>
   </section>
 
-  <!-- Projekt-Auswahl -->
+  <!-- Projekte: Fotowand. Die beiden Reihen verschieben sich beim Scrollen leicht gegeneinander
+       (nur CSS, in Browsern mit animation-timeline; sonst und bei reduzierter Bewegung stehen sie still). -->
   <section aria-labelledby="projekte-title">
     <div class="container">
       <div class="section-head">
         <h2 id="projekte-title">Aus unseren Projekten</h2>
         <p>Alle Fotos stammen von unseren Baustellen.</p>
       </div>
-      <div class="showcase">
-        <a class="showcase__item" href="projekte.html">
-          <div class="showcase__img"><picture><source type="image/avif" srcset="assets/img/bad-marmor-schwarz-600.avif 600w, assets/img/bad-marmor-schwarz-900.avif 900w, assets/img/bad-marmor-schwarz-1200.avif 1200w, assets/img/bad-marmor-schwarz.avif 1500w" sizes="(max-width: 960px) 100vw, 40vw"><img srcset="assets/img/bad-marmor-schwarz-600.jpg 600w, assets/img/bad-marmor-schwarz-900.jpg 900w, assets/img/bad-marmor-schwarz-1200.jpg 1200w, assets/img/bad-marmor-schwarz.jpg 1500w" sizes="(max-width: 960px) 100vw, 40vw" src="assets/img/bad-marmor-schwarz.jpg" alt="Bad mit dunklen Platten in Marmoroptik, Lichtlinien an der Decke und hellem Waschtisch" width="1500" height="2000" loading="lazy" style="object-position: 50% 45%"></picture></div>
-          <div class="showcase__cap"><small>Bad</small><strong>Dunkle Marmoroptik und Lichtlinien an der Decke</strong></div>
-        </a>
-        <a class="showcase__item" href="projekte.html">
-          <div class="showcase__img"><picture><source type="image/avif" srcset="assets/img/bad-beton-600.avif 600w, assets/img/bad-beton-900.avif 900w, assets/img/bad-beton-1200.avif 1200w, assets/img/bad-beton.avif 1545w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 50vw, 40vw"><img srcset="assets/img/bad-beton-600.jpg 600w, assets/img/bad-beton-900.jpg 900w, assets/img/bad-beton-1200.jpg 1200w, assets/img/bad-beton.jpg 1545w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 50vw, 40vw" src="assets/img/bad-beton-900.jpg" alt="Bad in Betonoptik mit Badewanne und Waschtisch aus Holz" width="900" height="1165" loading="lazy" style="object-position: 50% 55%"></picture></div>
-          <div class="showcase__cap"><small>Bad</small><strong>Betonoptik und Holz</strong></div>
-        </a>
-        <a class="showcase__item" href="projekte.html">
-          <div class="showcase__img"><picture><source type="image/avif" srcset="assets/img/kueche-spuele-600.avif 600w, assets/img/kueche-spuele-900.avif 900w, assets/img/kueche-spuele.avif 1125w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 50vw, 40vw"><img srcset="assets/img/kueche-spuele-600.jpg 600w, assets/img/kueche-spuele-900.jpg 900w, assets/img/kueche-spuele.jpg 1125w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 50vw, 40vw" src="assets/img/kueche-spuele-900.jpg" alt="Küchenspüle aus Chromstahl mit Armatur in einer Abdeckung aus Stein" width="900" height="1600" loading="lazy" style="object-position: 50% 60%"></picture></div>
-          <div class="showcase__cap"><small>Küche</small><strong>Spüle aus Chromstahl</strong></div>
-        </a>
-        <a class="showcase__item" href="projekte.html">
-          <div class="showcase__img"><picture><source type="image/avif" srcset="assets/img/technikraum-2-600.avif 600w, assets/img/technikraum-2-900.avif 900w, assets/img/technikraum-2-1200.avif 1200w, assets/img/technikraum-2.avif 2000w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 50vw, 40vw"><img srcset="assets/img/technikraum-2-600.jpg 600w, assets/img/technikraum-2-900.jpg 900w, assets/img/technikraum-2-1200.jpg 1200w, assets/img/technikraum-2.jpg 2000w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 50vw, 40vw" src="assets/img/technikraum-2-900.jpg" alt="Heller Technikraum mit Wasserleitungen, blauem Druckgefäss und Steuerungen" width="900" height="675" loading="lazy"></picture></div>
-          <div class="showcase__cap"><small>Technik</small><strong>Technikraum mit Druckgefäss</strong></div>
-        </a>
-        <a class="showcase__item" href="projekte.html">
-          <div class="showcase__img"><picture><source type="image/avif" srcset="assets/img/baustelle-grundleitungen-600.avif 600w, assets/img/baustelle-grundleitungen-900.avif 900w, assets/img/baustelle-grundleitungen-1200.avif 1200w, assets/img/baustelle-grundleitungen.avif 1500w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 50vw, 40vw"><img srcset="assets/img/baustelle-grundleitungen-600.jpg 600w, assets/img/baustelle-grundleitungen-900.jpg 900w, assets/img/baustelle-grundleitungen-1200.jpg 1200w, assets/img/baustelle-grundleitungen.jpg 1500w" sizes="(max-width: 640px) 90vw, (max-width: 960px) 50vw, 40vw" src="assets/img/baustelle-grundleitungen-900.jpg" alt="Neubau-Baustelle mit verlegten Grundleitungen in der Baugrube" width="900" height="1200" loading="lazy" style="object-position: 50% 55%"></picture></div>
-          <div class="showcase__cap"><small>Baustelle</small><strong>Grundleitungen im Neubau</strong></div>
-        </a>
-      </div>
-      <p class="showcase-foot"><a class="btn" href="projekte.html"><span class="i i-arrow" aria-hidden="true"></span>Alle Projekte</a></p>
+    </div>
+    <div class="photowall" role="group" aria-label="Fotos aus unseren Projekten">
+      <ul class="photowall__row">
+        <li><picture><source type="image/avif" srcset="assets/img/dusche-nischen-600.avif 600w, assets/img/dusche-nischen-900.avif 900w, assets/img/dusche-nischen-1200.avif 1200w, assets/img/dusche-nischen.avif 1500w" sizes="(max-width: 714px) 160px, 22vw"><img srcset="assets/img/dusche-nischen-600.jpg 600w, assets/img/dusche-nischen-900.jpg 900w, assets/img/dusche-nischen-1200.jpg 1200w, assets/img/dusche-nischen.jpg 1500w" sizes="(max-width: 714px) 160px, 22vw" src="assets/img/dusche-nischen-900.jpg" alt="Dusche mit Regenbrause und zwei beleuchteten Nischen in der Wand" width="900" height="1200" loading="lazy"></picture></li>
+        <li><picture><source type="image/avif" srcset="assets/img/waschtisch-rundspiegel-hell-600.avif 600w, assets/img/waschtisch-rundspiegel-hell-900.avif 900w, assets/img/waschtisch-rundspiegel-hell.avif 1126w" sizes="(max-width: 714px) 160px, 22vw"><img srcset="assets/img/waschtisch-rundspiegel-hell-600.jpg 600w, assets/img/waschtisch-rundspiegel-hell-900.jpg 900w, assets/img/waschtisch-rundspiegel-hell.jpg 1126w" sizes="(max-width: 714px) 160px, 22vw" src="assets/img/waschtisch-rundspiegel-hell-900.jpg" alt="Waschtisch mit hellem Unterschrank und rundem, hinterleuchtetem Spiegel" width="900" height="1599" loading="lazy"></picture></li>
+        <li><picture><source type="image/avif" srcset="assets/img/kueche-quooker-600.avif 600w, assets/img/kueche-quooker-900.avif 900w, assets/img/kueche-quooker-1200.avif 1200w, assets/img/kueche-quooker.avif 1500w" sizes="(max-width: 714px) 160px, 22vw"><img srcset="assets/img/kueche-quooker-600.jpg 600w, assets/img/kueche-quooker-900.jpg 900w, assets/img/kueche-quooker-1200.jpg 1200w, assets/img/kueche-quooker.jpg 1500w" sizes="(max-width: 714px) 160px, 22vw" src="assets/img/kueche-quooker-900.jpg" alt="Zwei schwarze Küchenarmaturen vor einem Fenster" width="900" height="1200" loading="lazy"></picture></li>
+        <li><picture><source type="image/avif" srcset="assets/img/wc-waschtisch-bronze-600.avif 600w, assets/img/wc-waschtisch-bronze-900.avif 900w, assets/img/wc-waschtisch-bronze.avif 1125w" sizes="(max-width: 714px) 160px, 22vw"><img srcset="assets/img/wc-waschtisch-bronze-600.jpg 600w, assets/img/wc-waschtisch-bronze-900.jpg 900w, assets/img/wc-waschtisch-bronze.jpg 1125w" sizes="(max-width: 714px) 160px, 22vw" src="assets/img/wc-waschtisch-bronze-900.jpg" alt="Wand-WC und Waschtisch aus Holz mit bronzefarbener Armatur" width="900" height="1600" loading="lazy"></picture></li>
+        <li><picture><source type="image/avif" srcset="assets/img/wanne-marmor-600.avif 600w, assets/img/wanne-marmor-900.avif 900w, assets/img/wanne-marmor.avif 1089w" sizes="(max-width: 714px) 160px, 22vw"><img srcset="assets/img/wanne-marmor-600.jpg 600w, assets/img/wanne-marmor-900.jpg 900w, assets/img/wanne-marmor.jpg 1089w" sizes="(max-width: 714px) 160px, 22vw" src="assets/img/wanne-marmor-900.jpg" alt="Freistehende Badewanne vor Platten in Marmoroptik" width="900" height="1652" loading="lazy"></picture></li>
+        <li><picture><source type="image/avif" srcset="assets/img/baustelle-grundleitungen-600.avif 600w, assets/img/baustelle-grundleitungen-900.avif 900w, assets/img/baustelle-grundleitungen-1200.avif 1200w, assets/img/baustelle-grundleitungen.avif 1500w" sizes="(max-width: 714px) 160px, 22vw"><img srcset="assets/img/baustelle-grundleitungen-600.jpg 600w, assets/img/baustelle-grundleitungen-900.jpg 900w, assets/img/baustelle-grundleitungen-1200.jpg 1200w, assets/img/baustelle-grundleitungen.jpg 1500w" sizes="(max-width: 714px) 160px, 22vw" src="assets/img/baustelle-grundleitungen-900.jpg" alt="Neubau-Baustelle mit verlegten Grundleitungen in der Baugrube" width="900" height="1200" loading="lazy"></picture></li>
+        <li><picture><source type="image/avif" srcset="assets/img/kueche-spuele-600.avif 600w, assets/img/kueche-spuele-900.avif 900w, assets/img/kueche-spuele.avif 1125w" sizes="(max-width: 714px) 160px, 22vw"><img srcset="assets/img/kueche-spuele-600.jpg 600w, assets/img/kueche-spuele-900.jpg 900w, assets/img/kueche-spuele.jpg 1125w" sizes="(max-width: 714px) 160px, 22vw" src="assets/img/kueche-spuele-900.jpg" alt="Küchenspüle aus Chromstahl mit Armatur in einer Abdeckung aus Stein" width="900" height="1600" loading="lazy"></picture></li>
+      </ul>
+      <ul class="photowall__row">
+        <li><picture><source type="image/avif" srcset="assets/img/waschtisch-blau-led-600.avif 600w, assets/img/waschtisch-blau-led-900.avif 900w, assets/img/waschtisch-blau-led.avif 1125w" sizes="(max-width: 714px) 160px, 22vw"><img srcset="assets/img/waschtisch-blau-led-600.jpg 600w, assets/img/waschtisch-blau-led-900.jpg 900w, assets/img/waschtisch-blau-led.jpg 1125w" sizes="(max-width: 714px) 160px, 22vw" src="assets/img/waschtisch-blau-led-900.jpg" alt="Waschtisch mit dunkelblauem Unterschrank, Lichtband am Boden und ovalem Lichtspiegel" width="900" height="1600" loading="lazy"></picture></li>
+        <li><picture><source type="image/avif" srcset="assets/img/bad-beton-600.avif 600w, assets/img/bad-beton-900.avif 900w, assets/img/bad-beton-1200.avif 1200w, assets/img/bad-beton.avif 1545w" sizes="(max-width: 714px) 160px, 22vw"><img srcset="assets/img/bad-beton-600.jpg 600w, assets/img/bad-beton-900.jpg 900w, assets/img/bad-beton-1200.jpg 1200w, assets/img/bad-beton.jpg 1545w" sizes="(max-width: 714px) 160px, 22vw" src="assets/img/bad-beton-900.jpg" alt="Bad in Betonoptik mit Badewanne und Waschtisch aus Holz" width="900" height="1165" loading="lazy"></picture></li>
+        <li><picture><source type="image/avif" srcset="assets/img/dusche-armatur-bronze-600.avif 600w, assets/img/dusche-armatur-bronze-900.avif 900w, assets/img/dusche-armatur-bronze.avif 1125w" sizes="(max-width: 714px) 160px, 22vw"><img srcset="assets/img/dusche-armatur-bronze-600.jpg 600w, assets/img/dusche-armatur-bronze-900.jpg 900w, assets/img/dusche-armatur-bronze.jpg 1125w" sizes="(max-width: 714px) 160px, 22vw" src="assets/img/dusche-armatur-bronze-900.jpg" alt="Bronzefarbene Duscharmatur mit Handbrause vor gerillten Platten" width="900" height="1600" loading="lazy"></picture></li>
+        <li><picture><source type="image/avif" srcset="assets/img/bad-marmor-schwarz-600.avif 600w, assets/img/bad-marmor-schwarz-900.avif 900w, assets/img/bad-marmor-schwarz-1200.avif 1200w, assets/img/bad-marmor-schwarz.avif 1500w" sizes="(max-width: 714px) 160px, 22vw"><img srcset="assets/img/bad-marmor-schwarz-600.jpg 600w, assets/img/bad-marmor-schwarz-900.jpg 900w, assets/img/bad-marmor-schwarz-1200.jpg 1200w, assets/img/bad-marmor-schwarz.jpg 1500w" sizes="(max-width: 714px) 160px, 22vw" src="assets/img/bad-marmor-schwarz-900.jpg" alt="Bad mit dunklen Platten in Marmoroptik, Lichtlinien an der Decke und hellem Waschtisch" width="900" height="1200" loading="lazy"></picture></li>
+        <li><picture><source type="image/avif" srcset="assets/img/lavabo-rundspiegel-blau-600.avif 600w, assets/img/lavabo-rundspiegel-blau-900.avif 900w, assets/img/lavabo-rundspiegel-blau.avif 1125w" sizes="(max-width: 714px) 160px, 22vw"><img srcset="assets/img/lavabo-rundspiegel-blau-600.jpg 600w, assets/img/lavabo-rundspiegel-blau-900.jpg 900w, assets/img/lavabo-rundspiegel-blau.jpg 1125w" sizes="(max-width: 714px) 160px, 22vw" src="assets/img/lavabo-rundspiegel-blau-900.jpg" alt="Aufsatzlavabo auf dunkelblauem Unterschrank mit rundem Lichtspiegel und schwarzer Armatur" width="900" height="1600" loading="lazy"></picture></li>
+        <li><picture><source type="image/avif" srcset="assets/img/waschtisch-schale-messing-600.avif 600w, assets/img/waschtisch-schale-messing-900.avif 900w, assets/img/waschtisch-schale-messing.avif 1125w" sizes="(max-width: 714px) 160px, 22vw"><img srcset="assets/img/waschtisch-schale-messing-600.jpg 600w, assets/img/waschtisch-schale-messing-900.jpg 900w, assets/img/waschtisch-schale-messing.jpg 1125w" sizes="(max-width: 714px) 160px, 22vw" src="assets/img/waschtisch-schale-messing-900.jpg" alt="Waschtisch mit Aufsatzschale und messingfarbener Armatur unter einem Spiegelschrank" width="900" height="1600" loading="lazy"></picture></li>
+        <li><picture><source type="image/avif" srcset="assets/img/doppellavabo-rundspiegel-600.avif 600w, assets/img/doppellavabo-rundspiegel-900.avif 900w, assets/img/doppellavabo-rundspiegel.avif 1125w" sizes="(max-width: 714px) 160px, 22vw"><img srcset="assets/img/doppellavabo-rundspiegel-600.jpg 600w, assets/img/doppellavabo-rundspiegel-900.jpg 900w, assets/img/doppellavabo-rundspiegel.jpg 1125w" sizes="(max-width: 714px) 160px, 22vw" src="assets/img/doppellavabo-rundspiegel-900.jpg" alt="Doppelwaschtisch mit zwei runden, hinterleuchteten Spiegeln" width="900" height="1600" loading="lazy"></picture></li>
+      </ul>
+    </div>
+    <div class="container">
+      <div class="btn-row"><a class="btn" href="projekte.html"><span class="i i-arrow" aria-hidden="true"></span>Alle Projekte ansehen</a></div>
     </div>
   </section>
 
-  <!-- Ansprechpartner -->
+  <!-- Ansprechpartner (das Teamfoto steht schon im Einstieg, darum hier ohne Foto) -->
   <section aria-labelledby="team-title">
-    <div class="container team">
-      <div class="team__media">
-        <picture><source type="image/avif" srcset="assets/img/team-adera-600.avif 600w, assets/img/team-adera-900.avif 900w, assets/img/team-adera.avif 1080w" sizes="(max-width: 960px) 100vw, 52vw"><img srcset="assets/img/team-adera-600.jpg 600w, assets/img/team-adera-900.jpg 900w, assets/img/team-adera.jpg 1080w" sizes="(max-width: 960px) 100vw, 52vw" src="assets/img/team-adera.jpg" alt="Drei Mitarbeiter der Adera Partner GmbH in blauen Firmen-Shirts und mit Helmen auf einer Baustelle" width="1080" height="1442" loading="lazy" style="object-position: 50% 30%"></picture>
-      </div>
-      <div class="team__text">
+    <div class="container intro">
+      <div>
         <h2 id="team-title">Ihre Ansprechpartner</h2>
         <p>Die Brüder Erolind und Tosum Zhaku führen die Adera Partner GmbH gemeinsam.</p>
+      </div>
+      <div class="team__text">
         <ul class="team__names">
           <li><strong>Erolind Zhaku</strong><span>Mitinhaber und Geschäftsführer</span></li>
           <li><strong>Tosum Zhaku</strong><span>Mitinhaber und Geschäftsführer</span></li>
@@ -450,6 +628,6 @@
 </footer>
 <!-- ===== /FOOTER ===== -->
 
-<script src="assets/js/main.js?v=20261126" defer></script>
+<script src="assets/js/main.js?v=20261126c" defer></script>
 </body>
 </html>

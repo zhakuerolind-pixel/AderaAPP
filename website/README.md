@@ -14,7 +14,7 @@ Externe Inhalte gibt es nur nach einem Klick: die Google-Karte («Karte laden»)
 website/                      → gehört auf den Webserver (Hauptverzeichnis der Domain)
   index.html                  Startseite
   heizung.html lueftung.html sanitaer.html badumbau.html planung.html service.html   Angebot
-  projekte.html               Galerie mit Filter und Grossansicht (34 eigene Projektfotos)
+  projekte.html               Galerie mit Filter und Grossansicht (21 ausgewählte eigene Projektfotos)
   unternehmen.html jobs.html kontakt.html
   impressum.html datenschutz.html 404.html
   send.php                    Versand des Kontaktformulars per E-Mail
@@ -85,9 +85,10 @@ Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Ma
 - Einstellungen oben in der Datei: `MAIL_TO` (fest info@aderapartner.ch, nie aus dem Formular), `MAIL_FROM`
   (website@aderapartner.ch – muss beim Hoster bzw. im SPF erlaubt sein), `MAIL_SET_ENVELOPE_FROM`, Rate-Limit
   (5 Anfragen pro IP und Stunde, braucht Schreibrecht im temporären Verzeichnis).
-- Schutz: Honeypot-Feld `hp_adera` (unsichtbar), Prüfung aller Felder, keine Header-Injection, Antwort immer JSON.
-- Pflichtfelder: thema, plz, ort, vorname, nachname, email, datenschutz. Freiwillig: objekt, zeitraum, adresse,
-  nachricht, firma, telefon, rueckruf. Der Assistent setzt Thema, Objekt, Zeitraum und Rückruf oben in die Nachricht.
+- Schutz: Honeypot-Feld `hp_adera` (unsichtbar), Prüfung aller Felder, keine Header-Injection. Antwort als JSON für den
+  Assistenten, ohne JavaScript als einfache Seite mit derselben Meldung.
+- Pflichtfelder: thema (im Formular), plz, ort, vorname, nachname, email, datenschutz. Freiwillig: objekt, zeitraum,
+  adresse, nachricht, firma, telefon, rueckruf. Alle Angaben stehen in der E-Mail (Felder: `FIELDS` oben in `send.php`).
 - Test nach dem Livegang: auf `kontakt.html` und der Startseite je eine Anfrage senden → «Vielen Dank …» erscheint →
   E-Mail kommt in info@aderapartner.ch an (auch Spam prüfen), Antworten gehen an die eingegebene Adresse.
   Nach 5 Anfragen pro Stunde vom gleichen Anschluss sperrt das Rate-Limit eine Stunde lang.
@@ -99,6 +100,7 @@ Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Ma
 ## 5. Bilder
 
 - Alle Fotos stammen von Projekten und Baustellen der Adera Partner GmbH (so steht es auch im Impressum).
+  Gezeigt wird bewusst nur eine Auswahl der stärksten Fotos (Qualität vor Menge).
   Keine Stockbilder, keine KI-Bilder. Logos: offizielle Dateien von suissetec, «Wir, die Gebäudetechniker» und die
   Lehrbetrieb-Vignette (Bund, gültig seit 1.12.2025, Mindestgrösse 120 × 120 px) – nur verwenden, solange Mitgliedschaft
   bzw. Bildungsbewilligung bestehen.
@@ -117,9 +119,12 @@ Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Ma
 - **Kopf und Fuss stehen in jeder HTML-Datei** (kein Template-System). Änderungen dort in allen Dateien machen,
   auch in `404.html` (dort beginnen alle Pfade mit `/`).
 - **Automatisch durch `main.js`:** die Kontaktleiste am Handy (Anrufen / Anfrage starten), der Schluss-Aufruf vor dem
-  Footer (auf Seiten ohne Formular), das Einblenden beim Scrollen, der Anfrage-Assistent, Filter und Grossansicht der Galerie,
+  Footer (nicht auf Seiten mit Formular und nicht mit `<body data-no-finale>`, z. B. service.html), das Einblenden beim Scrollen, der Anfrage-Assistent, Filter und Grossansicht der Galerie,
   die Karte nach Klick.
-- **Versionsangabe:** `style.css?v=20261126` und `main.js?v=20261126` in allen HTML-Dateien. Nach jeder Änderung an CSS/JS
+- **Bewegung:** Die Fotowand auf der Startseite und die grosse Telefonnummer im Schluss-Aufruf bewegen sich nur beim
+  Scrollen (CSS `animation-timeline`, Abschnitt «Starke Momente» am Ende von `style.css`). Browser ohne diese Funktion
+  zeigen alles ruhig an, bei «Bewegung reduzieren» steht alles still. Nichts läuft endlos, kein Autoplay.
+- **Versionsangabe:** `style.css?v=20261126c` und `main.js?v=20261126c` in allen HTML-Dateien. Nach jeder Änderung an CSS/JS
   die Zahl in allen Dateien hochzählen (die `.htaccess` speichert diese Dateien 1 Jahr im Browser).
 - **Strukturierte Daten (JSON-LD):** stehen im `<head>` jeder Seite zwischen den Kommentaren
   `<!-- JSON-LD: automatisch erzeugt … -->` und `<!-- /JSON-LD -->`. Nach Textänderungen (Titel, Beschreibung, Fragen)
@@ -140,7 +145,5 @@ Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Ma
   Die Lüftungsseite zeigt vorläufig ein Bad mit Abluftventilator.
 - Bürozeiten sind nirgends angegeben (öffentlich nicht bekannt). Bei Bedarf auf `kontakt.html` ergänzen.
 - Einverständnis der drei Personen auf dem Teamfoto und der Kunden, deren Bäder gezeigt werden.
-- Einige Aussagen zur Arbeitsweise sollten vom Inhaber bestätigt werden (z. B. Leitungsersatz in Etappen,
+- Einige Aussagen zur Arbeitsweise werden vor dem Livegang noch bestätigt (z. B. Leitungsersatz in Etappen,
   provisorisches WC beim Badumbau, Terminplan für alle Handwerker, Dichtheitsprüfung neuer Leitungen).
-- GitHub: Der Verlauf liegt im Repository `zhakuerolind-pixel/AderaAPP` (Branch `claude/zealous-ramanujan-ue3ezh`);
-  der Upload auf GitHub braucht noch die Freigabe der Claude-App für dieses Repository.
