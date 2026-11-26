@@ -33,6 +33,26 @@ Keine Datenbank, kein CMS, keine Cookies und beim Seitenaufruf keine externen Di
 4. Beim Hoster **HTTPS** einschalten (SSL-Zertifikat, meist kostenlos über Let's Encrypt) und alle Aufrufe auf `https://www.aderapartner.ch` umleiten lassen, auch `aderapartner.ch` ohne www. Die Datenschutzerklärung sagt, dass die Verbindung verschlüsselt ist.
 5. Weiterleitungen und Fehlerseite einrichten (Abschnitt 5 unten).
 
+## Wichtig vor dem Livegang (Recherche vom 26.11.2026)
+
+1. **Hoster in Konkurs.** Die heutige Website und das DNS laufen bei Unity Systems (Schweiz) AG, Dietikon
+   (Server bei Datasource AG, Hünenberg). Diese Firma heisst heute «Cliq Soft AG in Liquidation»; der Konkurs
+   wurde am 25.08.2026 eröffnet (Zefix, SHAB vom 12.10.2026). Vor dem Livegang einen neuen Hoster wählen
+   (Schweizer Hoster mit PHP, z. B. bei hosttech, wo die Domain registriert ist) und DNS dorthin umziehen.
+   Danach in `datenschutz.html` Hoster und Logfile-Dauer eintragen.
+2. **Formular und E-Mail-Schutz.** Die Domain erlaubt per SPF nur Microsoft 365 als Absender (`-all`) und hat
+   DMARC `p=reject`. E-Mails, die `send.php` mit PHP `mail()` vom Webserver schickt, werden deshalb
+   voraussichtlich abgewiesen. Lösung: entweder den Mailserver des neuen Hosters ins SPF aufnehmen
+   (`include:` des Hosters ergänzen) oder `send.php` über Microsoft 365 (SMTP) senden lassen. Nach dem
+   Livegang das Formular unbedingt testen.
+3. **Alte Einträge im Internet.** local.ch und search.ch zeigen noch die alte Adresse Boostockstrasse 7.
+   Das local.ch-Profil ist nicht beansprucht. Einträge auf Industriestrasse 107 ändern und ein
+   Google-Unternehmensprofil mit Öffnungszeiten anlegen (hilft bei Google Maps und Bewertungen).
+4. **Zwei Firmen trennen.** Die Domain aderaimmobilien.ch leitet heute auf www.aderapartner.ch weiter.
+   Adera Immobilien AG ist eine eigene Firma und sollte eine eigene Seite erhalten.
+5. **Alte Website.** Auf der alten WordPress-Seite sind englische Demo-Beiträge des Themes online und es gibt
+   kein Impressum. Mit dem Wechsel auf die neue Seite fällt das weg; alte Adressen per 301 umleiten (Abschnitt 5).
+
 ## Vor dem Livegang
 
 ### 1. Platzhalter ersetzen
@@ -48,19 +68,17 @@ grep -n 'class="todo"' *.html
 
 Unter Windows (PowerShell): `Select-String -Pattern 'class="todo"' -Path *.html`
 
-Stand 26. November 2026: 27 Platzhalter in 7 Dateien.
+Stand 26. November 2026 (nach öffentlicher Recherche): nur noch wenige Platzhalter.
 
 | Was gebraucht wird | Wo |
 |---|---|
-| Vorname des Bruders (zweiter Geschäftsführer) | `index.html`, `kontakt.html`, `unternehmen.html` (2×), `impressum.html` |
-| UID-Nummer (CHE-…) und MWST-Nummer; falls nicht MWST-pflichtig, Zeile löschen | `impressum.html` |
-| Bürozeiten Montag bis Freitag (Vorschlag 07:00–12:00 und 13:00–17:00 bestätigen) | `index.html`, `kontakt.html` |
-| 4 Referenzen: Projektname, Ort, kurzer Beschrieb, Jahr (dazu passende Fotos) | `index.html` |
-| Stellen: Führerausweis Kat. B als Anforderung bestätigen, Lehrbeginn «August 20XX», Lehrstelle nur zeigen, wenn sie frei ist | `jobs.html` |
-| Wartungsabo: Gibt es eines? Intervall und Leistungen | `service.html` |
-| Hoster: Name, Ort, Land; wie lange er die Logfiles aufbewahrt | `datenschutz.html` |
-| E-Mail-Anbieter für info@aderapartner.ch: Name, Ort, Land; wo die Daten gespeichert sind | `datenschutz.html` |
-| Bildnachweis: Bildagentur und Urheber je Bild | `impressum.html` |
+| Neuer Hoster: Name, Ort, Land; wie lange er die Logfiles aufbewahrt (siehe Warnung unten) | `datenschutz.html` (2×) |
+| Bildnachweis: wird vervollständigt, sobald alle Bilder eigene Fotos sind | `impressum.html` |
+
+Bereits aus öffentlichen Quellen eingesetzt (Zefix, SHAB, UID-Register, suissetec, Lehrstellennachweis):
+UID CHE-190.687.776, MWST-Nummer CHE-190.687.776 MWST, Firmennummer CH-400.4.450.565-8,
+Geschäftsführung Erolind Zhaku (Vorsitz) und Tosum Zhaku, Gründung Januar 2022, suissetec-Mitglied seit 2023,
+Schnupperlehre Sanitärpraktiker/in EBA. Bitte trotzdem kurz gegenlesen.
 
 Danach jede Seite im Browser durchsehen. Es darf nichts Gelbes mehr zu sehen sein.
 
