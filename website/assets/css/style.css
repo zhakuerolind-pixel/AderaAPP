@@ -762,3 +762,10 @@ h2 { font-size: clamp(30px, 3.5vw, 52px); letter-spacing: -.02em; line-height: 1
 @media (min-width: 961px) {
   .split--reverse .split__panel::after { left: auto; right: 100%; }
 }
+
+/* Projektfotos: hohe Karten, drei nebeneinander (Hochformat-Fotos vom Handy) */
+.carousel--tall .slide { flex: 0 0 calc((100% - 56px) / 3.3); }
+.carousel--tall .slide img { aspect-ratio: 4 / 5; }
+.carousel--tall .slide__caption h3 { font-size: clamp(19px, 1.6vw, 23px); margin: 0; }
+@media (max-width: 960px) { .carousel--tall .slide { flex-basis: 58%; } }
+@media (max-width: 640px) { .carousel--tall .slide { flex-basis: 82%; } }
