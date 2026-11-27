@@ -394,8 +394,8 @@
       { gruppe: 'Abfluss und Anschlüsse', text: 'Abfluss verstopft (Spirale)', stunden: 1.5, standard: 20, gehoben: 20, anzahl: true },
       { gruppe: 'Boiler', text: 'Elektroboiler ersetzen (ca. 300 l, ohne Elektriker)', stunden: 6, standard: 2200, gehoben: 3000, anzahl: false },
       { gruppe: 'Boiler', text: 'Boiler entkalken (mit Dichtung und Anode)', stunden: 2.5, standard: 120, gehoben: 120, anzahl: false },
-      { gruppe: 'Heizung', text: 'Heizkörperventil oder Thermostatkopf ersetzen', stunden: 1, standard: 90, gehoben: 160, anzahl: true, thema: 'service' },
-      { gruppe: 'Heizung', text: 'Heizung entlüften und Druck prüfen', stunden: 1, standard: 0, gehoben: 0, anzahl: false, thema: 'service' },
+      { gruppe: 'Heizung', text: 'Heizkörperventil oder Thermostatkopf ersetzen', stunden: 1, standard: 90, gehoben: 160, anzahl: true, thema: 'heizung' },
+      { gruppe: 'Heizung', text: 'Heizung entlüften und Druck prüfen', stunden: 1, standard: 0, gehoben: 0, anzahl: false, thema: 'heizung' },
       { gruppe: 'Abfluss und Anschlüsse', text: 'Waschmaschinenanschluss erstellen', stunden: 2, standard: 120, gehoben: 120, anzahl: false }
     ]
   };

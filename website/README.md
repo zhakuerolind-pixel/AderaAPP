@@ -14,6 +14,7 @@ Externe Inhalte gibt es nur nach einem Klick: die Google-Karte («Karte laden»)
 website/                      → gehört auf den Webserver (Hauptverzeichnis der Domain)
   index.html                  Startseite
   heizung.html lueftung.html sanitaer.html badumbau.html planung.html service.html   Angebot
+  kostenrechner.html          Kostenrechner: Reparatur und Ersatz, Heizungsersatz (Preise in main.js, Abschnitt 6)
   projekte.html               Galerie mit Filter und Grossansicht (21 ausgewählte eigene Projektfotos)
   unternehmen.html jobs.html kontakt.html
   impressum.html datenschutz.html 404.html
@@ -22,7 +23,7 @@ website/                      → gehört auf den Webserver (Hauptverzeichnis de
   .htaccess.livegang          Server-Einstellungen, erst beim Livegang in .htaccess umbenennen (Abschnitt 3)
   README.md                   diese Anleitung (wird durch .htaccess gesperrt, darf aber auch weggelassen werden)
   assets/css/style.css        Gestaltung aller Seiten
-  assets/js/main.js           Navigation, Anfrage-Assistent, Galerie, Karte, Kontaktleiste, Einblenden
+  assets/js/main.js           Navigation, Anfrage-Assistent, Kostenrechner, Galerie, Karte, Kontaktleiste, Einblenden
   assets/img/                 Fotos (siehe Abschnitt 5), Logos, Favicon
   assets/img/og/              Vorschaubilder 1200×630 für WhatsApp, LinkedIn usw.
 werkzeuge/                    → NICHT auf den Server, nur für die Pflege (Python)
@@ -121,10 +122,16 @@ Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Ma
 - **Automatisch durch `main.js`:** die Kontaktleiste am Handy (Anrufen / Anfrage starten), der Schluss-Aufruf vor dem
   Footer (nicht auf Seiten mit Formular und nicht mit `<body data-no-finale>`, z. B. service.html), das Einblenden beim Scrollen, der Anfrage-Assistent, Filter und Grossansicht der Galerie,
   die Karte nach Klick.
+- **Kostenrechner (`kostenrechner.html`):** Die Preise stehen in `assets/js/main.js` im Block «Kostenrechner», in zwei
+  Objekten am Anfang des Blocks. `PREISE_REPARATUR` (CHF exkl. MWST): Stundenansatz, Servicefahrzeug und Anfahrt sind
+  vom Inhaber bestätigt; die Stunden und das Material pro Arbeit sind Richtwerte und vom Inhaber zu prüfen. Neue Arbeiten
+  dort in der Liste `arbeiten` ergänzen, die Auswahlliste baut sich daraus auf. `PREISE_HEIZUNG` (Richtwerte inkl. MWST)
+  ist ebenfalls vom Inhaber zu bestätigen. Nach einer Änderung die Versionsangabe hochzählen. Der Knopf «Offerte anfragen»
+  gibt die Angaben als Parameter `rechner` ans Formular weiter (Feld «Nachricht», höchstens 300 Zeichen, nur als Text).
 - **Bewegung:** Die Fotowand auf der Startseite und die grosse Telefonnummer im Schluss-Aufruf bewegen sich nur beim
   Scrollen (CSS `animation-timeline`, Abschnitt «Starke Momente» am Ende von `style.css`). Browser ohne diese Funktion
   zeigen alles ruhig an, bei «Bewegung reduzieren» steht alles still. Nichts läuft endlos, kein Autoplay.
-- **Versionsangabe:** `style.css?v=20261126d` und `main.js?v=20261126d` in allen HTML-Dateien. Nach jeder Änderung an CSS/JS
+- **Versionsangabe:** `style.css?v=20261126e` und `main.js?v=20261126e` in allen HTML-Dateien. Nach jeder Änderung an CSS/JS
   die Zahl in allen Dateien hochzählen (die `.htaccess` speichert diese Dateien 1 Jahr im Browser).
 - **Strukturierte Daten (JSON-LD):** stehen im `<head>` jeder Seite zwischen den Kommentaren
   `<!-- JSON-LD: automatisch erzeugt … -->` und `<!-- /JSON-LD -->`. Nach Textänderungen (Titel, Beschreibung, Fragen)

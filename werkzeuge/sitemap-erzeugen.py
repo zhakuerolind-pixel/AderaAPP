@@ -11,7 +11,7 @@ import html5lib
 ROOT, OUT = sys.argv[1], sys.argv[2]
 NS = '{http://www.w3.org/1999/xhtml}'
 SITE = 'https://www.aderapartner.ch/'
-ORDER = ['index.html', 'heizung.html', 'lueftung.html', 'sanitaer.html', 'badumbau.html', 'planung.html', 'service.html',
+ORDER = ['index.html', 'heizung.html', 'lueftung.html', 'sanitaer.html', 'badumbau.html', 'planung.html', 'service.html', 'kostenrechner.html',
          'projekte.html', 'unternehmen.html', 'jobs.html', 'kontakt.html', 'impressum.html', 'datenschutz.html']
 
 lines = ['<?xml version="1.0" encoding="UTF-8"?>',
