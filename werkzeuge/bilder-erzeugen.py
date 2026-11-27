@@ -12,7 +12,7 @@ Bestehende Dateien werden nie überschrieben (ausser mit --force). Die Originale
 Aufruf (Python 3.9+, Pillow 11.3 oder neuer mit AVIF):
   pip install --upgrade pillow
   python3 bilder-erzeugen.py --src website/assets/img --out website/assets/img
-  python3 bilder-erzeugen.py --src website/assets/img --out test-ausgabe --only team-adera   # zum Ausprobieren
+  python3 bilder-erzeugen.py --src website/assets/img --out test-ausgabe --only heizraum   # zum Ausprobieren
 
 Danach die Bilder im Browser ansehen (Qualität prüfen) und erst dann im HTML einbinden,
 siehe README, Abschnitt 5 (srcset mit -600/-900/-1200, <picture> mit AVIF).

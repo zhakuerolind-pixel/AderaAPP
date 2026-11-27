@@ -789,8 +789,7 @@ img.vignette { width: 120px; height: 120px; }
   .proofline { gap: 6px 18px; font-size: 13.5px; }
 }
 
-/* Ansprechpartner auf der Startseite ohne Foto (das Teamfoto steht im Hero): Namen oben bündig */
-.intro > .team__text .team__names { margin-top: 0; }
+/* Ansprechpartner der Startseite: siehe .crew im Abschnitt «Design-Runde suissetec» (hier stand die Regel für die frühere Spalte) */
 
 /* ---------- 2 Angebot als grosse Schrift-Liste ----------
    Bildschirm mit Maus: Zeilen links, rechts ein grosses Foto. Alle Fotos liegen übereinander,
@@ -1027,13 +1026,12 @@ h2 { font-size: clamp(32px, 4.4vw, 68px); font-weight: 700; letter-spacing: -.03
   font: 700 13px/1.25 var(--font); letter-spacing: .07em; text-transform: uppercase;
 }
 .tag--light, .band .tag--light { background: #fff; color: var(--blue-ink); }   /* .band p wäre sonst weiss */
-/* Etikett in der unteren linken Ecke eines Fotos (der Rahmen um das Foto braucht position: relative) */
-.tag--photo { position: absolute; left: 16px; bottom: 16px; z-index: 2; }
 
 /* ---------- V3 und V5 Hero der Startseite ----------
-   Bildschirm: der Kicker ist ein Etikett, auf dem Teamfoto steht das Etikett «Unser Team».
-   Handy und Tablet hoch: zuerst das Teamfoto als Querformat-Ausschnitt, darüber greift ein weisser
-   Titelkasten. Den Ausschnitt (Köpfe sichtbar) bestimmt object-position im HTML (inline am Teamfoto).
+   Bildschirm: der Kicker ist ein Etikett, rechts zwei Projektfotos Kante an Kante.
+   Handy und Tablet hoch: zuerst das erste Projektfoto als Querformat-Ausschnitt, darüber greift ein
+   weisser Titelkasten. Den Ausschnitt bestimmt object-position im HTML (inline am ersten Foto).
+   Keine Fotos von Mitarbeitenden (Vorgabe des Inhabers).
    Im HTML steht weiterhin zuerst der Text (Lesereihenfolge für Screenreader), nur die Anzeige ist
    umgedreht. Im Foto gibt es keine Links, die Tab-Reihenfolge bleibt also stimmig. */
 .hero-work__kicker.tag { margin-bottom: clamp(16px, 2.8svh, 28px); }
@@ -1044,7 +1042,6 @@ h2 { font-size: clamp(32px, 4.4vw, 68px); font-weight: 700; letter-spacing: -.03
     position: relative; z-index: 2; margin: -44px 12px 0;
     padding: clamp(20px, 4vw, 32px) calc(var(--gutter) - 4px) 4px; background: #fff;
   }
-  .hero-work__media .tag--photo { display: none; }   /* am Handy trägt der Titelkasten das Etikett */
 }
 
 /* ---------- V5b Ebenen auf den Unterseiten: das blaue Hero-Panel greift über das Foto ----------
@@ -1058,7 +1055,6 @@ h2 { font-size: clamp(32px, 4.4vw, 68px); font-weight: 700; letter-spacing: -.03
     position: relative; z-index: 2; margin: -40px 12px 0;
     padding: 36px calc(var(--gutter) - 4px) 44px;
   }
-  .hero__media .tag--photo { top: 12px; bottom: auto; left: 12px; }   /* unten liegt das Panel */
 }
 
 /* ---------- V4 Band «24h-Service» (nur Startseite) ----------

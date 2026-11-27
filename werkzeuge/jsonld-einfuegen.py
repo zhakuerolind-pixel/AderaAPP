@@ -57,7 +57,7 @@ def organization():
         'legalName': 'Adera Partner GmbH',
         'url': SITE,
         'logo': {'@type': 'ImageObject', 'url': SITE + 'assets/img/logo-adera-partner.svg'},
-        'image': [SITE + 'assets/img/og/og-index.jpg', SITE + 'assets/img/team-adera.jpg', SITE + 'assets/img/heizraum.jpg'],
+        'image': [SITE + 'assets/img/og/og-index.jpg', SITE + 'assets/img/service-technik.jpg', SITE + 'assets/img/heizraum.jpg'],
         'description': 'Haustechnik-Betrieb aus Spreitenbach: Heizung, Wärmepumpen, Lüftung, Sanitär, Badumbau, Planung und 24h-Service im Limmattal.',
         'telephone': '+41 56 402 10 00',
         'email': 'info@aderapartner.ch',

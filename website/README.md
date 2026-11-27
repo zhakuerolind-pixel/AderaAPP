@@ -113,7 +113,8 @@ Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Ma
   kopieren und anpassen (Kommentar in der Datei). Am Bildschirm hat die Galerie 4 Spalten; `gallery__item--big`
   (2 × 2 Felder) und `gallery__item--wide` (2 × 1 Felder) machen einzelne Fotos grösser. Die Reihenfolge ist so gewählt,
   dass keine Lücken entstehen: nach dem Ergänzen am Bildschirm prüfen, sonst die Klasse verschieben oder weglassen.
-- Personen auf Fotos (Teamfoto) und Kundenbäder: Einverständnis der Abgebildeten bzw. der Kunden einholen.
+- Vorgabe des Inhabers: keine Fotos von Mitarbeitenden und keine Firmenzahlen auf der Website. Für die gezeigten
+  Kundenbäder das Einverständnis der Kunden einholen.
 
 ---
 
@@ -133,12 +134,12 @@ Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Ma
 - **Gestaltungsregeln** (Abschnitt «Design-Runde suissetec» am Ende von `style.css`): höchstens eine blaue Fläche
   (#00729b) pro Seite, auf den Unterseiten das Hero-Panel, auf der Startseite das Band «24h-Service». Zwischentitel (H2)
   fett, wo es passt zweiteilig mit `<span class="soft">` für die graue zweite Hälfte. Etiketten (`<p class="tag">`,
-  auf Fotos `tag tag--photo`, auf Blau `tag--light`) sparsam einsetzen, höchstens zwei pro Bildschirmhöhe, im HTML
-  normal geschrieben (die Grossbuchstaben macht CSS). Nie weisse Schrift auf dem Logo-Blau #00a3d9.
+  auf Blau `tag--light`) sparsam einsetzen, höchstens zwei pro Bildschirmhöhe, im HTML normal geschrieben (die
+  Grossbuchstaben macht CSS). Nie weisse Schrift auf dem Logo-Blau #00a3d9. Keine Fotos von Mitarbeitenden.
 - **Bewegung:** Die Fotowand auf der Startseite und die grosse Telefonnummer im Schluss-Aufruf bewegen sich nur beim
   Scrollen (CSS `animation-timeline`, Abschnitt «Starke Momente» am Ende von `style.css`). Browser ohne diese Funktion
   zeigen alles ruhig an, bei «Bewegung reduzieren» steht alles still. Nichts läuft endlos, kein Autoplay.
-- **Versionsangabe:** `style.css?v=20261126e` und `main.js?v=20261126e` in allen HTML-Dateien. Nach jeder Änderung an CSS/JS
+- **Versionsangabe:** `style.css?v=20261126f` und `main.js?v=20261126f` in allen HTML-Dateien. Nach jeder Änderung an CSS/JS
   die Zahl in allen Dateien hochzählen (die `.htaccess` speichert diese Dateien 1 Jahr im Browser).
 - **Strukturierte Daten (JSON-LD):** stehen im `<head>` jeder Seite zwischen den Kommentaren
   `<!-- JSON-LD: automatisch erzeugt … -->` und `<!-- /JSON-LD -->`. Nach Textänderungen (Titel, Beschreibung, Fragen)
@@ -158,6 +159,6 @@ Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Ma
 - Eigene Fotos von einer Wärmepumpe (aussen/Heizraum) und einer Lüftungsanlage bzw. einem Komfortlüftungsgerät.
   Die Lüftungsseite zeigt vorläufig ein Bad mit Abluftventilator.
 - Bürozeiten sind nirgends angegeben (öffentlich nicht bekannt). Bei Bedarf auf `kontakt.html` ergänzen.
-- Einverständnis der drei Personen auf dem Teamfoto und der Kunden, deren Bäder gezeigt werden.
+- Einverständnis der Kunden, deren Bäder gezeigt werden.
 - Einige Aussagen zur Arbeitsweise werden vor dem Livegang noch bestätigt (z. B. Leitungsersatz in Etappen,
   provisorisches WC beim Badumbau, Terminplan für alle Handwerker, Dichtheitsprüfung neuer Leitungen).
