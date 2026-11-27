@@ -18,7 +18,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/img/favicon.png">
   <link rel="apple-touch-icon" href="assets/img/favicon.png">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261126f">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261127a">
   <!-- JSON-LD: automatisch erzeugt mit werkzeuge/jsonld-einfuegen.py -->
   <script type="application/ld+json">
 {
@@ -337,7 +337,7 @@
 
   <!-- Kostenrechner mit zwei Teilen. Preise und Berechnung: assets/js/main.js, Block «Kostenrechner».
        Ohne JavaScript bleibt der Rechner ausgeblendet (hidden), dann steht nur der Hinweis mit dem Link zum Formular da. -->
-  <section class="calc-section" aria-label="Kostenrechner">
+  <section class="calc-section">
     <div class="container">
       <!-- Sprungziele: kostenrechner.html#reparatur und kostenrechner.html#heizung öffnen den jeweiligen Teil -->
       <span class="calc-anchor" id="reparatur"></span>
@@ -414,7 +414,6 @@
               </div>
               <a class="btn btn--solid calc__cta" data-out="link" href="kontakt.html?thema=sanitaer#formular"><span class="i i-arrow" aria-hidden="true"></span>Offerte anfragen</a>
               <div class="calc__notes">
-                <p>Anfahrt ab Spreitenbach ist eingerechnet.</p>
                 <p>Diese Schätzung ist unverbindlich. Der genaue Preis hängt von der Situation vor Ort ab, zum Beispiel vom Zustand der Leitungen und Anschlüsse. Er steht in unserer Offerte.</p>
               </div>
             </div>
@@ -452,7 +451,7 @@
                     <label class="calc__sublabel" for="hz-menge"><span data-out="menge-titel">Heizöl pro Jahr</span><span class="visually-hidden" data-out="menge-einheit-lang"> in Litern</span></label>
                     <div class="calc__input"><input id="hz-menge" name="menge" inputmode="numeric" maxlength="9" autocomplete="off" aria-describedby="hz-menge-hinweis"><span class="calc__unit" aria-hidden="true" data-out="menge-einheit">Liter</span></div>
                     <p class="calc__hint" id="hz-menge-hinweis" data-out="menge-hinweis">Durchschnitt pro Jahr, z.&nbsp;B. aus den Heizöl-Rechnungen</p>
-                    <p class="error" id="hz-menge-fehler">Bitte nur eine Zahl eingeben, zum Beispiel 2500.</p>
+                    <p class="error" id="hz-menge-fehler">Bitte nur eine Zahl eingeben, zum Beispiel 2’500.</p>
                   </div>
                 </div>
                 <div class="calc__more" data-calc-weg="flaeche" hidden>
@@ -570,6 +569,6 @@
 </footer>
 <!-- ===== /FOOTER ===== -->
 
-<script src="assets/js/main.js?v=20261126f" defer></script>
+<script src="assets/js/main.js?v=20261127a" defer></script>
 </body>
 </html>

@@ -18,7 +18,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/img/favicon.png">
   <link rel="apple-touch-icon" href="assets/img/favicon.png">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261126f">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261127a">
   <!-- JSON-LD: automatisch erzeugt mit werkzeuge/jsonld-einfuegen.py -->
   <script type="application/ld+json">
 {
@@ -218,7 +218,7 @@
       },
       "primaryImageOfPage": {
         "@type": "ImageObject",
-        "url": "https://www.aderapartner.ch/assets/img/wc-waschtisch-bronze.jpg"
+        "url": "https://www.aderapartner.ch/assets/img/kueche-quooker.jpg"
       },
       "breadcrumb": {
         "@id": "https://www.aderapartner.ch/kontakt.html#breadcrumb"
@@ -325,13 +325,13 @@
   <!-- Hero -->
   <section class="hero hero--page" aria-labelledby="hero-title">
     <div class="hero__media">
-      <picture><source type="image/avif" srcset="assets/img/wc-waschtisch-bronze-600.avif 600w, assets/img/wc-waschtisch-bronze-900.avif 900w, assets/img/wc-waschtisch-bronze.avif 1125w" sizes="(max-width: 960px) 100vw, 50vw"><img srcset="assets/img/wc-waschtisch-bronze-600.jpg 600w, assets/img/wc-waschtisch-bronze-900.jpg 900w, assets/img/wc-waschtisch-bronze.jpg 1125w" sizes="(max-width: 960px) 100vw, 50vw" src="assets/img/wc-waschtisch-bronze.jpg" alt="Wand-WC und Waschtisch aus Holz mit bronzefarbener Armatur unter einem beleuchteten Spiegelschrank" width="1125" height="2000" fetchpriority="high" style="object-position: 50% 60%"></picture>
+      <picture><source type="image/avif" srcset="assets/img/kueche-quooker-600.avif 600w, assets/img/kueche-quooker-900.avif 900w, assets/img/kueche-quooker-1200.avif 1200w, assets/img/kueche-quooker.avif 1500w" sizes="(max-width: 960px) 100vw, 60vw"><img srcset="assets/img/kueche-quooker-600.jpg 600w, assets/img/kueche-quooker-900.jpg 900w, assets/img/kueche-quooker-1200.jpg 1200w, assets/img/kueche-quooker.jpg 1500w" sizes="(max-width: 960px) 100vw, 60vw" src="assets/img/kueche-quooker.jpg" alt="Zwei schwarze Armaturen an einer Küchenabdeckung vor einem Fenster" width="1500" height="2000" fetchpriority="high" style="object-position: 50% 30%"></picture>
     </div>
     <div class="hero__panel">
       <nav class="breadcrumb" aria-label="Brotkrümelnavigation">
         <ol><li><a href="index.html">Startseite</a></li><li><span aria-current="page">Kontakt</span></li></ol>
       </nav>
-      <h1 id="hero-title">Kontakt</h1>
+      <h1 id="hero-title" class="is-short">Kontakt</h1>
       <p class="hero__sub">Schreiben Sie uns über das Formular oder rufen Sie an.</p>
       <div class="btn-stack">
         <a class="btn btn--light" href="#formular"><span class="i i-arrow" aria-hidden="true"></span>Anfrage starten</a>
@@ -351,6 +351,7 @@
         <div class="wizard__progress" aria-live="polite"><span data-progress-text>Schritt 1 von 4</span><span class="wizard__bar" aria-hidden="true"><i></i></span></div>
         <fieldset class="wizard__step field">
           <legend>Worum geht es?</legend>
+          <p class="error full">Bitte wählen Sie ein Thema.</p>
           <div class="tiles full">
             <label class="tile"><input type="radio" name="thema" value="Heizung / Wärmepumpe" required>Heizung oder Wärmepumpe</label>
             <label class="tile"><input type="radio" name="thema" value="Lüftung" required>Lüftung</label>
@@ -361,7 +362,6 @@
             <label class="tile"><input type="radio" name="thema" value="Rechnung / Administration" required>Rechnung oder Administration</label>
             <label class="tile"><input type="radio" name="thema" value="Anderes" required>Anderes</label>
           </div>
-          <p class="error full">Bitte wählen Sie ein Thema.</p>
           <div class="wizard__alert full" aria-live="polite"><strong>Bei einer Störung rufen Sie am besten direkt an:</strong> <a href="tel:+41564021000">056 402 10 00</a><br>Wir sind rund um die Uhr erreichbar.</div>
         </fieldset>
         <fieldset class="wizard__step">
@@ -377,7 +377,7 @@
             <label class="tile"><input type="radio" name="zeitraum" value="In den nächsten Monaten">In den nächsten Monaten</label>
             <label class="tile"><input type="radio" name="zeitraum" value="Nur Information">Nur Information</label>
           </div></fieldset>
-          <div class="field full"><label for="f-adresse">Strasse und Nr.</label><input id="f-adresse" name="adresse" autocomplete="street-address"></div>
+          <div class="field full"><label for="f-adresse">Strasse und Nr.</label><input id="f-adresse" name="adresse" autocomplete="address-line1"></div>
           <div class="field"><label for="f-plz">PLZ*</label><input id="f-plz" name="plz" inputmode="numeric" autocomplete="postal-code" required><p class="error">Bitte PLZ eingeben.</p></div>
           <div class="field"><label for="f-ort">Ort*</label><input id="f-ort" name="ort" autocomplete="address-level2" required><p class="error">Bitte Ort eingeben.</p></div>
         </fieldset>
@@ -387,8 +387,8 @@
         </fieldset>
         <fieldset class="wizard__step">
           <legend>Ihre Kontaktangaben</legend>
-          <div class="field"><label for="f-vorname">Vorname*</label><input id="f-vorname" name="vorname" autocomplete="given-name" required><p class="error">Bitte Vorname eingeben.</p></div>
-          <div class="field"><label for="f-nachname">Nachname*</label><input id="f-nachname" name="nachname" autocomplete="family-name" required><p class="error">Bitte Nachname eingeben.</p></div>
+          <div class="field"><label for="f-vorname">Vorname*</label><input id="f-vorname" name="vorname" autocomplete="given-name" required><p class="error">Bitte Vornamen eingeben.</p></div>
+          <div class="field"><label for="f-nachname">Nachname*</label><input id="f-nachname" name="nachname" autocomplete="family-name" required><p class="error">Bitte Nachnamen eingeben.</p></div>
           <div class="field full"><label for="f-firma">Firma</label><input id="f-firma" name="firma" autocomplete="organization"></div>
           <div class="field"><label for="f-email">E-Mail*</label><input id="f-email" name="email" type="email" autocomplete="email" required><p class="error">Bitte gültige E-Mail eingeben.</p></div>
           <div class="field"><label for="f-telefon">Telefon</label><input id="f-telefon" name="telefon" type="tel" autocomplete="tel"></div>
@@ -398,7 +398,7 @@
             <label class="tile"><input type="radio" name="rueckruf" value="Egal">Egal</label>
           </div></fieldset>
           <div class="hp" aria-hidden="true"><label for="f-hp">Bitte leer lassen</label><input id="f-hp" name="hp_adera" tabindex="-1" autocomplete="off"></div>
-          <div class="check full"><input id="f-dsg" type="checkbox" name="datenschutz" value="ja" required><label for="f-dsg">Ich habe die <a href="datenschutz.html#kontaktformular">Datenschutzerklärung</a> gelesen.*</label><p class="error">Bitte bestätigen.</p></div>
+          <div class="check full"><input id="f-dsg" type="checkbox" name="datenschutz" value="ja" required><label for="f-dsg">Ich habe die Datenschutzerklärung gelesen.*</label><p class="check__link"><a href="datenschutz.html#kontaktformular" target="_blank" rel="noopener">Datenschutzerklärung lesen <span class="check__neu">(öffnet in neuem Tab)</span></a></p><p class="error">Bitte bestätigen.</p></div>
           <p class="hint full">*Pflichtfelder</p>
         </fieldset>
         <div class="wizard__nav">
@@ -428,10 +428,14 @@
           <p><strong>Bei Störungen rund um die Uhr:</strong><br><a href="tel:+41564021000">056 402 10 00</a></p>
           <a class="btn btn--sm" href="https://www.google.com/maps/dir/?api=1&amp;destination=Industriestrasse+107%2C+8957+Spreitenbach" target="_blank" rel="noopener"><span class="i i-arrow" aria-hidden="true"></span>Route planen</a>
         </div>
+        <!-- Kartenplatzhalter (die Adresse steht links daneben). Die Google-Karte lädt erst nach dem Klick (main.js), vorher wird nichts
+             von Google geladen. Ohne JavaScript steht statt «Karte laden» ein Link zu Google Maps (style.css, P4). -->
         <div class="map" data-map="https://www.google.com/maps?q=Industriestrasse+107,+8957+Spreitenbach&amp;output=embed">
           <div class="map__consent">
-            <p>Beim Laden der Karte werden Daten an Google übertragen, auch in die USA. Mehr dazu in der <a href="datenschutz.html#google-maps">Datenschutzerklärung</a>.</p>
+            <p class="map__address"><span class="i i-pin" aria-hidden="true"></span><span>Google Maps</span></p>
+            <p class="map__hinweis">Beim Laden der Karte werden Daten an Google übertragen, auch in die USA. Mehr dazu in der <a href="datenschutz.html#google-maps">Datenschutzerklärung</a>.</p>
             <button class="btn btn--sm" type="button"><span class="i i-pin" aria-hidden="true"></span>Karte laden</button>
+            <a class="btn btn--sm map__nojs" href="https://www.google.com/maps/search/?api=1&amp;query=Industriestrasse+107%2C+8957+Spreitenbach" target="_blank" rel="noopener"><span class="i i-arrow" aria-hidden="true"></span>In Google Maps öffnen<span class="visually-hidden"> (öffnet in neuem Tab)</span></a>
           </div>
         </div>
       </div>
@@ -442,7 +446,7 @@
   <section aria-labelledby="team-title">
     <div class="container team">
       <div class="team__media">
-        <picture><source type="image/avif" srcset="assets/img/service-technik-600.avif 600w, assets/img/service-technik-900.avif 900w, assets/img/service-technik-1200.avif 1200w, assets/img/service-technik.avif 1388w" sizes="(max-width: 960px) 100vw, 52vw"><img srcset="assets/img/service-technik-600.jpg 600w, assets/img/service-technik-900.jpg 900w, assets/img/service-technik-1200.jpg 1200w, assets/img/service-technik.jpg 1388w" sizes="(max-width: 960px) 100vw, 52vw" src="assets/img/service-technik.jpg" alt="Technikraum aus einem unserer Projekte mit Pumpe, Rohrleitungen, Ventilen und Steuergeräten" width="1388" height="1041" loading="lazy"></picture>
+        <picture><source type="image/avif" srcset="assets/img/lavabo-rundspiegel-blau-600.avif 600w, assets/img/lavabo-rundspiegel-blau-900.avif 900w, assets/img/lavabo-rundspiegel-blau.avif 1125w" sizes="(max-width: 960px) 100vw, 52vw"><img srcset="assets/img/lavabo-rundspiegel-blau-600.jpg 600w, assets/img/lavabo-rundspiegel-blau-900.jpg 900w, assets/img/lavabo-rundspiegel-blau.jpg 1125w" sizes="(max-width: 960px) 100vw, 52vw" src="assets/img/lavabo-rundspiegel-blau.jpg" alt="Aufsatzlavabo auf dunkelblauem Unterschrank mit rundem Lichtspiegel und schwarzer Armatur" width="1125" height="2000" loading="lazy" style="object-position: 50% 52%"></picture>
       </div>
       <div class="team__text">
         <h2 id="team-title">Geschäftsführung</h2>
@@ -516,6 +520,6 @@
 </footer>
 <!-- ===== /FOOTER ===== -->
 
-<script src="assets/js/main.js?v=20261126f" defer></script>
+<script src="assets/js/main.js?v=20261127a" defer></script>
 </body>
 </html>

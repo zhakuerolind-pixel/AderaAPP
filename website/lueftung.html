@@ -18,7 +18,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/img/favicon.png">
   <link rel="apple-touch-icon" href="assets/img/favicon.png">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261126f">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261127a">
   <!-- JSON-LD: automatisch erzeugt mit werkzeuge/jsonld-einfuegen.py -->
   <script type="application/ld+json">
 {
@@ -389,7 +389,7 @@
   <!-- Hero -->
   <section class="hero hero--page" aria-labelledby="hero-title">
     <div class="hero__media">
-      <picture><source type="image/avif" srcset="assets/img/bad-rundspiegel-dusche-600.avif 600w, assets/img/bad-rundspiegel-dusche-900.avif 900w, assets/img/bad-rundspiegel-dusche.avif 1126w" sizes="(max-width: 960px) 100vw, 50vw"><img srcset="assets/img/bad-rundspiegel-dusche-600.jpg 600w, assets/img/bad-rundspiegel-dusche-900.jpg 900w, assets/img/bad-rundspiegel-dusche.jpg 1126w" sizes="(max-width: 960px) 100vw, 50vw" src="assets/img/bad-rundspiegel-dusche.jpg" alt="Bad mit Abluftventilator an der Wand, rundem Lichtspiegel und bodenebener Dusche" width="1126" height="2000" fetchpriority="high" style="object-position: 50% 36%"></picture>
+      <picture><source type="image/avif" srcset="assets/img/bad-rundspiegel-dusche-600.avif 600w, assets/img/bad-rundspiegel-dusche-900.avif 900w, assets/img/bad-rundspiegel-dusche.avif 1126w" sizes="(max-width: 960px) 100vw, 60vw"><img srcset="assets/img/bad-rundspiegel-dusche-600.jpg 600w, assets/img/bad-rundspiegel-dusche-900.jpg 900w, assets/img/bad-rundspiegel-dusche.jpg 1126w" sizes="(max-width: 960px) 100vw, 60vw" src="assets/img/bad-rundspiegel-dusche.jpg" alt="Bad mit Abluftventilator an der Wand, rundem Lichtspiegel und bodenebener Dusche" width="1126" height="2000" fetchpriority="high" style="object-position: 50% 36%"></picture>
     </div>
     <div class="hero__panel">
       <nav class="breadcrumb" aria-label="Brotkrümelnavigation">
@@ -399,7 +399,7 @@
           <li><span aria-current="page">Lüftung</span></li>
         </ol>
       </nav>
-      <h1 id="hero-title">Lüftung</h1>
+      <h1 id="hero-title" class="is-short">Lüftung</h1>
       <p class="hero__sub">Einbau und Wartung von Lüftungsanlagen im Limmattal</p>
       <div class="btn-stack">
         <a class="btn btn--light" href="kontakt.html?thema=lueftung#formular"><span class="i i-arrow" aria-hidden="true"></span>Offerte anfragen</a>
@@ -436,7 +436,7 @@
   <section class="section section--grey" id="komfortlueftung" aria-labelledby="funktion-title">
     <div class="container">
       <div class="section-head">
-        <h2 id="funktion-title">So funktioniert eine Komfortlüftung</h2>
+        <h2 id="funktion-title">So funktioniert <span class="soft">eine Komfortlüftung</span></h2>
         <p>Die Anlage tauscht die Luft in der Wohnung laufend aus, auch wenn die Fenster geschlossen sind.</p>
       </div>
       <ol class="steps">
@@ -460,23 +460,27 @@
     </div>
   </section>
 
-  <!-- Wartung -->
+  <!-- Wartung: Text und Foto nebeneinander. Das Foto zeigt ein Lüftungsgitter an der Decke eines Gäste-WCs
+       (Hochformat-Ausschnitt von oben, damit das Gitter im Bild bleibt) -->
   <section id="wartung" aria-labelledby="wartung-title">
-    <div class="container intro">
-      <div class="section-head">
-        <h2 id="wartung-title">Wartung von Lüftungsanlagen</h2>
-        <p>Verschmutzte Filter verschlechtern die Luft, und die Ventilatoren müssen mehr leisten.</p>
-        <p>Schmutz an den Ventilen und Gittern in den Räumen zeigt, dass die Anlage eine Kontrolle braucht. Dasselbe gilt, wenn sie lauter geworden ist oder weniger Luft bringt.</p>
-        <p>Ist eine Anlage stark verschmutzt oder schon älter, beraten wir Sie, ob eine Reinigung reicht oder ob sich ein neues Gerät lohnt.</p>
-      </div>
-      <div>
-        <h3>Das machen wir bei der Wartung</h3>
-        <ul class="checklist checklist--one">
-          <li><span class="i i-check" aria-hidden="true"></span><span>Filter wechseln</span></li>
-          <li><span class="i i-check" aria-hidden="true"></span><span>Lüftungsgerät und Wärmetauscher kontrollieren und reinigen</span></li>
-          <li><span class="i i-check" aria-hidden="true"></span><span>Ventilatoren prüfen</span></li>
-          <li><span class="i i-check" aria-hidden="true"></span><span>Luftmengen prüfen und bei Bedarf neu einregulieren</span></li>
-        </ul>
+    <div class="container">
+      <div class="feature feature--reverse">
+        <div class="feature__media feature__media--hoch">
+          <picture><source type="image/avif" srcset="assets/img/gaeste-wc-holz-600.avif 600w, assets/img/gaeste-wc-holz-900.avif 900w, assets/img/gaeste-wc-holz.avif 1126w" sizes="(max-width: 960px) 100vw, 50vw"><img srcset="assets/img/gaeste-wc-holz-600.jpg 600w, assets/img/gaeste-wc-holz-900.jpg 900w, assets/img/gaeste-wc-holz.jpg 1126w" sizes="(max-width: 960px) 100vw, 50vw" src="assets/img/gaeste-wc-holz.jpg" alt="Gäste-WC mit Lüftungsgitter an der Decke, Wand-WC und Waschtisch aus Holz" width="1126" height="2000" loading="lazy"></picture>
+        </div>
+        <div>
+          <h2 id="wartung-title">Wartung <span class="soft">von Lüftungsanlagen</span></h2>
+          <p>Verschmutzte Filter verschlechtern die Luft, und die Ventilatoren müssen mehr leisten.</p>
+          <p>Schmutz an den Ventilen und Gittern in den Räumen zeigt, dass die Anlage eine Kontrolle braucht. Dasselbe gilt, wenn sie lauter geworden ist oder weniger Luft bringt.</p>
+          <p>Ist eine Anlage stark verschmutzt oder schon älter, beraten wir Sie, ob eine Reinigung reicht oder ob sich ein neues Gerät lohnt.</p>
+          <h3>Das machen wir bei der Wartung</h3>
+          <ul class="checklist checklist--one">
+            <li><span class="i i-check" aria-hidden="true"></span><span>Filter wechseln</span></li>
+            <li><span class="i i-check" aria-hidden="true"></span><span>Lüftungsgerät und Wärmetauscher kontrollieren und reinigen</span></li>
+            <li><span class="i i-check" aria-hidden="true"></span><span>Ventilatoren prüfen</span></li>
+            <li><span class="i i-check" aria-hidden="true"></span><span>Luftmengen prüfen und bei Bedarf neu einregulieren</span></li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
@@ -485,7 +489,7 @@
   <section aria-labelledby="faq-title">
     <div class="container">
       <div class="section-head">
-        <h2 id="faq-title">Fragen zur Komfortlüftung</h2>
+        <h2 id="faq-title">Fragen <span class="soft">zur Komfortlüftung</span></h2>
       </div>
       <div class="faq">
         <details>
@@ -575,6 +579,6 @@
 </footer>
 <!-- ===== /FOOTER ===== -->
 
-<script src="assets/js/main.js?v=20261126f" defer></script>
+<script src="assets/js/main.js?v=20261127a" defer></script>
 </body>
 </html>

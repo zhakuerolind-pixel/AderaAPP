@@ -34,7 +34,8 @@ werkzeuge/                    → NICHT auf den Server, nur für die Pflege (Pyt
 ```
 
 Lokal ansehen: `index.html` doppelklicken genügt. Mit Server (Formular, 404): im Ordner `website` `php -S localhost:8000`.
-Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Mailserver läuft. Das ist normal.
+Das Formular meldet mit `php -S` «Die Anfrage konnte nicht gesendet werden. Bitte rufen Sie uns an: 056 402 10 00.»,
+weil kein Mailserver läuft (ohne Server, per Doppelklick: «Das Senden hat leider nicht geklappt …»). Das ist normal.
 
 ---
 
@@ -122,7 +123,7 @@ Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Ma
 
 - **Kopf und Fuss stehen in jeder HTML-Datei** (kein Template-System). Änderungen dort in allen Dateien machen,
   auch in `404.html` (dort beginnen alle Pfade mit `/`).
-- **Automatisch durch `main.js`:** die Kontaktleiste am Handy (Anrufen / Anfrage starten), der Schluss-Aufruf vor dem
+- **Automatisch durch `main.js`:** die Kontaktleiste am Handy (Anrufen / Anfrage starten; ausgeblendet, solange die Knöpfe im Seitenkopf, das Formular, der Rechner oder der Footer im Bild sind), der Schluss-Aufruf vor dem
   Footer (nicht auf Seiten mit Formular und nicht mit `<body data-no-finale>`, z. B. service.html), das Einblenden beim Scrollen, der Anfrage-Assistent, Filter und Grossansicht der Galerie,
   die Karte nach Klick.
 - **Kostenrechner (`kostenrechner.html`):** Die Preise stehen in `assets/js/main.js` im Block «Kostenrechner», in zwei
@@ -131,7 +132,7 @@ Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Ma
   dort in der Liste `arbeiten` ergänzen, die Auswahlliste baut sich daraus auf. `PREISE_HEIZUNG` (Richtwerte inkl. MWST)
   ist ebenfalls vom Inhaber zu bestätigen. Nach einer Änderung die Versionsangabe hochzählen. Der Knopf «Offerte anfragen»
   gibt die Angaben als Parameter `rechner` ans Formular weiter (Feld «Nachricht», höchstens 300 Zeichen, nur als Text).
-- **Gestaltungsregeln** (Abschnitt «Design-Runde suissetec» am Ende von `style.css`): höchstens eine blaue Fläche
+- **Gestaltungsregeln** (Abschnitte «Design-Runde suissetec» und «Korrekturen nach Prüfung» am Ende von `style.css`): höchstens eine blaue Fläche
   (#00729b) pro Seite, auf den Unterseiten das Hero-Panel, auf der Startseite das Band «24h-Service». Zwischentitel (H2)
   fett, wo es passt zweiteilig mit `<span class="soft">` für die graue zweite Hälfte. Etiketten (`<p class="tag">`,
   auf Blau `tag--light`) sparsam einsetzen, höchstens zwei pro Bildschirmhöhe, im HTML normal geschrieben (die
@@ -139,7 +140,7 @@ Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Ma
 - **Bewegung:** Die Fotowand auf der Startseite und die grosse Telefonnummer im Schluss-Aufruf bewegen sich nur beim
   Scrollen (CSS `animation-timeline`, Abschnitt «Starke Momente» am Ende von `style.css`). Browser ohne diese Funktion
   zeigen alles ruhig an, bei «Bewegung reduzieren» steht alles still. Nichts läuft endlos, kein Autoplay.
-- **Versionsangabe:** `style.css?v=20261126f` und `main.js?v=20261126f` in allen HTML-Dateien. Nach jeder Änderung an CSS/JS
+- **Versionsangabe:** `style.css?v=20261127a` und `main.js?v=20261127a` in allen HTML-Dateien. Nach jeder Änderung an CSS/JS
   die Zahl in allen Dateien hochzählen (die `.htaccess` speichert diese Dateien 1 Jahr im Browser).
 - **Strukturierte Daten (JSON-LD):** stehen im `<head>` jeder Seite zwischen den Kommentaren
   `<!-- JSON-LD: automatisch erzeugt … -->` und `<!-- /JSON-LD -->`. Nach Textänderungen (Titel, Beschreibung, Fragen)

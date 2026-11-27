@@ -18,7 +18,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/img/favicon.png">
   <link rel="apple-touch-icon" href="assets/img/favicon.png">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261126f">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261127a">
   <!-- JSON-LD: automatisch erzeugt mit werkzeuge/jsonld-einfuegen.py -->
   <script type="application/ld+json">
 {
@@ -314,7 +314,7 @@
       "name": "Braucht es für eine Wärmepumpe eine Bewilligung?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Das ist von Kanton zu Kanton und teils von Gemeinde zu Gemeinde verschieden. Für eine Luft-Wasser-Wärmepumpe braucht es oft eine Bewilligung, manchmal reicht eine Meldung. Beim Aussengerät zählt auch der Standort, zum Beispiel wegen der Lärmvorschriften. Für eine Erdwärmesonde ist wegen der Bohrung eine Bewilligung nötig."
+        "text": "Das ist von Kanton zu Kanton und teils von Gemeinde zu Gemeinde verschieden. Für eine Luft/Wasser-Wärmepumpe braucht es oft eine Bewilligung, manchmal reicht eine Meldung. Beim Aussengerät zählt auch der Standort, zum Beispiel wegen der Lärmvorschriften. Für eine Erdsonde ist wegen der Bohrung eine Bewilligung nötig."
       }
     }
   ]
@@ -397,7 +397,7 @@
   <!-- Hero -->
   <section class="hero hero--page" aria-labelledby="hero-title">
     <div class="hero__media">
-      <picture><source type="image/avif" srcset="assets/img/heizraum-600.avif 600w, assets/img/heizraum-900.avif 900w, assets/img/heizraum-1200.avif 1200w, assets/img/heizraum.avif 1500w" sizes="(max-width: 960px) 100vw, 50vw"><img srcset="assets/img/heizraum-600.jpg 600w, assets/img/heizraum-900.jpg 900w, assets/img/heizraum-1200.jpg 1200w, assets/img/heizraum.jpg 1500w" sizes="(max-width: 960px) 100vw, 50vw" src="assets/img/heizraum.jpg" alt="Heizungsraum mit Boiler, Speicher und Verteilern" width="1500" height="2000" fetchpriority="high" style="object-position: 50% 38%"></picture>
+      <picture><source type="image/avif" srcset="assets/img/heizraum-600.avif 600w, assets/img/heizraum-900.avif 900w, assets/img/heizraum-1200.avif 1200w, assets/img/heizraum.avif 1500w" sizes="(max-width: 960px) 100vw, 60vw"><img srcset="assets/img/heizraum-600.jpg 600w, assets/img/heizraum-900.jpg 900w, assets/img/heizraum-1200.jpg 1200w, assets/img/heizraum.jpg 1500w" sizes="(max-width: 960px) 100vw, 60vw" src="assets/img/heizraum.jpg" alt="Heizungsraum mit Boiler, Speicher und Verteilern" width="1500" height="2000" fetchpriority="high" style="object-position: 50% 38%"></picture>
     </div>
     <div class="hero__panel">
       <nav class="breadcrumb" aria-label="Brotkrümelnavigation">
@@ -429,11 +429,11 @@
   <!-- Heizungsersatz in 5 Schritten -->
   <section class="section section--grey" id="heizungsersatz" aria-labelledby="ersatz-title">
     <div class="container intro">
-      <div class="section-head">
+      <div class="section-head section-head--klebt">
         <h2 id="ersatz-title">Heizungsersatz <span class="soft">in 5&nbsp;Schritten</span></h2>
         <p>Für Häuser, die bisher mit Öl oder Gas beheizt werden.</p>
       </div>
-      <ol class="timeline">
+      <ol class="timeline timeline--gross timeline--schritte">
         <li>
           <strong>Schritt 1</strong>
           <h3>Besichtigung</h3>
@@ -468,7 +468,7 @@
   <section aria-labelledby="faq-title">
     <div class="container">
       <div class="section-head">
-        <h2 id="faq-title">Fragen zum Heizungsersatz</h2>
+        <h2 id="faq-title">Fragen <span class="soft">zum Heizungsersatz</span></h2>
       </div>
       <div class="faq">
         <details>
@@ -501,29 +501,32 @@
         <details>
           <summary>Braucht es für eine Wärmepumpe eine Bewilligung?</summary>
           <div>
-            <p>Das ist von Kanton zu Kanton und teils von Gemeinde zu Gemeinde verschieden. Für eine Luft-Wasser-Wärmepumpe braucht es oft eine Bewilligung, manchmal reicht eine Meldung. Beim Aussengerät zählt auch der Standort, zum Beispiel wegen der Lärmvorschriften. Für eine Erdwärmesonde ist wegen der Bohrung eine Bewilligung nötig.</p>
+            <p>Das ist von Kanton zu Kanton und teils von Gemeinde zu Gemeinde verschieden. Für eine Luft/Wasser-Wärmepumpe braucht es oft eine Bewilligung, manchmal reicht eine Meldung. Beim Aussengerät zählt auch der Standort, zum Beispiel wegen der Lärmvorschriften. Für eine Erdsonde ist wegen der Bohrung eine Bewilligung nötig.</p>
           </div>
         </details>
       </div>
     </div>
   </section>
 
-  <!-- Neubau -->
+  <!-- Neubau: Foto und Text nebeneinander (vorher stand links nur der Titel) -->
   <section id="neubau" aria-labelledby="neubau-title">
-    <div class="container intro">
-      <div class="section-head">
-        <h2 id="neubau-title">Heizung im Neubau <span class="soft">geplant, bevor gebaut wird.</span></h2>
-      </div>
-      <div>
-        <p class="lead">Häufig fällt die Wahl auf eine Wärmepumpe mit Bodenheizung.</p>
-        <p>Wärmepumpe, Wärmeverteilung und Warmwasser dimensionieren wir als ein System. Den Platz für Leitungen und Technikraum legen wir mit dem Architekturbüro fest, solange alles noch auf dem Plan ist. Im gleichen Neubau können wir auch Lüftung und Sanitär übernehmen.</p>
-        <nav class="btn-row" aria-label="Verwandte Angebote">
-          <ul class="more-links">
-            <li><a href="planung.html"><span class="i i-arrow" aria-hidden="true"></span>Planung</a></li>
-            <li><a href="lueftung.html"><span class="i i-arrow" aria-hidden="true"></span>Lüftung</a></li>
-            <li><a href="sanitaer.html"><span class="i i-arrow" aria-hidden="true"></span>Sanitär</a></li>
-          </ul>
-        </nav>
+    <div class="container">
+      <div class="feature">
+        <div class="feature__media">
+          <picture><source type="image/avif" srcset="assets/img/service-technik-600.avif 600w, assets/img/service-technik-900.avif 900w, assets/img/service-technik-1200.avif 1200w, assets/img/service-technik.avif 1388w" sizes="(max-width: 960px) 100vw, 50vw"><img srcset="assets/img/service-technik-600.jpg 600w, assets/img/service-technik-900.jpg 900w, assets/img/service-technik-1200.jpg 1200w, assets/img/service-technik.jpg 1388w" sizes="(max-width: 960px) 100vw, 50vw" src="assets/img/service-technik.jpg" alt="Technikraum aus einem unserer Projekte mit Pumpe, Rohrleitungen, Ventilen und Steuergeräten" width="1388" height="1041" loading="lazy"></picture>
+        </div>
+        <div>
+          <h2 id="neubau-title">Heizung im Neubau <span class="soft">geplant, bevor gebaut wird.</span></h2>
+          <p class="lead">Häufig fällt die Wahl auf eine Wärmepumpe mit Bodenheizung.</p>
+          <p>Wärmepumpe, Wärmeverteilung und Warmwasser dimensionieren wir als ein System. Den Platz für Leitungen und Technikraum legen wir mit dem Architekturbüro fest, solange alles noch auf dem Plan ist. Im gleichen Neubau können wir auch Lüftung und Sanitär übernehmen.</p>
+          <nav class="btn-row" aria-label="Verwandte Angebote">
+            <ul class="more-links">
+              <li><a href="planung.html"><span class="i i-arrow" aria-hidden="true"></span>Planung</a></li>
+              <li><a href="lueftung.html"><span class="i i-arrow" aria-hidden="true"></span>Lüftung</a></li>
+              <li><a href="sanitaer.html"><span class="i i-arrow" aria-hidden="true"></span>Sanitär</a></li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
   </section>
@@ -585,6 +588,6 @@
 </footer>
 <!-- ===== /FOOTER ===== -->
 
-<script src="assets/js/main.js?v=20261126f" defer></script>
+<script src="assets/js/main.js?v=20261127a" defer></script>
 </body>
 </html>

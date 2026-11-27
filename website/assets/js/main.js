@@ -11,11 +11,11 @@
   var PHONE = '056 402 10 00';
   var TEL = 'tel:+41564021000';
 
-  /* Header: Schatten und kompakte Höhe beim Scrollen */
+  /* Header: Schatten und kompakte Höhe beim Scrollen
+     (Die Klasse past-hero für die Kontaktleiste entfällt: die Leiste ist von Anfang an sichtbar, P3) */
   var header = document.querySelector('.site-header');
   function onScroll() {
     if (header) header.classList.toggle('is-scrolled', window.scrollY > 40);
-    body.classList.toggle('past-hero', window.scrollY > 420);
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
@@ -103,24 +103,22 @@
     if (v && el.type === 'email') v = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(el.value.trim());
     return v;
   }
+  /* Prüft alle Pflichtfelder in scope und markiert sie (Klasse, aria-invalid, Fehlertext).
+     Gibt das erste fehlerhafte Feld als { el, field } zurück, sonst null. Den Fokus setzt erst
+     showError (Block «Korrekturen nach Prüfung» am Ende), damit zuerst der richtige Schritt sichtbar ist. */
   function validateIn(scope) {
-    var ok = true, seenGroups = {};
+    var first = null, seenGroups = {};
     scope.querySelectorAll('[required]').forEach(function (el) {
       if (el.type === 'radio') {
         if (seenGroups[el.name]) return;
         seenGroups[el.name] = true;
-        var any = scope.querySelector('input[type="radio"][name="' + el.name + '"]:checked');
-        var f = fieldOf(el);
-        if (f) f.classList.toggle('is-invalid', !any);
-        if (!any && ok) { el.focus(); ok = false; }
-        return;
       }
-      var valid = isValid(el), field = fieldOf(el);
-      if (field) field.classList.toggle('is-invalid', !valid);
-      if (valid) el.removeAttribute('aria-invalid'); else el.setAttribute('aria-invalid', 'true');   /* Audit */
-      if (!valid && ok) { el.focus(); ok = false; }
+      var inputs = groupOf(el, scope), field = fieldOf(el);
+      var ok = el.type === 'radio' ? inputs.some(function (r) { return r.checked; }) : isValid(el);
+      markField(inputs, field, !ok);
+      if (!ok && !first) first = { el: el, field: field };
     });
-    return ok;
+    return first;
   }
 
   /* Anfrage-Assistent: ein Formular in Schritten, ohne JavaScript ein normales Formular */
@@ -132,8 +130,19 @@
     var next = form.querySelector('[data-next]');
     var submit = form.querySelector('[type="submit"]');
     var alertBox = form.querySelector('.wizard__alert');
+    var status = form.querySelector('.form-status');
     var idx = 0;
     form.classList.add('is-wizard');
+    /* Korrekturen nach Prüfung (P2): unsichtbare Live-Meldung für Fehler beim «Weiter»,
+       z. B. «Bitte wählen Sie ein Thema.» (Screenreader hörten den Fehler vorher nicht) */
+    var live = document.createElement('p');
+    live.className = 'visually-hidden';
+    live.setAttribute('role', 'status');
+    form.insertBefore(live, form.firstChild);
+    function announce(text) {
+      live.textContent = '';
+      window.setTimeout(function () { live.textContent = text; }, 80);   /* dieselbe Meldung wird so erneut angesagt */
+    }
 
     function show(i, focus) {
       idx = Math.max(0, Math.min(steps.length - 1, i));
@@ -147,10 +156,22 @@
       if (back) back.hidden = idx === 0;
       if (next) next.hidden = idx === steps.length - 1;
       if (submit) submit.hidden = idx !== steps.length - 1;
+      fitTextareas(steps[idx]);
       if (focus && legend) { legend.setAttribute('tabindex', '-1'); legend.focus(); }
     }
-    if (next) next.addEventListener('click', function () { if (validateIn(steps[idx])) show(idx + 1, true); });
-    if (back) back.addEventListener('click', function () { show(idx - 1, true); });
+    /* Beim Schrittwechsel alte Meldungen (Fehler oder Dank) unten im Formular entfernen */
+    function clearStatus() {
+      if (status && status.textContent) { status.className = 'form-status'; status.textContent = ''; }
+    }
+    /* «Weiter»: nur den aktuellen Schritt prüfen; bei einem Fehler das Feld zeigen und die Meldung ansagen */
+    function goNext() {
+      var f = validateIn(steps[idx]);
+      if (f) { showError(f); announce(errorText(f)); return; }
+      clearStatus();
+      show(idx + 1, true);
+    }
+    if (next) next.addEventListener('click', goNext);
+    if (back) back.addEventListener('click', function () { clearStatus(); show(idx - 1, true); });
 
     /* Störung: Telefonnummer sofort zeigen. Nach einem Klick auf eine Kachel geht es weiter
        (nicht bei Pfeiltasten, damit Tastatur-Nutzer in Ruhe auswählen können) */
@@ -179,34 +200,35 @@
       if (fromCalc) msgField.value = Array.from('Angaben aus dem Kostenrechner: ' + fromCalc).slice(0, 300).join('');
     }
     show(0, false);
-    return { reset: function () { form.reset(); if (alertBox) alertBox.classList.remove('is-on'); show(0, false); } };
+    return {
+      isLast: function () { return idx === steps.length - 1; },
+      next: goNext,
+      /* den Schritt anzeigen, in dem el steht (Fehler beim Absenden), statt ihn nur zusätzlich einzublenden */
+      showStepOf: function (el) {
+        var k = steps.indexOf(el.closest('.wizard__step'));
+        if (k >= 0 && k !== idx) show(k, false);
+      },
+      reset: function () {
+        form.reset();
+        form.querySelectorAll('textarea').forEach(function (ta) { ta.style.height = ''; });
+        if (alertBox) alertBox.classList.remove('is-on');
+        show(0, false);
+      }
+    };
   }
 
   /* Formular: Prüfung und Versand an send.php */
   document.querySelectorAll('form[data-form]').forEach(function (form) {
     var status = form.querySelector('.form-status');
     var wizard = form.hasAttribute('data-wizard') ? setupWizard(form) : null;
-    /* Audit: Fehlermeldungen mit den Feldern verknüpfen (WCAG 1.3.1, 3.3.1), feste Live-Region */
+    /* Audit: feste Live-Region für Meldungen */
     if (status) { status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite'); }
-    form.querySelectorAll('.field').forEach(function (field) {
+    /* Fehlertexte erhalten eine id (z. B. f-plz-fehler, bei Kacheln thema-fehler). Mit dem Feld verknüpft
+       werden sie erst im Fehlerfall (markField), sonst lasen Screenreader sie schon ohne Fehler vor. */
+    form.querySelectorAll('.field, .check').forEach(function (field) {
       var el = field.querySelector('input, select, textarea'), err = field.querySelector('.error');
-      if (!el || !err || !el.id) return;
-      err.id = el.id + '-fehler';
-      el.setAttribute('aria-describedby', err.id);
+      if (el && err && !err.id) err.id = (el.id || el.name) + '-fehler';
     });
-    var dsg = form.querySelector('.check input[type="checkbox"][required]');
-    var dsgOwn = dsg && dsg.closest('.check').querySelector('.error');
-    if (dsg && dsg.id && dsgOwn) {
-      dsgOwn.id = dsg.id + '-fehler';
-      dsg.setAttribute('aria-describedby', dsgOwn.id);
-    } else if (dsg && dsg.id && !document.getElementById(dsg.id + '-fehler')) {
-      var dsgErr = document.createElement('p');
-      dsgErr.className = 'error check-error full';
-      dsgErr.id = dsg.id + '-fehler';
-      dsgErr.textContent = 'Bitte bestätigen Sie, dass Sie die Datenschutzerklärung gelesen haben.';
-      dsg.closest('.check').insertAdjacentElement('afterend', dsgErr);
-      dsg.setAttribute('aria-describedby', dsgErr.id);
-    }
 
     function setStatus(type, text) {
       if (!status) return;
@@ -215,13 +237,14 @@
     }
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      if (!validateIn(form)) {
+      /* Korrekturen nach Prüfung (P2): Enter in einem Feld oder auf einer Kachel vor dem letzten Schritt
+         wirkt wie «Weiter». Vorher wurde das ganze Formular geprüft und zwei Schritte waren zu sehen. */
+      if (wizard && !wizard.isLast()) { wizard.next(); return; }
+      var f = validateIn(form);
+      if (f) {
+        if (wizard) wizard.showStepOf(f.el);
+        showError(f);
         setStatus('error', 'Bitte füllen Sie die markierten Felder aus.');
-        if (wizard) {
-          var bad = form.querySelector('.is-invalid');
-          var step = bad && bad.closest('.wizard__step');
-          if (step) step.classList.add('is-current');
-        }
         return;
       }
       var fd = new FormData(form);   /* alle Angaben, auch die Kacheln, setzt send.php in die E-Mail */
@@ -237,6 +260,9 @@
           if (!(res && res.ok)) { var err = new Error('send failed'); err.userMessage = res && res.error; throw err; }
           if (wizard) wizard.reset(); else form.reset();
           setStatus('ok', 'Vielen Dank. Ihre Anfrage ist bei uns angekommen. Wir melden uns so schnell wie möglich.');
+          /* Korrekturen nach Prüfung (P2): Fokus auf die Meldung. Der fokussierte Senden-Knopf ist nach dem
+             Zurücksetzen ausgeblendet, der Fokus fiel sonst auf die ganze Seite zurück. */
+          if (status) { status.setAttribute('tabindex', '-1'); status.focus(); }
         })
         .catch(function (err) {
           setStatus('error', (err && err.userMessage) || 'Das Senden hat leider nicht geklappt. Bitte rufen Sie uns an (' + PHONE + ') oder schreiben Sie an info@aderapartner.ch.');
@@ -244,11 +270,11 @@
         .then(function () { if (btn) btn.removeAttribute('aria-disabled'); });
     });
 
+    /* Nach einer Eingabe ist der Fehler behoben: Markierung und Verknüpfung entfernen (bei Kacheln für die ganze Gruppe) */
     form.querySelectorAll('input, textarea, select').forEach(function (el) {
       el.addEventListener(el.type === 'radio' || el.type === 'checkbox' ? 'change' : 'input', function () {
         var field = fieldOf(el);
-        if (field) field.classList.remove('is-invalid');
-        el.removeAttribute('aria-invalid');
+        if (field && field.classList.contains('is-invalid')) markField(groupOf(el), field, false);
       });
     });
   });
@@ -275,7 +301,7 @@
       });
     });
 
-    var box = null, boxImg, boxCap, boxClose, idx = 0, shown = [], lastFocus = null, touchX = null, inerted = [];
+    var box = null, boxImg, boxAvif, boxCap, boxClose, idx = 0, shown = [], lastFocus = null, touchX = null, inerted = [];
     var small = window.matchMedia('(max-width: 640px)');
     function buildBox() {
       box = document.createElement('div');
@@ -287,10 +313,11 @@
       box.innerHTML =
         '<button class="lightbox__close" type="button" aria-label="Schliessen">&times;</button>' +
         '<button class="lightbox__prev" type="button" aria-label="Vorheriges Foto"><span class="i i-prev" aria-hidden="true"></span></button>' +
-        '<figure class="lightbox__figure"><img alt=""><figcaption aria-live="polite"></figcaption></figure>' +
+        '<figure class="lightbox__figure"><picture><source type="image/avif"><img alt=""></picture><figcaption aria-live="polite"></figcaption></figure>' +
         '<button class="lightbox__next" type="button" aria-label="Nächstes Foto"><span class="i i-next" aria-hidden="true"></span></button>';
       body.appendChild(box);
       boxImg = box.querySelector('img');
+      boxAvif = box.querySelector('source');
       boxCap = box.querySelector('figcaption');
       boxClose = box.querySelector('.lightbox__close');
       boxClose.addEventListener('click', closeBox);
@@ -321,7 +348,10 @@
       if (!shown.length) return;
       idx = (i + shown.length) % shown.length;
       var a = shown[idx].querySelector('a'), im = shown[idx].querySelector('img');
-      /* Audit: am Handy das 900-px-Bild statt des 1–2000-px-Originals (bis 1 MB) */
+      /* Korrekturen nach Prüfung (P5): zuerst AVIF, wenn der Browser es kann (am Bildschirm -1200 bzw. das
+         Original-AVIF, am Handy -900; etwa halb so gross wie das JPEG). Das <picture> wählt selber. */
+      boxAvif.srcset = avifUpTo(shown[idx], small.matches ? 900 : 1200);
+      /* Ersatz ohne AVIF wie bisher (Audit): am Handy das 900-px-JPEG, sonst das JPEG-Original aus dem Link */
       boxImg.src = small.matches && im ? im.getAttribute('src') : a.getAttribute('href');
       boxImg.alt = im ? im.alt : '';
       var cap = shown[idx].querySelector('figcaption');
@@ -390,8 +420,8 @@
       { gruppe: 'Waschtisch und Armaturen', text: 'Waschtischarmatur ersetzen', stunden: 1, standard: 180, gehoben: 450, anzahl: true },
       { gruppe: 'Waschtisch und Armaturen', text: 'Küchenarmatur ersetzen', stunden: 1.25, standard: 250, gehoben: 600, anzahl: false },
       { gruppe: 'Waschtisch und Armaturen', text: 'Dusch- oder Badewannenarmatur ersetzen (Aufputz)', stunden: 1.5, standard: 300, gehoben: 700, anzahl: true },
-      { gruppe: 'Waschtisch und Armaturen', text: 'Tropfender Wasserhahn (Dichtung/Kartusche)', stunden: 0.75, standard: 40, gehoben: 80, anzahl: true },
-      { gruppe: 'Abfluss und Anschlüsse', text: 'Abfluss verstopft (Spirale)', stunden: 1.5, standard: 20, gehoben: 20, anzahl: true },
+      { gruppe: 'Waschtisch und Armaturen', text: 'Tropfenden Wasserhahn reparieren (Dichtung/Kartusche)', stunden: 0.75, standard: 40, gehoben: 80, anzahl: true },
+      { gruppe: 'Abfluss und Anschlüsse', text: 'Verstopften Abfluss reinigen (Spirale)', stunden: 1.5, standard: 20, gehoben: 20, anzahl: true },
       { gruppe: 'Boiler', text: 'Elektroboiler ersetzen (ca. 300 l, ohne Elektriker)', stunden: 6, standard: 2200, gehoben: 3000, anzahl: false },
       { gruppe: 'Boiler', text: 'Boiler entkalken (mit Dichtung und Anode)', stunden: 2.5, standard: 120, gehoben: 120, anzahl: false },
       { gruppe: 'Heizung', text: 'Heizkörperventil oder Thermostatkopf ersetzen', stunden: 1, standard: 90, gehoben: 160, anzahl: true, thema: 'heizung' },
@@ -578,7 +608,7 @@
         oel: { titel: 'Heizöl pro Jahr', lang: ' in Litern', einheit: 'Liter', proKw: H.literOelProKw,
           hinweis: 'Durchschnitt pro Jahr, z. B. aus den Heizöl-Rechnungen', text: 'Heizöl ', nach: ' Liter pro Jahr' },
         gas: { titel: 'Gas pro Jahr', lang: ' in Kubikmetern', einheit: 'm³', proKw: H.m3GasProKw,
-          hinweis: 'aus der Jahresabrechnung; steht dort kWh, die Zahl durch 10 teilen', text: 'Gas ', nach: ' m³ pro Jahr' }
+          hinweis: 'aus der Jahresabrechnung. Steht dort kWh, teilen Sie die Zahl durch 10.', text: 'Gas ', nach: ' m³ pro Jahr' }
       };
       var hzNamen = { 'luft-aussen': 'Luft/Wasser-Wärmepumpe, aussen aufgestellt', 'luft-innen': 'Luft/Wasser-Wärmepumpe, innen aufgestellt', erdsonde: 'Erdsonden-Wärmepumpe' };
       var hzBaujahr = { vor1980: 'Baujahr vor 1980', bis1999: 'Baujahr 1980–1999', ab2000: 'Baujahr ab 2000' };
@@ -675,7 +705,8 @@
     footer.parentNode.insertBefore(finale, footer);
   }
 
-  /* Kontaktleiste am Handy: Anrufen und Anfrage, ausgeblendet über Formular und Footer */
+  /* Kontaktleiste am Handy: Anrufen und Anfrage. Sichtbar, sobald keine anderen Kontaktknöpfe im Bild sind;
+     ausgeblendet über den Knöpfen im Seitenkopf, Formular, Rechner, Schluss-Aufruf und Footer (CSS: .actionbar-hide) */
   if (!document.querySelector('.actionbar')) {
     var bar = document.createElement('nav');
     bar.className = 'actionbar';
@@ -683,16 +714,21 @@
     bar.innerHTML =
       '<a class="actionbar__call" href="' + TEL + '"><span class="i i-phone" aria-hidden="true"></span>Anrufen</a>' +
       '<a class="actionbar__ask" href="' + base + 'kontakt.html#formular">Anfrage starten</a>';
-    body.appendChild(bar);
     if ('IntersectionObserver' in window) {
-      var hideFor = Array.prototype.slice.call(document.querySelectorAll('form[data-form], #rechner, .site-footer, .finale'));
-      var visibleSet = new Set();
+      /* Auch weg, solange die Knöpfe im Seitenkopf im Bild sind: Sie bieten dasselbe, und die Leiste würde
+         sie am Handy sonst halb verdecken. Der Anfangszustand wird vor dem Einfügen gesetzt, damit die
+         Leiste beim Laden nicht sichtbar wegrutscht. */
+      var hideFor = Array.prototype.slice.call(document.querySelectorAll('.hero__panel .btn-stack, .hero-work__actions, form[data-form], #rechner, .site-footer, .finale'));
+      var vh0 = window.innerHeight;
+      var visibleSet = new Set(hideFor.filter(function (el) { var r = el.getBoundingClientRect(); return r.bottom > 0 && r.top < vh0; }));
+      body.classList.toggle('actionbar-hide', visibleSet.size > 0);
       var hio = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) { if (en.isIntersecting) visibleSet.add(en.target); else visibleSet.delete(en.target); });
         body.classList.toggle('actionbar-hide', visibleSet.size > 0);
       }, { threshold: 0.05 });
       hideFor.forEach(function (el) { hio.observe(el); });
     }
+    body.appendChild(bar);
   }
 
   /* Einblenden beim Scrollen: nur Titel, Karten und Bilder */
@@ -755,6 +791,76 @@
 
   /* Jahr im Footer */
   document.querySelectorAll('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
+
+  /* ==========================================================================
+     Korrekturen nach Prüfung (27.11.2026)
+     Hilfsfunktionen für Formular, Anfrage-Assistent und Grossansicht. Die Stellen, die sie benutzen,
+     sind weiter oben mit «Korrekturen nach Prüfung» und der Nummer aus der Auftragsliste (P2, P5) markiert.
+     Als Funktionsdeklarationen gelten sie im ganzen Skript, auch wenn sie erst hier stehen.
+     ========================================================================== */
+
+  /* aria-describedby um eine id ergänzen (add) oder sie daraus entfernen; andere ids bleiben erhalten */
+  function describedBy(el, id, add) {
+    var ids = (el.getAttribute('aria-describedby') || '').split(' ').filter(function (x) { return x && x !== id; });
+    if (add) ids.push(id);
+    if (ids.length) el.setAttribute('aria-describedby', ids.join(' ')); else el.removeAttribute('aria-describedby');
+  }
+  /* Feld bzw. Kachelgruppe als fehlerhaft markieren oder die Markierung entfernen: Klasse is-invalid
+     (macht den Fehlertext sichtbar und die Kacheln rot), aria-invalid an jedem Eingabefeld und die
+     Verknüpfung mit dem Fehlertext, aber nur solange er sichtbar ist (WCAG 1.3.1, 3.3.1) */
+  function markField(inputs, field, invalid) {
+    var err = field && field.querySelector('.error');
+    if (field) field.classList.toggle('is-invalid', invalid);
+    inputs.forEach(function (el) {
+      if (invalid) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid');
+      if (err && err.id) describedBy(el, err.id, invalid);
+    });
+  }
+  /* Alle Kacheln einer Gruppe (Radio-Knöpfe mit demselben Namen), sonst nur das Feld selber */
+  function groupOf(el, scope) {
+    if (el.type !== 'radio') return [el];
+    return Array.prototype.slice.call((scope || el.form || document).querySelectorAll('input[type="radio"][name="' + el.name + '"]'));
+  }
+  /* Erstes fehlerhaftes Feld zeigen: Fokus aufs Feld (Screenreader hören Name und Fehlertext), dann
+     Feld und Meldung in den sichtbaren Bereich scrollen, auch bei 320 px. Bei Kacheln steht die Meldung
+     direkt unter der Frage, darum kommt die Frage nach oben. */
+  function showError(f) {
+    if (!f) return;
+    f.el.focus({ preventScroll: true });
+    var how = { behavior: reduce ? 'auto' : 'smooth' };
+    var legend = f.el.type === 'radio' && f.field ? f.field.querySelector('legend') : null;
+    if (!legend) { how.block = 'nearest'; (f.field || f.el).scrollIntoView(how); return; }   /* scrollt nur, wenn nötig */
+    /* Kacheln: nur scrollen, wenn Frage oder Meldung nicht ganz zu sehen sind (unter dem klebenden Kopf) */
+    var err = f.field.querySelector('.error') || legend;
+    var top = header ? header.getBoundingClientRect().bottom : 0;
+    if (legend.getBoundingClientRect().top < top + 8 || err.getBoundingClientRect().bottom > window.innerHeight - 8) {
+      how.block = 'start'; legend.scrollIntoView(how);
+    }
+  }
+  /* Text der Fehlermeldung eines Felds, für die Live-Meldung */
+  function errorText(f) {
+    var err = f && f.field && f.field.querySelector('.error');
+    return err ? err.textContent : 'Bitte füllen Sie die markierten Felder aus.';
+  }
+  /* Nachrichtenfeld an den Inhalt anpassen (z. B. Angaben aus dem Kostenrechner), in Browsern ohne
+     field-sizing: content. Erst wenn der Schritt sichtbar ist, vorher lässt sich das Feld nicht messen. */
+  function fitTextareas(scope) {
+    scope.querySelectorAll('textarea').forEach(function (ta) {
+      if (ta.value && ta.scrollHeight > ta.clientHeight) ta.style.height = (ta.scrollHeight + ta.offsetHeight - ta.clientHeight) + 'px';
+    });
+  }
+  /* Grossansicht: aus dem AVIF-srcset eines Galeriefotos die grösste Datei bis max Pixel Breite
+     (-1200 bzw. das kleinere Original, am Handy -900); ohne passende Datei die kleinste */
+  function avifUpTo(item, max) {
+    var src = item.querySelector('source[type="image/avif"]'), best = null, smallest = null;
+    if (!src) return '';
+    src.getAttribute('srcset').split(',').forEach(function (part) {
+      var bits = part.trim().split(/\s+/), w = parseInt(bits[1], 10) || 0;
+      if (w <= max && (!best || w > best.w)) best = { url: bits[0], w: w };
+      if (!smallest || w < smallest.w) smallest = { url: bits[0], w: w };
+    });
+    return (best || smallest).url;
+  }
 
   doc.classList.add('js');
 })();
