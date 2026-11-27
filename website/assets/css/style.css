@@ -983,3 +983,183 @@ main > .calc-section:not(:first-child) { margin-top: clamp(32px, 4vw, 64px); }
 @media (max-width: 480px) {
   .calc .calc__switch .tiles { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ==========================================================================
+   Design-Runde suissetec (27.11.2026)
+   Vorbild: suissetec.ch und die Kampagne «Wir, die Gebäudetechniker». Übernommen wird nur
+   das Prinzip: kurze, fette Titel, Text in Kästen (Etiketten), Kästen über der Fotokante
+   (Ebenen) und eine einzige laute Farbe. Die Nummern (V2, V3 …) verweisen auf den Bericht
+   «suissetec als Vorbild».
+   Feste Regeln für alles in diesem Abschnitt:
+   - hell bleiben, Schrift nur Arial, Farben nur aus :root
+   - höchstens EINE blaue Fläche (#00729b) pro Seite: auf den Unterseiten das Hero-Panel,
+     auf der Startseite das Band «24h-Service»
+   - keine neue Bewegung: Tiefe entsteht durch Ebenen, nicht durch Animation
+   Die Regeln weiter oben bleiben stehen; was hier steht, überschreibt sie gezielt.
+   ========================================================================== */
+
+/* ---------- V2 Zwischentitel: fett, gross, eng ----------
+   Wo es passt, ist ein Titel zweiteilig wie der H1: die zweite Hälfte steht in <span class="soft">. */
+h2 { font-size: clamp(32px, 4.4vw, 68px); font-weight: 700; letter-spacing: -.035em; line-height: 1.02; }
+/* In halber Breite (zweispaltige Abschnitte, Band) kleiner, sonst bricht ein Titel auf drei, vier Zeilen */
+:is(.intro, .feature, .split, .team, .emergency, .band, .cta, .crew) h2 { font-size: clamp(30px, 3.4vw, 54px); }
+/* Rechtstexte (Impressum, Datenschutz, 404): Grösse wie bisher (.prose h2), nur fett */
+.prose h2 { letter-spacing: -.02em; line-height: 1.15; }
+/* Der Seitentitel der Unterseiten bleibt grösser als die neuen Zwischentitel */
+.hero--page h1 { font-size: clamp(38px, 5vw, 76px); }
+/* Handy: lange Wörter in Titeln trennen, statt sie über den Rand laufen zu lassen (lang="de-CH").
+   Nur Wörter ab 12 Buchstaben, mindestens 5 Buchstaben vor und nach dem Trennstrich
+   (z. B. «Familien-betrieb»; kürzere Wörter wie «Handwerker» rutschen ganz auf die nächste Zeile). */
+@media (max-width: 640px) {
+  h1, h2 { -webkit-hyphens: auto; hyphens: auto; hyphenate-limit-chars: 12 5 5; }
+}
+
+/* ---------- V5a Etiketten ----------
+   Ein bis drei Wörter in Grossbuchstaben im Kasten, wie ein Stempel. Weiss auf #00729b (5,41:1),
+   auf einer blauen Fläche umgekehrt mit .tag--light. Nie weisse Schrift auf dem Logo-Blau #00a3d9
+   (nur 2,9:1). Sparsam einsetzen: höchstens zwei Etiketten pro Bildschirmhöhe.
+   Im HTML steht die normale Schreibweise, die Grossbuchstaben macht CSS. So lesen Screenreader
+   das Wort, statt es zu buchstabieren. */
+.tag {
+  display: block; width: fit-content; margin: 0;
+  padding: 7px 10px 6px;
+  background: var(--blue-ink); color: #fff;
+  font: 700 13px/1.25 var(--font); letter-spacing: .07em; text-transform: uppercase;
+}
+.tag--light, .band .tag--light { background: #fff; color: var(--blue-ink); }   /* .band p wäre sonst weiss */
+/* Etikett in der unteren linken Ecke eines Fotos (der Rahmen um das Foto braucht position: relative) */
+.tag--photo { position: absolute; left: 16px; bottom: 16px; z-index: 2; }
+
+/* ---------- V3 und V5 Hero der Startseite ----------
+   Bildschirm: der Kicker ist ein Etikett, auf dem Teamfoto steht das Etikett «Unser Team».
+   Handy und Tablet hoch: zuerst das Teamfoto als Querformat-Ausschnitt, darüber greift ein weisser
+   Titelkasten. Den Ausschnitt (Köpfe sichtbar) bestimmt object-position im HTML (inline am Teamfoto).
+   Im HTML steht weiterhin zuerst der Text (Lesereihenfolge für Screenreader), nur die Anzeige ist
+   umgedreht. Im Foto gibt es keine Links, die Tab-Reihenfolge bleibt also stimmig. */
+.hero-work__kicker.tag { margin-bottom: clamp(16px, 2.8svh, 28px); }
+@media (max-width: 960px) {
+  .hero-work { display: flex; flex-direction: column-reverse; }
+  .hero-work__media li:first-child { aspect-ratio: 4 / 3; min-height: 0; max-height: 70svh; }
+  .hero-work__text {
+    position: relative; z-index: 2; margin: -44px 12px 0;
+    padding: clamp(20px, 4vw, 32px) calc(var(--gutter) - 4px) 4px; background: #fff;
+  }
+  .hero-work__media .tag--photo { display: none; }   /* am Handy trägt der Titelkasten das Etikett */
+}
+
+/* ---------- V5b Ebenen auf den Unterseiten: das blaue Hero-Panel greift über das Foto ----------
+   Bildschirm: 64 px nach links über die Fotokante. Handy: 40 px nach oben, links und rechts bleiben
+   12 px Foto sichtbar. Seitenköpfe ohne Foto (Impressum, Datenschutz, Kostenrechner, 404) bleiben. */
+@media (min-width: 961px) {
+  .hero:has(.hero__media) .hero__panel { position: relative; z-index: 2; margin-left: -64px; }
+}
+@media (max-width: 960px) {
+  .hero:has(.hero__media) .hero__panel {
+    position: relative; z-index: 2; margin: -40px 12px 0;
+    padding: 36px calc(var(--gutter) - 4px) 44px;
+  }
+  .hero__media .tag--photo { top: 12px; bottom: auto; left: 12px; }   /* unten liegt das Panel */
+}
+
+/* ---------- V4 Band «24h-Service» (nur Startseite) ----------
+   Die eine blaue Fläche der Startseite, aufgebaut auf .band (weiter oben). Links Etikett, Titel,
+   Telefonnummer in Riesenschrift, ein Satz und der Knopf. Rechts das Querformat-Foto, das oben und
+   unten 64 px über das Band ragt (am Handy unten 40 px). Keine Bewegung ausser dem üblichen
+   Einblenden des Fotos (main.js, .band__media). */
+.band--service .band__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.band--service .band__text { container-type: inline-size; padding: clamp(56px, 6vw, 96px) 0; }
+.band--service .tag { margin-bottom: 22px; }
+.band--service h2 { margin-bottom: clamp(16px, 1.8vw, 26px); }
+.band__phone {
+  display: block; width: fit-content; white-space: nowrap; color: #fff;
+  font-size: clamp(40px, 16.4cqi, 132px);   /* die ganze Nummer passt immer in die Spalte (wie .finale__phone) */
+  font-weight: 700; line-height: .95; letter-spacing: -.05em;
+}
+.band__phone:hover { color: #fff; text-decoration: underline; text-decoration-thickness: .05em; text-underline-offset: .12em; }
+.band--service .band__text > p:not(.tag) { max-width: 44ch; margin: clamp(18px, 2vw, 28px) 0 0; font-size: 18px; line-height: 1.5; }
+.band--service .btn-row { margin-top: 28px; }
+.band--service .band__media { margin: -64px 0; min-height: 0; }
+.band--service .band__media img { object-position: 40% 50%; }   /* Pumpe und Steuerung im Bild */
+@media (max-width: 960px) {
+  .band--service { margin-bottom: 40px; }   /* Platz für das Foto, das unten herausragt */
+  .band--service .band__inner { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .band--service .band__text { padding: 56px 0 0; }
+  .band--service .band__text > p:not(.tag) { font-size: 17px; }
+  .band--service .band__media { margin: 0 0 -40px; aspect-ratio: 4 / 3; }
+}
+
+/* ---------- V7 Startseite: Grundsätze, Geschäftsführung und Stellen in einem Abschnitt ----------
+   Unter den drei Grundsätzen eine kräftige Linie, darunter zwei Spalten:
+   links die Geschäftsführung (Namen wie .team__names), rechts die offenen Stellen (.joblist). */
+.crew {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px clamp(32px, 5vw, 80px);
+  margin-top: clamp(48px, 5vw, 72px); padding-top: clamp(32px, 3.4vw, 48px); border-top: 2px solid var(--ink);
+}
+.crew > * { min-width: 0; }
+.crew h3 { font-weight: 700; font-size: clamp(22px, 1.9vw, 28px); margin-bottom: 12px; }
+.crew .team__names { margin: 24px 0 0; }
+.crew .joblist { margin-top: 18px; }
+.crew .btn-row { margin-top: 24px; }
+@media (max-width: 960px) {
+  .crew { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- V8 Projekte-Galerie: Raster mit grossen und breiten Kacheln ----------
+   Bildschirm: 4 Spalten. Solange «Alle» gewählt ist, belegt ein Foto mit .gallery__item--big
+   2 × 2 Felder und eines mit .gallery__item--wide 2 × 1 Felder. Die Reihenfolge im HTML ist so
+   gewählt, dass keine Lücken entstehen und die Grossansicht in der sichtbaren Reihenfolge blättert
+   (Kommentar in projekte.html). Beim Filtern sind alle Kacheln gleich gross, sonst gäbe es Lücken.
+   Browser ohne :has() zeigen alle Kacheln gleich gross. Tablet 3 Spalten, Handy 2 Spalten. */
+.gallery { columns: auto; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 24px; }
+.gallery__item { margin: 0; display: flex; flex-direction: column; }
+.gallery__item a { aspect-ratio: 4 / 5; }
+.gallery__item img { height: 100%; object-fit: cover; }
+.gallery__item figcaption { font-size: 15px; color: var(--ink); padding-top: 10px; }   /* V8b: Anthrazit statt Grau */
+@media (min-width: 961px) {
+  .filters:has([data-filter="alle"][aria-pressed="true"]) ~ .gallery .gallery__item--big { grid-column: span 2; grid-row: span 2; }
+  .filters:has([data-filter="alle"][aria-pressed="true"]) ~ .gallery .gallery__item--wide { grid-column: span 2; }
+  /* grosse und breite Kacheln füllen ihr Feld; contain: size, damit das Foto die Zeilen nicht streckt */
+  .filters:has([data-filter="alle"][aria-pressed="true"]) ~ .gallery :is(.gallery__item--big, .gallery__item--wide) a {
+    aspect-ratio: auto; flex: 1 1 0; min-height: 0; contain: size;
+  }
+}
+@media (max-width: 960px) {
+  .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 16px; }
+}
+@media (max-width: 640px) {
+  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; }
+  .gallery__item { margin: 0; }
+  .gallery__item figcaption { font-size: 14px; padding-top: 8px; }
+}
+/* V8d Filterknöpfe im Stil der Etiketten: Grossbuchstaben, der gewählte Bereich in Blau */
+.filters { gap: 8px; }
+.filters button { min-height: 48px; padding: 14px 18px 13px; font: 700 14px/1 var(--font); letter-spacing: .07em; text-transform: uppercase; }
+.filters button[aria-pressed="true"] { background: var(--blue-ink); border-color: var(--blue-ink); color: #fff; }
+.filters button[aria-pressed="true"]:hover { background: var(--blue-deep); border-color: var(--blue-deep); }
+
+/* ---------- Kostenrechner im neuen Stil ----------
+   Der Rechner liegt als Kasten über der unteren Kante des blauen Seitenkopfs (Ebene, wie V5b).
+   Nur mit JavaScript (.js): ohne JS ist der Rechner ausgeblendet, und der Hinweistext darf nicht
+   auf der blauen Fläche stehen. Die Ergebnis-Box trägt ein Etikett. */
+.js .hero--text:has(+ .calc-section) .hero__panel { padding-bottom: 144px; }
+.js main > .hero--text + .calc-section { position: relative; z-index: 2; margin-top: -72px; }
+.calc__result .calc__label.tag { margin: 0 0 14px; }
+@media (max-width: 960px) {
+  .js .hero--text:has(+ .calc-section) .hero__panel { padding-bottom: 96px; }
+  .js main > .hero--text + .calc-section { margin-top: -40px; }
+}
+@media (max-width: 640px) {
+  /* am Handy nicht randlos, sondern als Kasten mit 12 px Abstand, damit die Ebene sichtbar bleibt */
+  .js main > .hero--text + .calc-section .calc { margin: 0 calc(12px - var(--gutter)); padding-left: calc(var(--gutter) - 4px); padding-right: calc(var(--gutter) - 4px); }
+}
+
+/* ---------- Etiketten auf den Unterseiten ---------- */
+.emergency .tag { margin-bottom: 20px; }   /* service.html: «24h-Service» wie das Band der Startseite */
+
+/* ---------- Druck ----------
+   Browser lassen Hintergrundfarben beim Drucken weg. Blaue Flächen mit weisser Schrift werden darum
+   ausdrücklich mitgedruckt, sonst stünde weisse Schrift auf weissem Papier. */
+@media print {
+  .hero__panel, .band, .tag, .btn--solid, .filters button, .calc .calc__switch .tile { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .band--service .band__media { margin: 0; }
+}

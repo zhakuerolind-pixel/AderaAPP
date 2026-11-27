@@ -110,7 +110,9 @@ Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Ma
 - Neues Foto: Metadaten (GPS!) entfernen, auf max. 2000 px verkleinern, als `name.jpg` und `name-900.jpg` speichern, dann
   `python3 werkzeuge/bilder-erzeugen.py --src website/assets/img --out website/assets/img` (Pillow 11.3+ mit AVIF).
 - Projekte-Galerie: in `projekte.html` ein `<figure class="gallery__item" data-cat="bad|kueche|technik|baustelle">`
-  kopieren und anpassen (Kommentar in der Datei).
+  kopieren und anpassen (Kommentar in der Datei). Am Bildschirm hat die Galerie 4 Spalten; `gallery__item--big`
+  (2 × 2 Felder) und `gallery__item--wide` (2 × 1 Felder) machen einzelne Fotos grösser. Die Reihenfolge ist so gewählt,
+  dass keine Lücken entstehen: nach dem Ergänzen am Bildschirm prüfen, sonst die Klasse verschieben oder weglassen.
 - Personen auf Fotos (Teamfoto) und Kundenbäder: Einverständnis der Abgebildeten bzw. der Kunden einholen.
 
 ---
@@ -128,6 +130,11 @@ Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Ma
   dort in der Liste `arbeiten` ergänzen, die Auswahlliste baut sich daraus auf. `PREISE_HEIZUNG` (Richtwerte inkl. MWST)
   ist ebenfalls vom Inhaber zu bestätigen. Nach einer Änderung die Versionsangabe hochzählen. Der Knopf «Offerte anfragen»
   gibt die Angaben als Parameter `rechner` ans Formular weiter (Feld «Nachricht», höchstens 300 Zeichen, nur als Text).
+- **Gestaltungsregeln** (Abschnitt «Design-Runde suissetec» am Ende von `style.css`): höchstens eine blaue Fläche
+  (#00729b) pro Seite, auf den Unterseiten das Hero-Panel, auf der Startseite das Band «24h-Service». Zwischentitel (H2)
+  fett, wo es passt zweiteilig mit `<span class="soft">` für die graue zweite Hälfte. Etiketten (`<p class="tag">`,
+  auf Fotos `tag tag--photo`, auf Blau `tag--light`) sparsam einsetzen, höchstens zwei pro Bildschirmhöhe, im HTML
+  normal geschrieben (die Grossbuchstaben macht CSS). Nie weisse Schrift auf dem Logo-Blau #00a3d9.
 - **Bewegung:** Die Fotowand auf der Startseite und die grosse Telefonnummer im Schluss-Aufruf bewegen sich nur beim
   Scrollen (CSS `animation-timeline`, Abschnitt «Starke Momente» am Ende von `style.css`). Browser ohne diese Funktion
   zeigen alles ruhig an, bei «Bewegung reduzieren» steht alles still. Nichts läuft endlos, kein Autoplay.
