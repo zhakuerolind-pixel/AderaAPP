@@ -163,11 +163,20 @@
     });
 
     /* Thema über die Adresse vorwählen, z. B. kontakt.html?thema=badumbau#formular */
+    var params = new URLSearchParams(window.location.search);
     var map = { heizung: 'Heizung / Wärmepumpe', lueftung: 'Lüftung', sanitaer: 'Sanitär', badumbau: 'Badumbau', planung: 'Planung', service: 'Störung / Reparatur' };
-    var q = new URLSearchParams(window.location.search).get('thema');
+    var q = params.get('thema');
     if (q && map[q]) {
       var pre = form.querySelector('input[name="thema"][value="' + map[q] + '"]');
       if (pre) { pre.checked = true; if (alertBox) alertBox.classList.toggle('is-on', map[q] === 'Störung / Reparatur'); }
+    }
+    /* Angaben aus dem Kostenrechner (Parameter «rechner», z. B. kontakt.html?thema=heizung&rechner=…#formular)
+       ins Feld «nachricht» übernehmen, aber nur, wenn es leer ist. Höchstens 300 Zeichen, nur als Text. */
+    var fromCalc = params.get('rechner');
+    var msgField = form.querySelector('textarea[name="nachricht"]');
+    if (fromCalc && msgField && !msgField.value.trim()) {
+      fromCalc = fromCalc.replace(/[\u0000-\u001f\u007f-\u009f]/g, ' ').replace(/\s+/g, ' ').trim();
+      if (fromCalc) msgField.value = Array.from('Angaben aus dem Kostenrechner: ' + fromCalc).slice(0, 300).join('');
     }
     show(0, false);
     return { reset: function () { form.reset(); if (alertBox) alertBox.classList.remove('is-on'); show(0, false); } };
@@ -343,6 +352,311 @@
     });
   }
 
+  /* ==========================================================================
+     Kostenrechner (kostenrechner.html), nur aktiv, wenn #rechner existiert.
+     Zwei Teile, oben umschaltbar: «Reparatur und Ersatz» und «Heizungsersatz».
+     Die Preise stehen in den zwei Objekten gleich hier und lassen sich dort anpassen.
+     Ohne JavaScript bleibt der Rechner ausgeblendet (hidden), dann steht nur der Hinweis da.
+     ========================================================================== */
+
+  /* Teil «Reparatur und Ersatz». Alle Preise in CHF exkl. MWST.
+     Vom Inhaber bestätigt: Stundenansatz, Fahrzeug, Anfahrt; Stunden und Material sind Richtwerte, vom Inhaber zu prüfen.
+     Arbeit und Anfahrt = Stunden × Anzahl × Monteur + Fahrzeug + Anfahrt (Stunden × Anzahl mindestens 1)
+     Material = Material pro Stück × Anzahl («Material ist schon da»: 0)
+     Angezeigt wird beides mit MWST als Spanne ±10 %, auf 10 Franken gerundet. Das Total ist die Summe
+     der beiden gerundeten Spannen, damit die Zahlen auf dem Bildschirm zusammenpassen. */
+  var PREISE_REPARATUR = {
+    monteurProStunde: 115,
+    fahrzeugProEinsatz: 35,   /* Servicefahrzeug, einmal pro Einsatz; vom Inhaber bestätigt */
+    /* Anfahrt, vom Inhaber bestätigt: 95 pauschal, ab 15 km 0.80 pro km; Hin- und Rückweg vom Inhaber bestätigt */
+    anfahrtPauschale: 95,     /* pro Einsatz */
+    kmAb: 15,                 /* ab dieser Entfernung (einfacher Weg) kommen die Kilometer dazu */
+    proKm: 0.80,
+    hinUndZurueck: true,      /* km zählen hin und zurück (Entfernung × 2) */
+    kmMax: 100,               /* weiter weg: keine Zahl, sondern «Bitte Offerte anfragen» */
+    mindestStunden: 1,
+    mwst: 0.081,
+    spanne: 0.10,             /* ±10 % um den Mittelwert */
+    rundenAuf: 10,            /* Franken */
+    /* gruppe: Überschrift in der Auswahlliste; stunden: pro Stück; standard, gehoben: Material pro Stück;
+       anzahl: true = Anzahl 1 bis 5 wählbar, sonst immer 1; thema: Thema im Anfrageformular (sonst sanitaer).
+       Gleiche Zahl bei Standard und Gehoben: keine Auswahl beim Material, der Betrag ist immer eingerechnet. */
+    arbeiten: [
+      { gruppe: 'WC', text: 'WC ersetzen (Wand-WC)', stunden: 2.5, standard: 450, gehoben: 900, anzahl: true },
+      { gruppe: 'WC', text: 'WC ersetzen (Stand-WC)', stunden: 3, standard: 400, gehoben: 800, anzahl: true },
+      { gruppe: 'WC', text: 'Dusch-WC einbauen (ohne Elektroanschluss)', stunden: 4, standard: 1800, gehoben: 3500, anzahl: true },
+      { gruppe: 'WC', text: 'Spülkasten reparieren (Innenleben)', stunden: 1.5, standard: 120, gehoben: 180, anzahl: true },
+      { gruppe: 'Waschtisch und Armaturen', text: 'Waschtisch ersetzen (mit Armatur und Siphon)', stunden: 3.5, standard: 600, gehoben: 1500, anzahl: true },
+      { gruppe: 'Waschtisch und Armaturen', text: 'Waschtischarmatur ersetzen', stunden: 1, standard: 180, gehoben: 450, anzahl: true },
+      { gruppe: 'Waschtisch und Armaturen', text: 'Küchenarmatur ersetzen', stunden: 1.25, standard: 250, gehoben: 600, anzahl: false },
+      { gruppe: 'Waschtisch und Armaturen', text: 'Dusch- oder Badewannenarmatur ersetzen (Aufputz)', stunden: 1.5, standard: 300, gehoben: 700, anzahl: true },
+      { gruppe: 'Waschtisch und Armaturen', text: 'Tropfender Wasserhahn (Dichtung/Kartusche)', stunden: 0.75, standard: 40, gehoben: 80, anzahl: true },
+      { gruppe: 'Abfluss und Anschlüsse', text: 'Abfluss verstopft (Spirale)', stunden: 1.5, standard: 20, gehoben: 20, anzahl: true },
+      { gruppe: 'Boiler', text: 'Elektroboiler ersetzen (ca. 300 l, ohne Elektriker)', stunden: 6, standard: 2200, gehoben: 3000, anzahl: false },
+      { gruppe: 'Boiler', text: 'Boiler entkalken (mit Dichtung und Anode)', stunden: 2.5, standard: 120, gehoben: 120, anzahl: false },
+      { gruppe: 'Heizung', text: 'Heizkörperventil oder Thermostatkopf ersetzen', stunden: 1, standard: 90, gehoben: 160, anzahl: true, thema: 'service' },
+      { gruppe: 'Heizung', text: 'Heizung entlüften und Druck prüfen', stunden: 1, standard: 0, gehoben: 0, anzahl: false, thema: 'service' },
+      { gruppe: 'Abfluss und Anschlüsse', text: 'Waschmaschinenanschluss erstellen', stunden: 2, standard: 120, gehoben: 120, anzahl: false }
+    ]
+  };
+
+  /* Teil «Heizungsersatz»: Ersatz einer Öl- oder Gasheizung durch eine Wärmepumpe.
+     Richtwerte in CHF inkl. MWST, inkl. Montage, Demontage der alten Heizung, Speicher, Warmwasser und
+     Elektroanschluss. Vom Inhaber zu bestätigen bzw. durch eigene Preise zu ersetzen.
+     Die Anfahrt ist in diesen Preisen enthalten. */
+  var PREISE_HEIZUNG = {
+    literOelProKw: 250,       /* Heizöl: Liter pro Jahr ÷ 250 = Heizleistung in kW */
+    m3GasProKw: 250,          /* Gas: m³ pro Jahr ÷ 250 = Heizleistung in kW */
+    wattProM2: { vor1980: 60, bis1999: 45, ab2000: 30 },   /* Fläche: m² × W/m² ÷ 1000, nach Baujahr */
+    zuschlagWarmwasser: 1.1,  /* Fläche: +10 % für das Warmwasser */
+    kwRunden: 0.5,            /* Heizleistung auf 0.5 kW runden */
+    kwMin: 4,                 /* kleinste Heizleistung */
+    kwMax: 45,                /* darüber keine Zahl, sondern Offerte nach Besichtigung */
+    /* Grundpreis nach Leistungsstufe: [bis kW, CHF] */
+    luftWasser: [[8, 36000], [12, 42000], [16, 48000], [22, 56000], [30, 68000], [45, 85000]],
+    zuschlagInnen: 5000,      /* Luft/Wasser-Wärmepumpe innen aufgestellt */
+    erdsonde: [[8, 32000], [12, 36000], [16, 41000], [22, 48000], [30, 58000], [45, 72000]],   /* Wärmepumpe ohne Sonde */
+    sondeMeterProKw: 16,      /* Erdsonde: kW × 16 m … */
+    sondeChfProMeter: 85,     /* … × CHF 85 pro Meter … */
+    sondePauschale: 4000,     /* … + Pauschale für Bewilligung, Bohrplatz, Anschluss */
+    zuschlagHeizkoerper: 3000,   /* höhere Vorlauftemperatur, evtl. einzelne Heizkörper anpassen */
+    oeltank: 3500,            /* Öltank entfernen */
+    spanne: 0.10,             /* ±10 % um den Mittelwert */
+    rundenAuf: 500            /* Franken */
+  };
+
+  var rechner = document.getElementById('rechner');
+  if (rechner) {
+    var rechnerHinweis = document.querySelector('[data-calc-fallback]');
+    if (rechnerHinweis) rechnerHinweis.hidden = true;
+    rechner.hidden = false;
+
+    /* Zahl aus einem Eingabefeld lesen: «2500», «2'500», «2’500», «2 500», «2.500», «12,5», «2500 l».
+       Leer gibt null, keine gültige Zahl NaN. */
+    function calcZahl(text) {
+      var s = String(text).replace(/[\s'’‘`´]/g, '').replace(/(liter|l|m2|m²|m3|m³|km)\.?$/i, '');
+      if (s === '') return null;
+      if (/^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, '');   /* 2.500 als 2500 lesen */
+      s = s.replace(',', '.');
+      return /^\d+(\.\d*)?$/.test(s) ? parseFloat(s) : NaN;
+    }
+    /* 1’090: Tausender wie de-CH, in allen Browsern mit dem typografischen Apostroph */
+    function calcChf(x) { return x.toLocaleString('de-CH').replace(/'/g, '’'); }
+    function calcDez(x) { return String(x).replace('.', ','); }         /* 2,5 */
+    function calcRunden(x, schritt) { return Math.round(x / schritt) * schritt; }
+    /* «ca. CHF 900 bis 1’090»; geschützte Leerzeichen, damit die Zeile nur vor «bis» umbricht */
+    function calcSpanne(von, bis) { return 'ca. CHF ' + calcChf(von) + (bis !== von ? ' bis ' + calcChf(bis) : ''); }
+    /* Nur ändern, was sich ändert: die Ergebnis-Box ist aria-live, so wird nur Neues angesagt */
+    function calcText(el, text) { if (el && el.textContent !== text) el.textContent = text; }
+    function calcZeigen(el, sichtbar) { if (el && el.hidden === sichtbar) el.hidden = !sichtbar; }
+    function calcOut(teil, name) { return teil.querySelector('[data-out="' + name + '"]'); }
+    /* Feld als fehlerhaft markieren; der Fehlertext ist nur dann mit dem Feld verknüpft */
+    function calcFeldFehler(input, fehler) {
+      var feld = input.closest('.field'), meldung = feld && feld.querySelector('.error');
+      if (feld) feld.classList.toggle('is-invalid', fehler);
+      if (fehler) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid');
+      if (!meldung) return;
+      var ids = (input.getAttribute('aria-describedby') || '').split(' ').filter(function (id) { return id && id !== meldung.id; });
+      if (fehler) ids.push(meldung.id);
+      input.setAttribute('aria-describedby', ids.join(' '));
+    }
+    /* Knopf «Offerte anfragen»: Thema und eine kurze Zusammenfassung fürs Anfrageformular */
+    function calcLink(thema, text) {
+      return base + 'kontakt.html?thema=' + thema + (text ? '&rechner=' + encodeURIComponent(text.replace(/ /g, ' ')) : '') + '#formular';
+    }
+    /* Live rechnen: Auswahl sofort, beim Tippen kurz warten (sonst wird jede Ziffer angesagt) */
+    function calcLive(form, rechnen) {
+      var warten = null;
+      form.addEventListener('input', function (e) {
+        window.clearTimeout(warten);
+        if (e.target.type === 'text') warten = window.setTimeout(rechnen, 300); else rechnen();
+      });
+      form.addEventListener('change', function () { window.clearTimeout(warten); rechnen(); });
+      form.addEventListener('submit', function (e) { e.preventDefault(); window.clearTimeout(warten); rechnen(); });
+      rechnen();
+    }
+
+    /* Umschalten zwischen den Teilen; die Adresse zeigt den gewählten Teil (#reparatur, #heizung) */
+    var calcTeile = {};
+    rechner.querySelectorAll('[data-calc-part]').forEach(function (f) { calcTeile[f.getAttribute('data-calc-part')] = f; });
+    var calcSchalter = rechner.querySelectorAll('input[name="calc-teil"]');
+    function calcTeilZeigen(name, adresse) {
+      if (!calcTeile[name]) return;
+      Object.keys(calcTeile).forEach(function (k) { calcTeile[k].hidden = k !== name; });
+      calcSchalter.forEach(function (r) { r.checked = r.value === name; });
+      if (adresse) { try { history.replaceState(null, '', '#' + name); } catch (e) { /* z. B. lokal geöffnet */ } }
+    }
+    calcSchalter.forEach(function (r) {
+      r.addEventListener('change', function () { if (r.checked) calcTeilZeigen(r.value, true); });
+    });
+    window.addEventListener('hashchange', function () { calcTeilZeigen(window.location.hash.slice(1), false); });
+    var calcStart = window.location.hash.slice(1);
+    if (!calcTeile[calcStart]) calcStart = (rechner.querySelector('input[name="calc-teil"]:checked') || { value: 'reparatur' }).value;
+    calcTeilZeigen(calcStart, false);
+
+    /* --- Teil «Reparatur und Ersatz» --- */
+    var rep = calcTeile.reparatur;
+    if (rep) {
+      var R = PREISE_REPARATUR;
+      var repArbeit = rep.querySelector('[name="arbeit"]');
+      var repAnzahl = rep.querySelector('[name="anzahl"]');
+      var repKm = rep.querySelector('[name="km"]');
+      var repGruppen = {};
+      /* Auswahlliste aus der Konfiguration aufbauen, nach Gruppen */
+      R.arbeiten.forEach(function (a, i) {
+        var g = repGruppen[a.gruppe];
+        if (!g) { g = repGruppen[a.gruppe] = document.createElement('optgroup'); g.label = a.gruppe; repArbeit.appendChild(g); }
+        var o = document.createElement('option');
+        o.value = String(i);
+        o.textContent = a.text;
+        g.appendChild(o);
+      });
+      calcText(calcOut(rep, 'mwst'), 'MWST ' + calcDez(Math.round(R.mwst * 1000) / 10) + ' %');
+
+      calcLive(rep, function () {
+        var a = R.arbeiten[parseInt(repArbeit.value, 10)] || R.arbeiten[0];
+        var anzahl = a.anzahl ? Math.min(5, Math.max(1, parseInt(repAnzahl.value, 10) || 1)) : 1;
+        var mitWahl = a.standard !== a.gehoben;
+        var wahl = mitWahl ? (rep.querySelector('[name="material"]:checked') || { value: 'standard' }).value : 'fest';
+        var wahlText = wahl === 'gehoben' ? 'Gehoben' : 'Standard';
+        var material = (wahl === 'vorhanden' ? 0 : wahl === 'gehoben' ? a.gehoben : a.standard) * anzahl;
+        var km = calcZahl(repKm.value);
+        var kmOk = km !== null && !isNaN(km);
+        calcZeigen(rep.querySelector('[data-calc-anzahl]'), !!a.anzahl);
+        calcZeigen(rep.querySelector('[data-calc-material]'), mitWahl);
+        calcFeldFehler(repKm, km !== null && !kmOk);
+
+        var meldung = '';
+        if (km === null) meldung = 'Geben Sie die Entfernung ab Spreitenbach ein. Die Schätzung erscheint dann hier.';
+        else if (!kmOk) meldung = 'Bitte geben Sie die Entfernung als Zahl ein.';
+        else if (km > R.kmMax) meldung = 'Mehr als ' + R.kmMax + ' km: Bitte Offerte anfragen.';
+
+        var stunden = Math.round(Math.max(R.mindestStunden, a.stunden * anzahl) * 100) / 100;
+        var anfahrt = kmOk ? R.anfahrtPauschale + (km >= R.kmAb ? km * (R.hinUndZurueck ? 2 : 1) * R.proKm : 0) : 0;
+        var mitMwst = 1 + R.mwst;
+        var arbeit = (stunden * R.monteurProStunde + R.fahrzeugProEinsatz + anfahrt) * mitMwst;
+        var arbeitVon = calcRunden(arbeit * (1 - R.spanne), R.rundenAuf), arbeitBis = calcRunden(arbeit * (1 + R.spanne), R.rundenAuf);
+        var matVon = calcRunden(material * mitMwst * (1 - R.spanne), R.rundenAuf), matBis = calcRunden(material * mitMwst * (1 + R.spanne), R.rundenAuf);
+        var materialTitel = mitWahl && material ? 'Material (' + wahlText + ')' : 'Material';
+
+        calcZeigen(calcOut(rep, 'zahlen'), !meldung);
+        calcZeigen(calcOut(rep, 'meldung'), !!meldung);
+        calcText(calcOut(rep, 'meldung'), meldung);
+        if (!meldung) {
+          calcText(calcOut(rep, 'arbeit'), calcSpanne(arbeitVon, arbeitBis));
+          calcText(calcOut(rep, 'material-titel'), materialTitel);
+          calcText(calcOut(rep, 'material'), material ? calcSpanne(matVon, matBis) : 'keines');
+          calcText(calcOut(rep, 'total'), calcSpanne(arbeitVon + matVon, arbeitBis + matBis));
+        }
+        calcText(calcOut(rep, 'aufwand'), 'Geschätzter Aufwand: ca. ' + calcDez(stunden) + (stunden === 1 ? ' Stunde' : ' Stunden'));
+        calcZeigen(calcOut(rep, 'inkl'), !meldung);
+        calcZeigen(calcOut(rep, 'material-inkl'), material > 0);
+        calcText(calcOut(rep, 'material-text'), mitWahl ? 'Material (' + wahlText + ')' : 'Material');
+
+        /* Zusammenfassung fürs Anfrageformular */
+        var zus = [a.text + (anzahl > 1 ? ', ' + anzahl + ' Stück' : '')];
+        if (mitWahl) zus.push(wahl === 'vorhanden' ? 'Material ist schon da' : 'Material ' + wahlText);
+        if (kmOk) zus.push(calcDez(km) + ' km ab Spreitenbach');
+        if (!meldung) {
+          zus.push('Aufwand ca. ' + calcDez(stunden) + ' h');
+          zus.push('Arbeit und Anfahrt ' + calcSpanne(arbeitVon, arbeitBis));
+          zus.push('Material ' + (material ? calcSpanne(matVon, matBis) : 'keines'));
+          zus.push('Total ' + calcSpanne(arbeitVon + matVon, arbeitBis + matBis) + ' inkl. MWST');
+        }
+        calcOut(rep, 'link').href = calcLink(a.thema || 'sanitaer', zus.join('; '));
+      });
+    }
+
+    /* --- Teil «Heizungsersatz» --- */
+    var hz = calcTeile.heizung;
+    if (hz) {
+      var H = PREISE_HEIZUNG;
+      var hzMenge = hz.querySelector('[name="menge"]');
+      var hzFlaeche = hz.querySelector('[name="flaeche"]');
+      var hzTank = hz.querySelector('[name="oeltank"]');
+      var hzTraeger = {
+        oel: { titel: 'Heizöl pro Jahr', lang: ' in Litern', einheit: 'Liter', proKw: H.literOelProKw,
+          hinweis: 'Durchschnitt pro Jahr, z. B. aus den Heizöl-Rechnungen', text: 'Heizöl ', nach: ' Liter pro Jahr' },
+        gas: { titel: 'Gas pro Jahr', lang: ' in Kubikmetern', einheit: 'm³', proKw: H.m3GasProKw,
+          hinweis: 'aus der Jahresabrechnung; steht dort kWh, die Zahl durch 10 teilen', text: 'Gas ', nach: ' m³ pro Jahr' }
+      };
+      var hzNamen = { 'luft-aussen': 'Luft/Wasser-Wärmepumpe, aussen aufgestellt', 'luft-innen': 'Luft/Wasser-Wärmepumpe, innen aufgestellt', erdsonde: 'Erdsonden-Wärmepumpe' };
+      var hzBaujahr = { vor1980: 'Baujahr vor 1980', bis1999: 'Baujahr 1980–1999', ab2000: 'Baujahr ab 2000' };
+      function hzWert(name) { var r = hz.querySelector('[name="' + name + '"]:checked'); return r ? r.value : ''; }
+      function hzStufe(tabelle, kw) {
+        for (var i = 0; i < tabelle.length; i++) if (kw <= tabelle[i][0]) return tabelle[i][1];
+        return null;
+      }
+
+      calcLive(hz, function () {
+        var wp = hzWert('wp') || 'luft-aussen', weg = hzWert('weg') || 'verbrauch', bj = hzWert('baujahr') || 'vor1980';
+        var traeger = hzTraeger[hzWert('traeger')] || hzTraeger.oel;
+        var heizkoerper = hzWert('verteilung') === 'heizkoerper', tank = hzTank.checked;
+        hz.querySelectorAll('[data-calc-weg]').forEach(function (w) { calcZeigen(w, w.getAttribute('data-calc-weg') === weg); });
+        calcText(calcOut(hz, 'menge-titel'), traeger.titel);
+        calcText(calcOut(hz, 'menge-einheit-lang'), traeger.lang);
+        calcText(calcOut(hz, 'menge-einheit'), traeger.einheit);
+        calcText(calcOut(hz, 'menge-hinweis'), traeger.hinweis);
+
+        var feld = weg === 'flaeche' ? hzFlaeche : hzMenge;
+        var wert = calcZahl(feld.value);
+        var falsch = wert !== null && (isNaN(wert) || wert <= 0);
+        calcFeldFehler(weg === 'flaeche' ? hzMenge : hzFlaeche, false);
+        calcFeldFehler(feld, falsch);
+
+        var kw = null, bedarf = '', meldung = '';
+        if (wert === null) meldung = weg === 'flaeche' ? 'Geben Sie die beheizte Fläche ein. Die Schätzung erscheint dann hier.' : 'Geben Sie den Verbrauch ein. Die Schätzung erscheint dann hier.';
+        else if (falsch) meldung = 'Bitte geben Sie ' + (weg === 'flaeche' ? 'die Fläche' : 'den Verbrauch') + ' als Zahl ein.';
+        else {
+          if (weg === 'flaeche') {
+            kw = wert * H.wattProM2[bj] / 1000 * H.zuschlagWarmwasser;
+            bedarf = calcChf(wert) + ' m² beheizt, ' + hzBaujahr[bj];
+          } else {
+            kw = wert / traeger.proKw;
+            bedarf = traeger.text + calcChf(wert) + traeger.nach;
+          }
+          kw = Math.max(H.kwMin, Math.round(kw / H.kwRunden) * H.kwRunden);
+          if (kw > H.kwMax) meldung = 'Für diese Grösse machen wir eine Offerte nach Besichtigung.';
+        }
+
+        var preis = null, von = 0, bis = 0;
+        if (kw !== null && !meldung) {
+          preis = wp === 'erdsonde'
+            ? hzStufe(H.erdsonde, kw) + kw * H.sondeMeterProKw * H.sondeChfProMeter + H.sondePauschale
+            : hzStufe(H.luftWasser, kw) + (wp === 'luft-innen' ? H.zuschlagInnen : 0);
+          if (heizkoerper) preis += H.zuschlagHeizkoerper;
+          if (tank) preis += H.oeltank;
+          von = calcRunden(preis * (1 - H.spanne), H.rundenAuf);
+          bis = calcRunden(preis * (1 + H.spanne), H.rundenAuf);
+        }
+        var kwText = kw === null ? '' : kw > H.kwMax ? 'mehr als ' + H.kwMax + ' kW' : 'ca. ' + calcDez(kw) + ' kW';
+
+        calcZeigen(calcOut(hz, 'preis'), preis !== null);
+        if (preis !== null) calcText(calcOut(hz, 'preis'), calcSpanne(von, bis));
+        calcZeigen(calcOut(hz, 'meldung'), preis === null);
+        calcText(calcOut(hz, 'meldung'), meldung);
+        calcZeigen(calcOut(hz, 'leistung'), kw !== null);
+        calcText(calcOut(hz, 'leistung'), kw === null ? '' : 'Geschätzte Heizleistung: ' + kwText);
+        calcZeigen(calcOut(hz, 'inkl'), preis !== null);
+        calcZeigen(calcOut(hz, 'innen'), wp === 'luft-innen');
+        calcZeigen(calcOut(hz, 'erdsonde'), wp === 'erdsonde');
+        if (wp === 'erdsonde' && preis !== null) calcText(calcOut(hz, 'sonde-text'), 'Erdsonde mit rund ' + calcRunden(kw * H.sondeMeterProKw, 10) + ' m Bohrung, Bewilligung und Bohrplatz');
+        calcZeigen(calcOut(hz, 'heizkoerper'), heizkoerper);
+        calcZeigen(calcOut(hz, 'oeltank'), tank);
+
+        /* Zusammenfassung fürs Anfrageformular, erst wenn eine Leistung berechnet ist */
+        var zus = [];
+        if (kw !== null) {
+          zus = ['Heizungsersatz: ' + hzNamen[wp], bedarf, heizkoerper ? 'Heizkörper' : 'Bodenheizung'];
+          if (tank) zus.push('Öltank entfernen');
+          zus.push(kwText);
+          if (preis !== null) zus.push(calcSpanne(von, bis) + ' inkl. MWST');
+        }
+        calcOut(hz, 'link').href = calcLink('heizung', zus.join('; '));
+      });
+    }
+  }
+
   /* Schluss-Aufruf vor dem Footer: Telefonnummer in Riesenschrift und Knopf zum Formular
      (nicht auf Seiten mit Formular und nicht mit <body data-no-finale>, z. B. service.html) */
   var footer = document.querySelector('.site-footer');
@@ -371,7 +685,7 @@
       '<a class="actionbar__ask" href="' + base + 'kontakt.html#formular">Anfrage starten</a>';
     body.appendChild(bar);
     if ('IntersectionObserver' in window) {
-      var hideFor = Array.prototype.slice.call(document.querySelectorAll('form[data-form], .site-footer, .finale'));
+      var hideFor = Array.prototype.slice.call(document.querySelectorAll('form[data-form], #rechner, .site-footer, .finale'));
       var visibleSet = new Set();
       var hio = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) { if (en.isIntersecting) visibleSet.add(en.target); else visibleSet.delete(en.target); });

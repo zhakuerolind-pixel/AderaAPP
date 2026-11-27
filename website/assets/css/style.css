@@ -896,3 +896,90 @@ img.vignette { width: 120px; height: 120px; }
 @media (max-width: 640px) {
   .finale__row .btn { width: 100%; justify-content: center; }
 }
+
+/* ==========================================================================
+   Kostenrechner (kostenrechner.html)
+   Zwei Teile, oben mit zwei Kacheln umschaltbar: «Reparatur und Ersatz» und «Heizungsersatz».
+   Eingaben links, Ergebnis rechts in einer weissen Box mit blauer Linie, am Handy untereinander.
+   Preise und Berechnung in main.js (Block «Kostenrechner»). Ohne JavaScript bleibt der Rechner
+   ausgeblendet (hidden), dann steht nur der Hinweis mit dem Link zum Formular da.
+   ========================================================================== */
+main > .calc-section:not(:first-child) { margin-top: clamp(32px, 4vw, 64px); }
+.calc-anchor { display: block; height: 0; }   /* Sprungziele #reparatur und #heizung oben am Rechner */
+.calc-nojs { max-width: 62ch; margin: 0; padding: 6px 0 6px 20px; border-left: 4px solid var(--blue); font-size: 18px; color: var(--ink); }
+
+.calc { background: var(--grey); padding: clamp(20px, 2.8vw, 40px); }
+.calc fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.calc .calc__q { display: block; margin: 0 0 8px; padding: 0; font-size: 16px; font-weight: 700; line-height: 1.35; color: var(--ink); }
+.calc .calc__sublabel { display: block; margin: 0 0 6px; padding: 0; font-size: 15px; font-weight: 700; line-height: 1.35; color: var(--ink); }
+.calc__hint { margin: 6px 0 0; font-size: 14px; line-height: 1.45; color: var(--muted); }
+
+/* Kacheln wie im Anfrage-Assistenten, etwas kompakter */
+.calc .tiles { grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 8px; }
+.calc .tile { min-height: 52px; padding: 10px 14px; }
+.calc .tile > span { min-width: 0; }
+.calc .tile small { margin-top: 1px; font-size: 13.5px; }
+.calc .calc__tiles3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.calc .calc__tiles2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); }
+
+/* Umschalter oben: der gewählte Teil als blaue Fläche */
+.calc .calc__switch { margin-bottom: clamp(22px, 2.4vw, 32px); }
+.calc .calc__switch .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.calc .calc__switch .tile { min-height: 62px; font-size: 17px; }
+.calc .calc__switch .tile:has(input:checked) { background: var(--blue-ink); border-color: var(--blue-ink); box-shadow: none; color: #fff; }
+.calc .calc__switch .tile:has(input:checked)::before { border-color: #fff; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2300729b' d='M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E") center / 14px no-repeat; }
+.calc .calc__switch .tile:has(input:checked) small { color: #fff; }
+
+/* Eingaben links, Ergebnis rechts */
+.calc__grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: clamp(24px, 3vw, 44px); align-items: start; }
+.calc__inputs { display: grid; gap: 22px; min-width: 0; }
+.calc__row { display: grid; grid-template-columns: minmax(0, 1fr) 7.5rem; gap: 14px; align-items: end; }
+.calc select { padding-right: 44px; text-overflow: ellipsis; }
+.calc__input { display: flex; align-items: center; gap: 10px; max-width: 260px; }
+.calc__input input { flex: 1 1 auto; min-width: 0; font-size: 18px; }
+.calc__unit { flex: none; min-width: 2.6em; font-size: 16px; color: var(--ink); }
+.calc__more { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 14px 28px; margin-top: 12px; padding: 2px 0 2px 18px; border-left: 3px solid var(--blue); }
+.calc .radios { padding-top: 0; gap: 0 22px; }
+.calc .radios label { min-height: 40px; font-size: 16px; }
+.calc__check input { margin-top: 3px; }
+.calc__check label { font-size: 16px; font-weight: 700; }
+.calc__soft { font-weight: 400; color: var(--muted); }
+
+/* Ergebnis: weisse Box mit blauer Linie */
+.calc__result { background: #fff; border-top: 4px solid var(--blue); padding: 20px clamp(20px, 2.2vw, 30px) 24px; }
+.calc__label { margin: 0 0 4px; font-size: 15px; color: var(--muted); }
+.calc__lines { margin: 0; }
+.calc__line { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 16px; padding: 8px 0; border-bottom: 1px solid var(--grey-2); }
+.calc__line dt { color: var(--text); }
+.calc__line dd { margin: 0; font-weight: 700; color: var(--ink); }
+.calc__line--total { display: block; padding: 12px 0 0; border-bottom: 0; }
+.calc__line--total dt { font-weight: 700; color: var(--ink); }
+.calc .calc__total { margin: 2px 0 0; font-size: clamp(28px, 2.5vw, 36px); font-weight: 700; line-height: 1.15; letter-spacing: -.015em; color: var(--ink); }
+.calc__msg { margin: 6px 0 0; font-size: 18px; line-height: 1.45; color: var(--ink); }
+.calc__sub { margin: 10px 0 0; font-size: 15px; }
+.calc__incl { margin-top: 16px; }
+.calc__inclhead { margin: 0 0 6px; font-size: 14px; font-weight: 700; color: var(--ink); }
+.calc__list { list-style: none; display: grid; gap: 4px 18px; font-size: 14.5px; line-height: 1.4; }
+.calc__list--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); }
+.calc__list li { display: flex; align-items: flex-start; gap: 8px; }
+.calc__list .i { width: 18px; height: 18px; margin-top: 1px; color: var(--blue); }
+.calc .calc__cta { width: 100%; justify-content: center; margin-top: 22px; }
+.calc__notes { margin-top: 18px; font-size: 14px; line-height: 1.5; color: var(--muted); }
+.calc__notes p { margin: 0 0 .5em; }
+.calc__notes p:last-child { margin-bottom: 0; }
+
+@media (max-width: 1080px) {
+  .calc__grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .calc { margin: 0 calc(var(--gutter) * -1); padding: 22px var(--gutter) 26px; }
+  .calc .calc__tiles3 { grid-template-columns: minmax(0, 1fr); }
+  .calc .calc__switch .tile { min-height: 52px; font-size: 16px; }
+  .calc .calc__switch .tile small { display: none; }
+  .calc__row { grid-template-columns: minmax(0, 1fr); }
+  .calc__count select { max-width: 8rem; }
+  .calc__result { padding: 18px 18px 22px; }
+}
+@media (max-width: 480px) {
+  .calc .calc__switch .tiles { grid-template-columns: minmax(0, 1fr); }
+}

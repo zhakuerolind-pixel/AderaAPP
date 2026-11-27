@@ -124,7 +124,7 @@ Das Formular meldet lokal «Das Senden hat leider nicht geklappt», weil kein Ma
 - **Bewegung:** Die Fotowand auf der Startseite und die grosse Telefonnummer im Schluss-Aufruf bewegen sich nur beim
   Scrollen (CSS `animation-timeline`, Abschnitt «Starke Momente» am Ende von `style.css`). Browser ohne diese Funktion
   zeigen alles ruhig an, bei «Bewegung reduzieren» steht alles still. Nichts läuft endlos, kein Autoplay.
-- **Versionsangabe:** `style.css?v=20261126c` und `main.js?v=20261126c` in allen HTML-Dateien. Nach jeder Änderung an CSS/JS
+- **Versionsangabe:** `style.css?v=20261126d` und `main.js?v=20261126d` in allen HTML-Dateien. Nach jeder Änderung an CSS/JS
   die Zahl in allen Dateien hochzählen (die `.htaccess` speichert diese Dateien 1 Jahr im Browser).
 - **Strukturierte Daten (JSON-LD):** stehen im `<head>` jeder Seite zwischen den Kommentaren
   `<!-- JSON-LD: automatisch erzeugt … -->` und `<!-- /JSON-LD -->`. Nach Textänderungen (Titel, Beschreibung, Fragen)
